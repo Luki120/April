@@ -13,10 +13,4 @@
 
 
 @interface APRRootListController : PSListController
-@property (nonatomic, retain) NSMutableDictionary *savedSpecifiers;
-@end
-
-
-@interface PSListController (Private)
--(BOOL)containsSpecifier:(PSSpecifier *)arg1;
 @end

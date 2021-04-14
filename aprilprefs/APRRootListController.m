@@ -5,6 +5,9 @@
 
 static NSString *plistPath = @"/var/mobile/Library/Preferences/me.luki.aprilprefs.plist";
 static BOOL yes;
+static BOOL blur;
+static BOOL alpha;
+float cellAlpha = 1.0f;
 
 
 
@@ -14,38 +17,10 @@ static BOOL yes;
 - (NSArray *)specifiers {
 	if (!_specifiers) {
 		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
-		NSArray *chosenIDs = @[@"Image"];
-		self.savedSpecifiers = (self.savedSpecifiers) ?: [[NSMutableDictionary alloc] init];
-		for(PSSpecifier *specifier in _specifiers) {
-			if([chosenIDs containsObject:[specifier propertyForKey:@"id"]]) {
-				[self.savedSpecifiers setObject:specifier forKey:[specifier propertyForKey:@"id"]];
-			}
-		}
+	
 	}
 
 	return _specifiers;
-}
-
-
--(void)reloadSpecifiers {
-
-    [super reloadSpecifiers];
-
-    if (![[self readPreferenceValue:[self specifierForID:@"Switch"]] boolValue]) {
-        [self removeSpecifier:self.savedSpecifiers[@"Image"] animated:NO];
-    } 
-    else if (![self containsSpecifier:self.savedSpecifiers[@"Image"]]) {
-        [self insertSpecifier:self.savedSpecifiers[@"Image"] afterSpecifierID:@"Switch" animated:NO];
-    
-    }
-}
-
-
--(void)viewDidLoad {
-
-	[super viewDidLoad];
-	[self reloadSpecifiers];
-
 }
 
 
@@ -54,6 +29,9 @@ static BOOL yes;
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:plistPath];
 	NSMutableDictionary *prefs = dict ? [dict mutableCopy] : [NSMutableDictionary dictionary];
     yes = prefs[@"yes"] ? [prefs[@"yes"] boolValue] : NO;
+	blur = prefs[@"blur"] ? [prefs[@"blur"] boolValue] : NO;
+	alpha = prefs[@"alphaEnabled"] ? [prefs[@"alphaEnabled"] boolValue] : YES;
+	cellAlpha = prefs[@"cellAlpha"] ? [prefs[@"cellAlpha"] floatValue] : 1.0f;
 
 }
 
@@ -76,19 +54,7 @@ static BOOL yes;
         [self loadWithoutAFuckingRespring];
     }
 
-	NSString *key = [specifier propertyForKey:@"key"];
-
- 		if([key isEqualToString:@"yes"]) {
-        
-        	if (![value boolValue]) {
-            [self removeSpecifier:self.savedSpecifiers[@"Image"] animated:YES];
-        	} 
-        	else if (![self containsSpecifier:self.savedSpecifiers[@"Image"]]) {
-            [self insertSpecifier:self.savedSpecifiers[@"Image"] afterSpecifierID:@"Switch" animated:YES];
-        	}
-   	 	}
-	}
-
+}
 
 
 @end

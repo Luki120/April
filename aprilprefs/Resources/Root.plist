@@ -25,10 +25,8 @@
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
-			<key>id</key>
-            <string>Switch</string>
 		</dict>
-		 <dict>
+		<dict>
 			<key>cell</key>
 			<string>PSLinkCell</string>
 			<key>cellClass</key>
@@ -45,8 +43,56 @@
 			<false/>
 			<key>videoQuality</key>
 			<integer>1</integer>
-			<key>id</key>
-            <string>Image</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>me.luki.aprilprefs</string>
+			<key>key</key>
+			<string>blur</string>
+			<key>label</key>
+			<string>Blur</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>me.luki.aprilprefs</string>
+			<key>key</key>
+			<string>alphaEnabled</string>
+			<key>label</key>
+			<string>Enable Alpha</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>default</key>
+			<real>1</real>
+			<key>defaults</key>
+			<string>me.luki.aprilprefs</string>
+			<key>key</key>
+			<string>cellAlpha</string>
+			<key>min</key>
+			<real>0</real>
+			<key>max</key>
+			<real>1</real>
+			<key>showValue</key>
+			<true/>
+			<key>label</key>
+			<string>Cell Background Alpha</string>
 		</dict>
 	</array>
 	<key>title</key>

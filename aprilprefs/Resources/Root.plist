@@ -35,6 +35,8 @@
 			<string>Choose Image</string>
 			<key>defaults</key>
 			<string>me.luki.aprilprefs</string>
+			<key>PostNotification</key>
+			<string>me.luki.aprilprefs/imageChanged</string>
 			<key>key</key>
 			<string>bImage</string>
 			<key>usesPhotos</key>

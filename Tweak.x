@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "GcImagePickerUtils.h"
+#import <GcUniversal/GcImagePickerUtils.h>
 
 
 
@@ -70,7 +70,7 @@ static void loadWithoutAFuckingRespring() {
 
 
 -(void)setImage {
-
+	loadWithoutAFuckingRespring();
 
 	if(yes) {
 
@@ -78,7 +78,6 @@ static void loadWithoutAFuckingRespring() {
 		UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:image];
 		[backgroundImageView setFrame:self.frame];
 		self.backgroundView = backgroundImageView;
-		loadWithoutAFuckingRespring();
 
 		//[backgroundImageView setClipsToBounds:YES];
         //[backgroundImageView setContentMode: UIViewContentModeScaleAspectFill];
@@ -96,7 +95,7 @@ static void loadWithoutAFuckingRespring() {
 
 		//loadWithoutAFuckingRespring();
 
-	}
+	} else self.backgroundView = NULL;
 
 }
 
@@ -105,26 +104,23 @@ static void loadWithoutAFuckingRespring() {
 
 
 -(void)setBlur {
-
-
+	loadWithoutAFuckingRespring();
+	
+	[[self.backgroundView viewWithTag:1337] removeFromSuperview];
+	
 	if(blur) {
 
 		UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     	UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+		blurEffectView.tag = 1337;
     	//always fill the view
 		blurEffectView.alpha = intensity;
     	blurEffectView.frame = self.backgroundView.bounds;
     	blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[self.backgroundView addSubview:blurEffectView];
 
-		
-		loadWithoutAFuckingRespring();
-
 
 	}
-
-
-	loadWithoutAFuckingRespring();
 
 
 }
@@ -137,16 +133,11 @@ static void loadWithoutAFuckingRespring() {
 
 
 	%orig;
-	if(!self.backgroundView)
-
-
-		[self setImage];
+	if(!self.backgroundView) [self setImage];
 	
-		[[NSNotificationCenter defaultCenter] removeObserver:self];
-    	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"disableImage" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setBlur) name:@"disableBlur" object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
 
 }
 
@@ -155,38 +146,9 @@ static void loadWithoutAFuckingRespring() {
 
 
 	%orig;
-
-	if(yes == YES) {
-
-
-		[self setImage];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"changeImage" object:nil];
-
-	}
-
-	else if(yes == NO) {
-
-
-		[self setImage];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"disableImage" object:nil];
-
-	}
-
-	if(blur == YES) {
-
-		//[self setBlur];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"changeBlur" object:nil];
-
-	}
-
-
-	else if(blur == NO) {
-
-
-		//[self setBlur];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"disableBlur" object:nil];
-
-	}
+	
+	if(!self.backgroundView) [self setImage];
+	if(![self.backgroundView viewWithTag:1337]) [self setBlur];
 
 	
 
@@ -206,38 +168,38 @@ static void loadWithoutAFuckingRespring() {
 
 
 -(void)applyAlpha {
-
+	loadWithoutAFuckingRespring();
 
 	if (alpha) {
 
 		CGFloat red = 0.0, green = 0.0, blue = 0.0, dAlpha = 0.0;
 		[self.backgroundColor getRed:&red green:&green blue:&blue alpha:&dAlpha];
 		self.backgroundColor = [[UIColor alloc] initWithRed:red green:green blue:blue alpha:cellAlpha];
-		loadWithoutAFuckingRespring();
 
 	}
 
-	loadWithoutAFuckingRespring();
+	
 
 }
 
 
 -(void)didMoveToWindow {
-
+	loadWithoutAFuckingRespring();
 
 	%orig;
 	[self applyAlpha];
-	loadWithoutAFuckingRespring();
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applyAlpha) name:@"changeAlpha" object:nil];
 
 }
 
 
 -(void)refreshCellContentsWithSpecifier:(id)arg1 {
-
-
-	%orig(arg1);
-	[self applyAlpha];
 	loadWithoutAFuckingRespring();
+
+	%orig;
+	[self applyAlpha];
 
 
 }
@@ -250,12 +212,6 @@ static void loadWithoutAFuckingRespring() {
 
 %ctor {
 
-    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:plistPath];
-	NSMutableDictionary *prefs = dict ? [dict mutableCopy] : [NSMutableDictionary dictionary];
-	yes = prefs[@"yes"] ? [prefs[@"yes"] boolValue] : NO;
-	blur = prefs[@"blur"] ? [prefs[@"blur"] boolValue] : NO;
-	alpha = prefs[@"alphaEnabled"] ? [prefs[@"alphaEnabled"] boolValue] : YES;
-	cellAlpha = prefs[@"cellAlpha"] ? [prefs[@"cellAlpha"] floatValue] : 1.0f;
-	intensity = prefs[@"intensity"] ? [prefs[@"intensity"] floatValue] : 1.0f;
+    loadWithoutAFuckingRespring();
 
 }

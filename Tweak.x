@@ -65,7 +65,7 @@ static void loadWithoutAFuckingRespring() {
 //%new
 
 
--(void)didMoveToSuperview {
+-(void)didMoveToWindow {
 
 
 	if(yes) {
@@ -95,14 +95,6 @@ static void loadWithoutAFuckingRespring() {
 	}
 
 
-	return %orig;
-
-}
-
-
-%end
-
-
 	if(blur) {
 
 		UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
@@ -125,6 +117,9 @@ static void loadWithoutAFuckingRespring() {
 }
 
 
+
+
+
 -(void)didMoveToSuperview {
 
 
@@ -137,7 +132,7 @@ static void loadWithoutAFuckingRespring() {
 
 }	
 
-%end*/
+%end
 
 
 

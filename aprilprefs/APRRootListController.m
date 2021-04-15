@@ -33,7 +33,7 @@ float cellAlpha = 1.0f;
 	alpha = prefs[@"alphaEnabled"] ? [prefs[@"alphaEnabled"] boolValue] : YES;
 	cellAlpha = prefs[@"cellAlpha"] ? [prefs[@"cellAlpha"] floatValue] : 1.0f;
 
-}*/
+}
 
 
 -(id)readPreferenceValue:(PSSpecifier*)specifier {

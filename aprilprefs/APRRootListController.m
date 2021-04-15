@@ -11,7 +11,9 @@ float cellAlpha = 1.0f;
 float intensity = 1.0f;
 
 
-
+static void postNSNotification(){
+	[NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
+}
 
 @implementation APRRootListController
 
@@ -24,6 +26,11 @@ float intensity = 1.0f;
 	return _specifiers;
 }
 
+-(void)viewDidLoad{
+	[super viewDidLoad];
+	
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/imageChanged"), NULL, 0);
+}
 
 -(void)loadWithoutAFuckingRespring {
 
@@ -55,7 +62,9 @@ float intensity = 1.0f;
     if (notificationName) {
         [self loadWithoutAFuckingRespring];
     }
-
+	
+	[NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
 }
 
 

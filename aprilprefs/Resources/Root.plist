@@ -62,6 +62,24 @@
 		</dict>
 		<dict>
 			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>default</key>
+			<real>1</real>
+			<key>defaults</key>
+			<string>me.luki.aprilprefs</string>
+			<key>key</key>
+			<string>intensity</string>
+			<key>min</key>
+			<real>0</real>
+			<key>max</key>
+			<real>1</real>
+			<key>showValue</key>
+			<true/>
+			<key>label</key>
+			<string>Strength</string>
+		</dict>
+		<dict>
+			<key>cell</key>
 			<string>PSGroupCell</string>
 		</dict>
 		<dict>

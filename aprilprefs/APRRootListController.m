@@ -8,6 +8,7 @@ static BOOL yes;
 static BOOL blur;
 static BOOL alpha;
 float cellAlpha = 1.0f;
+float intensity = 1.0f;
 
 
 
@@ -32,6 +33,7 @@ float cellAlpha = 1.0f;
 	blur = prefs[@"blur"] ? [prefs[@"blur"] boolValue] : NO;
 	alpha = prefs[@"alphaEnabled"] ? [prefs[@"alphaEnabled"] boolValue] : YES;
 	cellAlpha = prefs[@"cellAlpha"] ? [prefs[@"cellAlpha"] floatValue] : 1.0f;
+	intensity = prefs[@"intensity"] ? [prefs[@"intensity"] floatValue] : 1.0f;
 
 }
 

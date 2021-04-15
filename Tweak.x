@@ -11,18 +11,18 @@
 
 
 @interface PSUIPrefsListController : UIViewController
--(UITableView*)table;
+-(void)setImage;
 @end
 
 
 @interface UITableView ()
 - (void)setImage;
+- (void)setBlur;
 @end
 
 
 @interface PSTableCell : UIView
 -(void)applyAlpha;
--(void)setImage;
 @end
 
 
@@ -33,6 +33,9 @@ static BOOL yes;
 static BOOL blur;
 static BOOL alpha;
 float cellAlpha = 1.0f;
+float intensity = 1.0f;
+
+
 
 
 CAGradientLayer *gradient;
@@ -53,6 +56,7 @@ static void loadWithoutAFuckingRespring() {
 	blur = prefs[@"blur"] ? [prefs[@"blur"] boolValue] : NO;
 	alpha = prefs[@"alphaEnabled"] ? [prefs[@"alphaEnabled"] boolValue] : YES;
 	cellAlpha = prefs[@"cellAlpha"] ? [prefs[@"cellAlpha"] floatValue] : 1.0f;
+	intensity = prefs[@"intensity"] ? [prefs[@"intensity"] floatValue] : 1.0f;
 
 }
 
@@ -62,10 +66,10 @@ static void loadWithoutAFuckingRespring() {
 %hook UITableView
 
 
-//%new
+%new
 
 
--(void)didMoveToWindow {
+-(void)setImage {
 
 
 	if(yes) {
@@ -74,7 +78,7 @@ static void loadWithoutAFuckingRespring() {
 		UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:image];
 		[backgroundImageView setFrame:self.frame];
 		self.backgroundView = backgroundImageView;
-
+		loadWithoutAFuckingRespring();
 
 		//[backgroundImageView setClipsToBounds:YES];
         //[backgroundImageView setContentMode: UIViewContentModeScaleAspectFill];
@@ -94,12 +98,21 @@ static void loadWithoutAFuckingRespring() {
 
 	}
 
+}
+
+
+%new
+
+
+-(void)setBlur {
+
 
 	if(blur) {
 
 		UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     	UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
     	//always fill the view
+		blurEffectView.alpha = intensity;
     	blurEffectView.frame = self.backgroundView.bounds;
     	blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[self.backgroundView addSubview:blurEffectView];
@@ -125,12 +138,61 @@ static void loadWithoutAFuckingRespring() {
 
 	%orig;
 	if(!self.backgroundView)
+
+
 		[self setImage];
 	
 		[[NSNotificationCenter defaultCenter] removeObserver:self];
     	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"disableImage" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setBlur) name:@"disableBlur" object:nil];
 
-}	
+}
+
+
+-(void)didMoveToWindow {
+
+
+	%orig;
+
+	if(yes == YES) {
+
+
+		[self setImage];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"changeImage" object:nil];
+
+	}
+
+	else if(yes == NO) {
+
+
+		[self setImage];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"disableImage" object:nil];
+
+	}
+
+	if(blur == YES) {
+
+		//[self setBlur];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"changeBlur" object:nil];
+
+	}
+
+
+	else if(blur == NO) {
+
+
+		//[self setBlur];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"disableBlur" object:nil];
+
+	}
+
+	
+
+
+}
+
 
 %end
 
@@ -194,5 +256,6 @@ static void loadWithoutAFuckingRespring() {
 	blur = prefs[@"blur"] ? [prefs[@"blur"] boolValue] : NO;
 	alpha = prefs[@"alphaEnabled"] ? [prefs[@"alphaEnabled"] boolValue] : YES;
 	cellAlpha = prefs[@"cellAlpha"] ? [prefs[@"cellAlpha"] floatValue] : 1.0f;
+	intensity = prefs[@"intensity"] ? [prefs[@"intensity"] floatValue] : 1.0f;
 
 }

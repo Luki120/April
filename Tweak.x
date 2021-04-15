@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "GcImagePickerUtils.h"
-#import <Preferences/PSListController.h>
+
 
 
 
@@ -59,48 +59,13 @@ static void loadWithoutAFuckingRespring() {
 
 
 
-/*%hook PSUIPrefsListController
-
-
--(void)loadView {
-
-
-	%orig;
-
-
-	if(yes) {
-
-
-		UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:image];
-		image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bImage"];
-		[backgroundImageView setClipsToBounds:YES];
-        [backgroundImageView setContentMode: UIViewContentModeScaleAspectFill];
-		[((UITableView*)[self table]) setBackgroundView: backgroundImageView];
-
-		
-		loadWithoutAFuckingRespring();
-
-	}
-
-
-	loadWithoutAFuckingRespring();
-
-
-}
-
-
-%end*/
-
-
-
-
 %hook UITableView
 
 
-%new
+//%new
 
 
--(void)setImage {
+-(void)didMoveToSuperview {
 
 
 	if(yes) {
@@ -109,8 +74,6 @@ static void loadWithoutAFuckingRespring() {
 		UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:image];
 		[backgroundImageView setFrame:self.frame];
 		self.backgroundView = backgroundImageView;
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"changeImage" object:nil];
-	
 
 
 		//[backgroundImageView setClipsToBounds:YES];
@@ -127,8 +90,17 @@ static void loadWithoutAFuckingRespring() {
     	[view.layer addSublayer:gradient];
     	[self setBackgroundView:view];*/
 
-		loadWithoutAFuckingRespring();
+		//loadWithoutAFuckingRespring();
+
 	}
+
+
+	return %orig;
+
+}
+
+
+%end
 
 
 	if(blur) {
@@ -152,7 +124,23 @@ static void loadWithoutAFuckingRespring() {
 
 }
 
-%end
+
+-(void)didMoveToSuperview {
+
+
+	%orig;
+	if(!self.backgroundView)
+		[self setImage];
+	
+		[[NSNotificationCenter defaultCenter] removeObserver:self];
+    	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
+
+}	
+
+%end*/
+
+
+
 
 %hook PSTableCell
 
@@ -177,14 +165,12 @@ static void loadWithoutAFuckingRespring() {
 }
 
 
--(void)didMoveToSuperview {
+-(void)didMoveToWindow {
 
 
 	%orig;
-	[self setImage];
-	
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
+	[self applyAlpha];
+	loadWithoutAFuckingRespring();
 
 }
 

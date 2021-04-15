@@ -65,6 +65,7 @@ static void postNSNotification(){
 	
 	[NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:@"changeAlpha" object:NULL];
 }
 
 

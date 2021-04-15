@@ -188,6 +188,9 @@ static void loadWithoutAFuckingRespring() {
 
 	%orig;
 	[self applyAlpha];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applyAlpha) name:@"changeAlpha" object:nil];
 
 }
 
@@ -195,7 +198,7 @@ static void loadWithoutAFuckingRespring() {
 -(void)refreshCellContentsWithSpecifier:(id)arg1 {
 	loadWithoutAFuckingRespring();
 
-	%orig(arg1);
+	%orig;
 	[self applyAlpha];
 
 

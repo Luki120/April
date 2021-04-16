@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <GcUniversal/GcImagePickerUtils.h>
+#import <GcImagePickerUtils.h>
 
 
 
@@ -18,6 +18,7 @@
 @interface UITableView ()
 - (void)setImage;
 - (void)setBlur;
+- (void)setGradient;
 @end
 
 
@@ -26,12 +27,27 @@
 @end
 
 
+@interface _UIBackdropView : UIView
+@property (assign,nonatomic) BOOL blurRadiusSetOnce;
+@property (nonatomic,copy) NSString * _blurQuality;
+@property (assign,nonatomic) double _blurRadius;
+-(id)initWithFrame:(CGRect)arg1 autosizesToFitSuperview:(BOOL)arg2 settings:(id)arg3 ;
+-(id)initWithSettings:(id)arg1 ;
+@end
+
+
+@interface _UIBackdropViewSettings : NSObject
++(id)settingsForStyle:(long long)arg1 ;
+@end
+
 
 
 static NSString *plistPath = @"/var/mobile/Library/Preferences/me.luki.aprilprefs.plist";
 static BOOL yes;
 static BOOL blur;
+static BOOL setGradientAsBackground;
 static BOOL alpha;
+static int blurType;
 float cellAlpha = 1.0f;
 float intensity = 1.0f;
 
@@ -54,7 +70,9 @@ static void loadWithoutAFuckingRespring() {
 	NSMutableDictionary *prefs = dict ? [dict mutableCopy] : [NSMutableDictionary dictionary];
     yes = prefs[@"yes"] ? [prefs[@"yes"] boolValue] : NO;
 	blur = prefs[@"blur"] ? [prefs[@"blur"] boolValue] : NO;
+	setGradientAsBackground = prefs[@"setGradientAsBackground"] ? [prefs[@"setGradientAsBackground"] boolValue] : NO;
 	alpha = prefs[@"alphaEnabled"] ? [prefs[@"alphaEnabled"] boolValue] : YES;
+	blurType = prefs[@"blurType"] ? [prefs[@"blurType"] integerValue] : 2;
 	cellAlpha = prefs[@"cellAlpha"] ? [prefs[@"cellAlpha"] floatValue] : 1.0f;
 	intensity = prefs[@"intensity"] ? [prefs[@"intensity"] floatValue] : 1.0f;
 
@@ -70,7 +88,10 @@ static void loadWithoutAFuckingRespring() {
 
 
 -(void)setImage {
+
+
 	loadWithoutAFuckingRespring();
+
 
 	if(yes) {
 
@@ -82,20 +103,9 @@ static void loadWithoutAFuckingRespring() {
 		//[backgroundImageView setClipsToBounds:YES];
         //[backgroundImageView setContentMode: UIViewContentModeScaleAspectFill];
 
+	}
 
-		/*view = [[UIView alloc] initWithFrame:self.backgroundView.bounds];
-		[view setClipsToBounds:YES];
-   	 	gradient = [CAGradientLayer layer];
-    	gradient.frame = view.frame;
-    	gradient.startPoint = CGPointMake(0,0); // Lower right to upper left
-    	gradient.endPoint = CGPointMake(1,1);
-    	gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithRed:252.0/255.0 green:176.0/255.0 blue:243.0/255.0 alpha:1.0] CGColor],(id)[[UIColor colorWithRed:145.0/255.0 green:81.0/255.0 blue:230.0/255.0 alpha:1.0] CGColor], nil]; // (id)firstColor.CGColor, (id)secondColor.CGColor, nil];
-    	[view.layer addSublayer:gradient];
-    	[self setBackgroundView:view];*/
-
-		//loadWithoutAFuckingRespring();
-
-	} else self.backgroundView = NULL;
+	else self.backgroundView = NULL;
 
 }
 
@@ -104,20 +114,59 @@ static void loadWithoutAFuckingRespring() {
 
 
 -(void)setBlur {
+
+
 	loadWithoutAFuckingRespring();
 	
 	[[self.backgroundView viewWithTag:1337] removeFromSuperview];
 	
 	if(blur) {
 
-		UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-    	UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-		blurEffectView.tag = 1337;
-    	//always fill the view
-		blurEffectView.alpha = intensity;
-    	blurEffectView.frame = self.backgroundView.bounds;
-    	blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		[self.backgroundView addSubview:blurEffectView];
+
+		if(blur && blurType == 2) {
+
+			_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2]; //4005
+
+    		_UIBackdropView *blurView = [[_UIBackdropView alloc] initWithFrame:CGRectZero
+        	autosizesToFitSuperview:YES settings:settings];
+    		blurView.blurRadiusSetOnce = NO;
+    		blurView._blurRadius = 80.0;
+   	 		blurView._blurQuality = @"high";
+			blurView.tag = 1337;
+			blurView.alpha = intensity;
+    		[self.backgroundView insertSubview:blurView atIndex:1];
+
+
+		}
+
+
+		else if(blur && blurType == 1) {
+
+			UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    		UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+			blurEffectView.tag = 1337;
+    		//always fill the view
+			blurEffectView.alpha = intensity;
+    		blurEffectView.frame = self.backgroundView.bounds;
+    		blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+			[self.backgroundView addSubview:blurEffectView];
+
+
+		}
+
+
+		else if(blur && blurType == 0) {
+
+			UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+			UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+			blurEffectView.tag = 1337;
+    		//always fill the view
+			blurEffectView.alpha = intensity;
+    		blurEffectView.frame = self.backgroundView.bounds;
+    		blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+			[self.backgroundView addSubview:blurEffectView];
+
+		}
 
 
 	}
@@ -126,19 +175,44 @@ static void loadWithoutAFuckingRespring() {
 }
 
 
+%new 
 
+
+-(void)setGradient {
+
+
+	loadWithoutAFuckingRespring();
+
+
+	if(setGradientAsBackground) {
+
+		view = [[UIView alloc] initWithFrame:self.backgroundView.bounds];
+		[view setClipsToBounds:YES];
+   		gradient = [CAGradientLayer layer];
+    	gradient.frame = view.frame;
+    	gradient.startPoint = CGPointMake(0,0); // Lower right to upper left
+    	gradient.endPoint = CGPointMake(1,1);
+    	gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithRed:252.0/255.0 green:176.0/255.0 blue:243.0/255.0 alpha:1.0] CGColor],(id)[[UIColor colorWithRed:145.0/255.0 green:81.0/255.0 blue:230.0/255.0 alpha:1.0] CGColor], nil]; // (id)firstColor.CGColor, (id)secondColor.CGColor, nil];
+    	[view.layer addSublayer:gradient];
+    	self.backgroundView = view;
+		
+	}
+
+}
 
 
 -(void)didMoveToSuperview {
 
 
 	%orig;
-	if(!self.backgroundView) [self setImage];
+	if(!self.backgroundView) 
 	
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
-
+		[self setImage];
+	
+		[[NSNotificationCenter defaultCenter] removeObserver:self];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGradient) name:@"addGradient" object:nil];
 }
 
 
@@ -147,11 +221,19 @@ static void loadWithoutAFuckingRespring() {
 
 	%orig;
 	
-	if(!self.backgroundView) [self setImage];
-	if(![self.backgroundView viewWithTag:1337]) [self setBlur];
-
+	if(!self.backgroundView) 
 	
+		[self setImage];
 
+
+	if(![self.backgroundView viewWithTag:1337]) 
+	
+		[self setBlur];
+
+
+	else if(setGradientAsBackground)
+
+		[self setGradient];
 
 }
 
@@ -161,6 +243,9 @@ static void loadWithoutAFuckingRespring() {
 
 
 
+// https://github.com/PopsicleTreehouse/SettingsWallpaper
+
+
 %hook PSTableCell
 
 
@@ -168,6 +253,7 @@ static void loadWithoutAFuckingRespring() {
 
 
 -(void)applyAlpha {
+
 	loadWithoutAFuckingRespring();
 
 	if (alpha) {
@@ -178,12 +264,11 @@ static void loadWithoutAFuckingRespring() {
 
 	}
 
-	
-
 }
 
 
 -(void)didMoveToWindow {
+
 	loadWithoutAFuckingRespring();
 
 	%orig;
@@ -196,11 +281,11 @@ static void loadWithoutAFuckingRespring() {
 
 
 -(void)refreshCellContentsWithSpecifier:(id)arg1 {
+
 	loadWithoutAFuckingRespring();
 
 	%orig;
 	[self applyAlpha];
-
 
 }
 

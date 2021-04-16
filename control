@@ -6,4 +6,4 @@ Description: ;)
 Maintainer: Luki
 Author: Luki
 Section: Tweaks
-Depends: mobilesubstrate, com.mrgcgamer.libgcuniversal
+Depends: mobilesubstrate, preferenceloader, com.mrgcgamer.libgcuniversal

@@ -22,6 +22,3 @@ export April_LIBRARIES = gcuniversal
 include $(THEOS_MAKE_PATH)/tweak.mk
 SUBPROJECTS += aprilprefs
 include $(THEOS_MAKE_PATH)/aggregate.mk
-
-after-install::
-	install.exec "sbreload"

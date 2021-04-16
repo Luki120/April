@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <GcUniversal/GcImagePickerUtils.h>
+#import <GcImagePickerUtils.h>
 
 
 
@@ -70,7 +70,10 @@ static void loadWithoutAFuckingRespring() {
 
 
 -(void)setImage {
+
+
 	loadWithoutAFuckingRespring();
+	
 
 	if(yes) {
 
@@ -133,7 +136,9 @@ static void loadWithoutAFuckingRespring() {
 
 
 	%orig;
-	if(!self.backgroundView) [self setImage];
+	if(!self.backgroundView) 
+	
+	[self setImage];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
@@ -147,10 +152,14 @@ static void loadWithoutAFuckingRespring() {
 
 	%orig;
 	
-	if(!self.backgroundView) [self setImage];
-	if(![self.backgroundView viewWithTag:1337]) [self setBlur];
-
+	if(!self.backgroundView) 
 	
+	[self setImage];
+
+
+	if(![self.backgroundView viewWithTag:1337]) 
+	
+	[self setBlur];
 
 
 }
@@ -168,6 +177,7 @@ static void loadWithoutAFuckingRespring() {
 
 
 -(void)applyAlpha {
+
 	loadWithoutAFuckingRespring();
 
 	if (alpha) {
@@ -178,7 +188,6 @@ static void loadWithoutAFuckingRespring() {
 
 	}
 
-	
 
 }
 

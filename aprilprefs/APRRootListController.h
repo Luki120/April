@@ -11,6 +11,13 @@
 @end
 
 
+@interface AprilContributorsRootListController : PSListController
+@end
+
 
 @interface APRRootListController : PSListController
+@end
+
+
+@interface AprilTableCell : PSTableCell
 @end

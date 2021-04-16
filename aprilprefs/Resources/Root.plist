@@ -114,8 +114,118 @@
 			<key>label</key>
 			<string>Cell Background Alpha</string>
 		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>cellClass</key>
+			<string>AprilTableCell</string>
+			<key>detail</key>
+			<string>AprilContributorsRootListController</string>
+			<key>isController</key>
+			<true/>
+			<key>label</key>
+			<string>Contributors</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>AprilTableCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.luki.arizonaprefs</string>
+			<key>action</key>
+			<string>discord</string>
+			<key>label</key>
+			<string>Chat With Us On Discord</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>AprilTableCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.luki.arizonaprefs</string>
+			<key>action</key>
+			<string>paypal</string>
+			<key>label</key>
+			<string>Donate To Luki 🥰</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>AprilTableCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.luki.arizonaprefs</string>
+			<key>action</key>
+			<string>github</string>
+			<key>label</key>
+			<string>Source Code 🔥</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>You Might Like</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>AprilTableCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.luki.arizonaprefs</string>
+			<key>action</key>
+			<string>meredith</string>
+			<key>label</key>
+			<string>Meredith</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>AprilTableCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.luki.arizonaprefs</string>
+			<key>action</key>
+			<string>perfectSpotify</string>
+			<key>label</key>
+			<string>PerfectSpotify</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerAlignment</key>
+			<real>1</real>
+			<key>footerText</key>
+			<string>made by Luki with ❤️</string>
+			<key>isStaticText</key>
+			<true/>
+		</dict>
 	</array>
 	<key>title</key>
-	<string>AprilPrefs</string>
+	<string>April</string>
 </dict>
 </plist>

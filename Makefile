@@ -1,9 +1,10 @@
 export ARCHS = arm64 arm64e
-INSTALL_TARGET_PROCESSES = Preferences
-TARGET := iphone:clang:latest:latest
+export TARGET := iphone:clang:latest:latest
 
-THEOS_DEVICE_IP = 192.168.0.7
-#THEOS_DEVICE_IP = 192.168.0.12
+INSTALL_TARGET_PROCESSES = Preferences
+
+#THEOS_DEVICE_IP = 192.168.0.7
+THEOS_DEVICE_IP = 192.168.0.12
 
 include $(THEOS)/makefiles/common.mk
 
@@ -18,3 +19,6 @@ export April_LIBRARIES = gcuniversal
 include $(THEOS_MAKE_PATH)/tweak.mk
 SUBPROJECTS += aprilprefs
 include $(THEOS_MAKE_PATH)/aggregate.mk
+
+after-install::
+	install.exec "sbreload"

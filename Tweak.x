@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <GcImagePickerUtils.h>
+#import <GcUniversal/GcImagePickerUtils.h>
 
 
 
@@ -206,13 +206,12 @@ static void loadWithoutAFuckingRespring() {
 
 	%orig;
 	if(!self.backgroundView) 
-	
 		[self setImage];
 	
-		[[NSNotificationCenter defaultCenter] removeObserver:self];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGradient) name:@"addGradient" object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGradient) name:@"addGradient" object:nil];
 }
 
 
@@ -256,13 +255,9 @@ static void loadWithoutAFuckingRespring() {
 
 	loadWithoutAFuckingRespring();
 
-	if (alpha) {
-
-		CGFloat red = 0.0, green = 0.0, blue = 0.0, dAlpha = 0.0;
-		[self.backgroundColor getRed:&red green:&green blue:&blue alpha:&dAlpha];
-		self.backgroundColor = [[UIColor alloc] initWithRed:red green:green blue:blue alpha:cellAlpha];
-
-	}
+	CGFloat red = 0.0, green = 0.0, blue = 0.0, dAlpha = 0.0;
+	[self.backgroundColor getRed:&red green:&green blue:&blue alpha:&dAlpha];
+	self.backgroundColor = [[UIColor alloc] initWithRed:red green:green blue:blue alpha:alpha ? cellAlpha : 1];
 
 }
 

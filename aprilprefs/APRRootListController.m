@@ -11,7 +11,7 @@ float cellAlpha = 1.0f;
 float intensity = 1.0f;
 
 
-#define tint [UIColor colorWithRed: 0.02 green: 0.79 blue: 0.95 alpha: 1.00]
+#define tint [UIColor colorWithRed: 1.00 green: 0.55 blue: 0.73 alpha: 1.00]
 
 
 static void postNSNotification() {
@@ -105,19 +105,19 @@ static void postNSNotification() {
 }
 
 
--(void)meredith {
+-(void)arizona {
 
 
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://parcility.co/package/com.twickd.luki120.meredith"] options:@{} completionHandler:nil];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://repo.twickd.com/package/com.twickd.luki120.arizona"] options:@{} completionHandler:nil];
 
 
 }
 
 
--(void)perfectSpotify {
+-(void)meredith {
 
 
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://parcility.co/package/com.twickd.luki120.perfectspotify/twickd"] options:@{} completionHandler:nil];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://parcility.co/package/com.twickd.luki120.meredith"] options:@{} completionHandler:nil];
 
 
 }

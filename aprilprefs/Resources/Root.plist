@@ -196,9 +196,9 @@
 			<key>defaults</key>
 			<string>com.luki.arizonaprefs</string>
 			<key>action</key>
-			<string>meredith</string>
+			<string>arizona</string>
 			<key>label</key>
-			<string>Meredith</string>
+			<string>Arizona</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -210,9 +210,9 @@
 			<key>defaults</key>
 			<string>com.luki.arizonaprefs</string>
 			<key>action</key>
-			<string>perfectSpotify</string>
+			<string>meredith</string>
 			<key>label</key>
-			<string>PerfectSpotify</string>
+			<string>Meredith</string>
 		</dict>
 		<dict>
 			<key>cell</key>

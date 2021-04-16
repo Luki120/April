@@ -26,6 +26,19 @@
 @end
 
 
+@interface _UIBackdropView : UIView
+@property (assign,nonatomic) BOOL blurRadiusSetOnce;
+@property (nonatomic,copy) NSString * _blurQuality;
+@property (assign,nonatomic) double _blurRadius;
+-(id)initWithFrame:(CGRect)arg1 autosizesToFitSuperview:(BOOL)arg2 settings:(id)arg3 ;
+-(id)initWithSettings:(id)arg1 ;
+@end
+
+
+@interface _UIBackdropViewSettings : NSObject
++(id)settingsForStyle:(long long)arg1 ;
+@end
+
 
 
 static NSString *plistPath = @"/var/mobile/Library/Preferences/me.luki.aprilprefs.plist";
@@ -73,7 +86,7 @@ static void loadWithoutAFuckingRespring() {
 
 
 	loadWithoutAFuckingRespring();
-	
+
 
 	if(yes) {
 
@@ -113,14 +126,23 @@ static void loadWithoutAFuckingRespring() {
 	
 	if(blur) {
 
-		UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-    	UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-		blurEffectView.tag = 1337;
+		_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2]; //4005
+
+    	_UIBackdropView *blurView = [[_UIBackdropView alloc] initWithFrame:CGRectZero
+        autosizesToFitSuperview:YES settings:settings];
+    	blurView.blurRadiusSetOnce = NO;
+    	blurView._blurRadius = 80.0;
+   	 	blurView._blurQuality = @"high";
+
+    	[self.backgroundView insertSubview:blurView atIndex:1];	
+		//UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    	//UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+		blurView.tag = 1337;
     	//always fill the view
-		blurEffectView.alpha = intensity;
-    	blurEffectView.frame = self.backgroundView.bounds;
-    	blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		[self.backgroundView addSubview:blurEffectView];
+		blurView.alpha = intensity;
+    	//blurEffectView.frame = self.backgroundView.bounds;
+    	//blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		//[self.backgroundView addSubview:blurEffectView];
 
 
 	}

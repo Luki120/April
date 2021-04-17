@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <GcUniversal/GcImagePickerUtils.h>
+#import <GcImagePickerUtils.h>
 
 
 
@@ -205,7 +205,8 @@ static void loadWithoutAFuckingRespring() {
 
 
 	%orig;
-	if(!self.backgroundView) 
+	if(!self.backgroundView)
+
 		[self setImage];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];

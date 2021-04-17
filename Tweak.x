@@ -128,6 +128,7 @@ static void loadWithoutAFuckingRespring() {
 	
 	[[self.backgroundView viewWithTag:1337] removeFromSuperview];
 	
+
 	if(blur) {
 
 

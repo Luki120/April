@@ -62,7 +62,7 @@
             <key>cell</key>
             <string>PSSegmentCell</string>
             <key>defaults</key>
-            <string>com.luki.aprilsprefs</string>
+            <string>me.luki.aprilprefs</string>
             <key>default</key>
             <string>2</string>
             <key>key</key>
@@ -164,7 +164,7 @@
 			<key>label</key>
 			<string>First Color</string>
 			<key>defaults</key>
-			<string>com.luki.aprilprefs</string>
+			<string>me.luki.aprilprefs</string>
 			<key>key</key>
 			<string>gradientFirstColor</string>
 			<key>supportsAlpha</key>
@@ -180,7 +180,7 @@
 			<key>label</key>
 			<string>Second Color</string>
 			<key>defaults</key>
-			<string>com.luki.aprilprefs</string>
+			<string>me.luki.aprilprefs</string>
 			<key>key</key>
 			<string>gradientSecondColor</string>
 			<key>supportsAlpha</key>

@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-#import <GcImagePickerUtils.h>
 #import <GcColorPickerUtils.h>
+#import <GcImagePickerUtils.h>
 
 
 
@@ -200,7 +200,7 @@ static void loadWithoutAFuckingRespring() {
     	gradient.frame = view.frame;
     	gradient.startPoint = CGPointMake(0,0); // Lower right to upper left
     	gradient.endPoint = CGPointMake(1,1);
-    	gradient.colors = [NSArray arrayWithObjects:(id)[[GcColorPickerUtils colorFromDefaults:@"com.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"] CGColor],(id)[[GcColorPickerUtils colorFromDefaults:@"com.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"]  CGColor], nil]; // (id)firstColor.CGColor, (id)secondColor.CGColor, nil];
+    	gradient.colors = [NSArray arrayWithObjects:(id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"] CGColor],(id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"]  CGColor], nil]; // (id)firstColor.CGColor, (id)secondColor.CGColor, nil];
     	[view.layer addSublayer:gradient];
     	self.backgroundView = view;
 		

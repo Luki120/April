@@ -19,6 +19,7 @@ float intensity = 1.0f;
 static void postNSNotification() {
 
 	[NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
+    [NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
 
 }
 
@@ -41,6 +42,7 @@ static void postNSNotification() {
 	[super viewDidLoad];
 	
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/imageChanged"), NULL, 0);
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/blurSet"), NULL, 0);
 
 	UIImage *banner = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/epicbanner.png"];
 	
@@ -203,7 +205,7 @@ static void postNSNotification() {
 -(void)github {
 
 
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://github.com/Luki120/Arizona"] options:@{} completionHandler:nil];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://github.com/Luki120/April"] options:@{} completionHandler:nil];
 
 
 }
@@ -257,6 +259,15 @@ static void postNSNotification() {
 
 
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://twitter.com/runtimeoverflow"] options:@{} completionHandler:nil];
+
+
+}
+
+
+-(void)ethn {
+
+
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://twitter.com/ethanwhited"] options:@{} completionHandler:nil];
 
 
 }

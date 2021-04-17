@@ -48,6 +48,26 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
+			<string>Epic Blur</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>AprilTableCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.luki.arizonaprefs</string>
+			<key>action</key>
+			<string>ethn</string>
+			<key>label</key>
+			<string>ETHN</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
 			<string>Pretty Icon And Banner</string>
 		</dict>
 		<dict>

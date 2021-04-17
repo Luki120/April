@@ -113,7 +113,6 @@ static void loadWithoutAFuckingRespring() {
 	else {
 		if(setGradientAsBackground) [self setGradient];
 		else self.backgroundView = NULL;
-	}
 
 }
 

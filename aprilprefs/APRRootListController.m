@@ -205,7 +205,7 @@ static void postNSNotification() {
 -(void)github {
 
 
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://github.com/Luki120/Arizona"] options:@{} completionHandler:nil];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://github.com/Luki120/April"] options:@{} completionHandler:nil];
 
 
 }

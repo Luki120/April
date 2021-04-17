@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
-#import <GcUniversal/GcImagePickerUtils.h>
+#import <GcImagePickerUtils.h>
+#import <GcColorPickerUtils.h>
 
 
 
@@ -50,6 +51,10 @@ static BOOL alpha;
 static int blurType;
 float cellAlpha = 1.0f;
 float intensity = 1.0f;
+
+
+//NSString* gradientFirstColor = @"ffffff";
+//NSString* gradientSecondColor = @"ffffff";
 
 
 
@@ -195,11 +200,11 @@ static void loadWithoutAFuckingRespring() {
     	gradient.frame = view.frame;
     	gradient.startPoint = CGPointMake(0,0); // Lower right to upper left
     	gradient.endPoint = CGPointMake(1,1);
-    	gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithRed:252.0/255.0 green:176.0/255.0 blue:243.0/255.0 alpha:1.0] CGColor],(id)[[UIColor colorWithRed:145.0/255.0 green:81.0/255.0 blue:230.0/255.0 alpha:1.0] CGColor], nil]; // (id)firstColor.CGColor, (id)secondColor.CGColor, nil];
+    	gradient.colors = [NSArray arrayWithObjects:(id)[[GcColorPickerUtils colorFromDefaults:@"com.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"] CGColor],(id)[[GcColorPickerUtils colorFromDefaults:@"com.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"]  CGColor], nil]; // (id)firstColor.CGColor, (id)secondColor.CGColor, nil];
     	[view.layer addSublayer:gradient];
     	self.backgroundView = view;
 		
-	} else{
+	} else {
 		if(yes) [self setImage];
 		else self.backgroundView = NULL;
 	}
@@ -230,8 +235,9 @@ static void loadWithoutAFuckingRespring() {
 	if(!self.backgroundView) {
 		[self setImage];
 		[self setGradient];
+
 	}
-	
+
 	if(![self.backgroundView viewWithTag:1337]) 
 	
 		[self setBlur];

@@ -24,7 +24,7 @@
 
 
 @interface PSTableCell : UIView
--(void)applyAlpha;
+- (void)applyAlpha;
 @end
 
 
@@ -113,6 +113,8 @@ static void loadWithoutAFuckingRespring() {
 	else {
 		if(setGradientAsBackground) [self setGradient];
 		else self.backgroundView = NULL;
+
+	}
 
 }
 
@@ -224,6 +226,7 @@ static void loadWithoutAFuckingRespring() {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGradient) name:@"changeGradient" object:nil];
+
 }
 
 

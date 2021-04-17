@@ -179,7 +179,7 @@ static void postNSNotification() {
 	[NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"changeAlpha" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"addGradient" object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:@"changeGradient" object:NULL];
 
 }
 

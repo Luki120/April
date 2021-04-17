@@ -42,7 +42,7 @@
 			<key>action</key>
 			<string>wizard</string>
 			<key>label</key>
-			<string>Runtime Overflow</string>
+			<string>RuntimeOverflow</string>
 		</dict>
 		<dict>
 			<key>cell</key>

@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <GcImagePickerUtils.h>
+#import <GcUniversal/GcImagePickerUtils.h>
 
 
 
@@ -105,7 +105,10 @@ static void loadWithoutAFuckingRespring() {
 
 	}
 
-	else self.backgroundView = NULL;
+	else {
+		if(setGradientAsBackground) [self setGradient];
+		else self.backgroundView = NULL;
+	}
 
 }
 
@@ -196,6 +199,9 @@ static void loadWithoutAFuckingRespring() {
     	[view.layer addSublayer:gradient];
     	self.backgroundView = view;
 		
+	} else{
+		if(yes) [self setImage];
+		else self.backgroundView = NULL;
 	}
 
 }
@@ -212,7 +218,7 @@ static void loadWithoutAFuckingRespring() {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGradient) name:@"addGradient" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGradient) name:@"changeGradient" object:nil];
 }
 
 
@@ -221,19 +227,15 @@ static void loadWithoutAFuckingRespring() {
 
 	%orig;
 	
-	if(!self.backgroundView) 
-	
+	if(!self.backgroundView) {
 		[self setImage];
-
-
+		[self setGradient];
+	}
+	
 	if(![self.backgroundView viewWithTag:1337]) 
 	
 		[self setBlur];
-
-
-	else if(setGradientAsBackground)
-
-		[self setGradient];
+		
 
 }
 

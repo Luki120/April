@@ -165,6 +165,8 @@
 			<string>First Color</string>
 			<key>defaults</key>
 			<string>me.luki.aprilprefs</string>
+			<key>PostNotification</key>
+			<string>me.luki.aprilprefs/gradientChanged</string>
 			<key>key</key>
 			<string>gradientFirstColor</string>
 			<key>supportsAlpha</key>
@@ -181,6 +183,8 @@
 			<string>Second Color</string>
 			<key>defaults</key>
 			<string>me.luki.aprilprefs</string>
+			<key>PostNotification</key>
+			<string>me.luki.aprilprefs/gradientChanged</string>
 			<key>key</key>
 			<string>gradientSecondColor</string>
 			<key>supportsAlpha</key>

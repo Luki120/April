@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-#import <GcColorPickerUtils.h>
-#import <GcImagePickerUtils.h>
+#import <GcUniversal/GcColorPickerUtils.h>
+#import <GcUniversal/GcImagePickerUtils.h>
 
 
 

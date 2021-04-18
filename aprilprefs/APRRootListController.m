@@ -12,6 +12,7 @@ static NSString *plistPath = @"/var/mobile/Library/Preferences/me.luki.aprilpref
 static void postNSNotification() {
 
 	[NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:@"changeGradient" object:NULL];
     [NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
 
 }
@@ -35,7 +36,7 @@ static void postNSNotification() {
 	[super viewDidLoad];
 	
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/imageChanged"), NULL, 0);
-    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/blurSet"), NULL, 0);
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/gradientChanged"), NULL, 0);
 
 	UIImage *banner = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/epicbanner.png"];
 	

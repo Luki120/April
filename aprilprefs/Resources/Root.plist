@@ -62,7 +62,7 @@
             <key>cell</key>
             <string>PSSegmentCell</string>
             <key>defaults</key>
-            <string>com.luki.aprilsprefs</string>
+            <string>me.luki.aprilprefs</string>
             <key>default</key>
             <string>2</string>
             <key>key</key>
@@ -151,6 +151,42 @@
 			<string>setGradientAsBackground</string>
 			<key>label</key>
 			<string>Gradient</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>cellClass</key>
+			<string>GcColorPickerCell</string>
+			<key>label</key>
+			<string>First Color</string>
+			<key>defaults</key>
+			<string>me.luki.aprilprefs</string>
+			<key>key</key>
+			<string>gradientFirstColor</string>
+			<key>supportsAlpha</key>
+			<true/>
+			<key>fallback</key>
+			<string>ffffff</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>cellClass</key>
+			<string>GcColorPickerCell</string>
+			<key>label</key>
+			<string>Second Color</string>
+			<key>defaults</key>
+			<string>me.luki.aprilprefs</string>
+			<key>key</key>
+			<string>gradientSecondColor</string>
+			<key>supportsAlpha</key>
+			<true/>
+			<key>fallback</key>
+			<string>ffffff</string>
 		</dict>
 		<dict>
 			<key>cell</key>

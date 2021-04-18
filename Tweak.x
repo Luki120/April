@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-#import <GcColorPickerUtils.h>
-#import <GcImagePickerUtils.h>
+#import <GcUniversal/GcColorPickerUtils.h>
+#import <GcUniversal/GcImagePickerUtils.h>
 
 
 
@@ -129,55 +129,48 @@ static void loadWithoutAFuckingRespring() {
 	
 	[[self.backgroundView viewWithTag:1337] removeFromSuperview];
 	
+	if(blur && blurType == 2) {
 
-	if(blur) {
+		_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2]; //4005
 
-
-		if(blur && blurType == 2) {
-
-			_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2]; //4005
-
-    		_UIBackdropView *blurView = [[_UIBackdropView alloc] initWithFrame:CGRectZero
-        	autosizesToFitSuperview:YES settings:settings];
-    		blurView.blurRadiusSetOnce = NO;
-    		blurView._blurRadius = 80.0;
-   	 		blurView._blurQuality = @"high";
-			blurView.tag = 1337;
-			blurView.alpha = intensity;
-    		[self.backgroundView insertSubview:blurView atIndex:1];
+		_UIBackdropView *blurView = [[_UIBackdropView alloc] initWithFrame:CGRectZero
+		autosizesToFitSuperview:YES settings:settings];
+		blurView.blurRadiusSetOnce = NO;
+		blurView._blurRadius = 80.0;
+		blurView._blurQuality = @"high";
+		blurView.tag = 1337;
+		blurView.alpha = intensity;
+		[self.backgroundView insertSubview:blurView atIndex:1];
 
 
-		}
+	}
 
 
-		else if(blur && blurType == 1) {
+	else if(blur && blurType == 1) {
 
-			UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-    		UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-			blurEffectView.tag = 1337;
-    		//always fill the view
-			blurEffectView.alpha = intensity;
-    		blurEffectView.frame = self.backgroundView.bounds;
-    		blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-			[self.backgroundView addSubview:blurEffectView];
-
-
-		}
+		UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+		UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+		blurEffectView.tag = 1337;
+		//always fill the view
+		blurEffectView.alpha = intensity;
+		blurEffectView.frame = self.backgroundView.bounds;
+		blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		[self.backgroundView addSubview:blurEffectView];
 
 
-		else if(blur && blurType == 0) {
+	}
 
-			UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-			UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-			blurEffectView.tag = 1337;
-    		//always fill the view
-			blurEffectView.alpha = intensity;
-    		blurEffectView.frame = self.backgroundView.bounds;
-    		blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-			[self.backgroundView addSubview:blurEffectView];
 
-		}
+	else if(blur && blurType == 0) {
 
+		UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+		UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+		blurEffectView.tag = 1337;
+		//always fill the view
+		blurEffectView.alpha = intensity;
+		blurEffectView.frame = self.backgroundView.bounds;
+		blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		[self.backgroundView addSubview:blurEffectView];
 
 	}
 
@@ -218,9 +211,6 @@ static void loadWithoutAFuckingRespring() {
 
 
 	%orig;
-	if(!self.backgroundView)
-
-		[self setImage];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
@@ -235,15 +225,10 @@ static void loadWithoutAFuckingRespring() {
 
 	%orig;
 	
-	if(!self.backgroundView) {
-		[self setImage];
-		[self setGradient];
-
-	}
-
-	if(![self.backgroundView viewWithTag:1337]) 
+	[self setImage];
+	[self setGradient];
 	
-		[self setBlur];
+	[self setBlur];
 		
 
 }

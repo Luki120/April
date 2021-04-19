@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-#import <GcUniversal/GcColorPickerUtils.h>
-#import <GcUniversal/GcImagePickerUtils.h>
+#import <GcColorPickerUtils.h>
+#import <GcImagePickerUtils.h>
 
 
 
@@ -28,6 +28,10 @@
 @end
 
 
+@interface UITableViewCellSelectedBackground : UITableViewCell
+@end
+
+
 @interface _UIBackdropView : UIView
 @property (assign,nonatomic) BOOL blurRadiusSetOnce;
 @property (nonatomic,copy) NSString * _blurQuality;
@@ -49,6 +53,7 @@ static BOOL blur;
 static BOOL setGradientAsBackground;
 static BOOL alpha;
 static int blurType;
+static int gradientDirection;
 float cellAlpha = 1.0f;
 float intensity = 1.0f;
 
@@ -78,6 +83,7 @@ static void loadWithoutAFuckingRespring() {
 	setGradientAsBackground = prefs[@"setGradientAsBackground"] ? [prefs[@"setGradientAsBackground"] boolValue] : NO;
 	alpha = prefs[@"alphaEnabled"] ? [prefs[@"alphaEnabled"] boolValue] : YES;
 	blurType = prefs[@"blurType"] ? [prefs[@"blurType"] integerValue] : 2;
+	gradientDirection = prefs[@"gradientDirection"] ? [prefs[@"gradientDirection"] integerValue] : 0;
 	cellAlpha = prefs[@"cellAlpha"] ? [prefs[@"cellAlpha"] floatValue] : 1.0f;
 	intensity = prefs[@"intensity"] ? [prefs[@"intensity"] floatValue] : 1.0f;
 
@@ -193,6 +199,7 @@ static void loadWithoutAFuckingRespring() {
 		view = [[UIView alloc] initWithFrame:self.backgroundView.bounds];
 		[view setClipsToBounds:YES];
    		gradient = [CAGradientLayer layer];
+		//gradient.type = kCAGradientLayerConic;
     	gradient.frame = view.frame;
     	gradient.startPoint = CGPointMake(0,0); // Lower right to upper left
     	gradient.endPoint = CGPointMake(1,1);
@@ -200,25 +207,38 @@ static void loadWithoutAFuckingRespring() {
     	[view.layer addSublayer:gradient];
     	self.backgroundView = view;
 		
-	} switch(gradientDirection) {
+	}
+	
+	else {
+		if(yes) [self setImage];
+		else self.backgroundView = NULL;
+	}
 
 
-		case 0:
-		break;
+	switch(gradientDirection) {
+
+	//	loadWithoutAFuckingRespring();
 
 
-		case 1:
+		case 0: // Bottom to Top	
 		gradient.startPoint = CGPointMake(0.5,1);
 		gradient.endPoint = CGPointMake(0.5,0);
 		break;
 
-		case 2: // Left to Right
-    	gradient.startPoint = CGPointMake(0,0.5);
-    	gradient.endPoint = CGPointMake(1,0.5);
+
+		case 1: // Top to Bottom
+    	gradient.startPoint = CGPointMake(0.5,0);
+    	gradient.endPoint = CGPointMake(0.5,1);
     	break;
 
 
-  		case 3: // Right to Left
+		case 2: // Left to Right
+		gradient.startPoint = CGPointMake(0,0.5);
+    	gradient.endPoint = CGPointMake(1,0.5);
+		break;
+
+
+		case 3: // Right to Left
     	gradient.startPoint = CGPointMake(1,0.5);
     	gradient.endPoint = CGPointMake(0,0.5);
     	break;
@@ -242,22 +262,11 @@ static void loadWithoutAFuckingRespring() {
     	break;
 
 
-  		case 7: // Lower right upper left
+		case 7: // Lower right upper left
     	gradient.startPoint = CGPointMake(1,1);
     	gradient.endPoint = CGPointMake(0,0);
     	break;
 
-
-  		default:
-    	gradient.startPoint = CGPointMake(0.5,0);
-    	gradient.endPoint = CGPointMake(0.5,1);
-    	break;
-	}
-	
-	
-	else {
-		if(yes) [self setImage];
-		else self.backgroundView = NULL;
 	}
 
 }
@@ -289,6 +298,42 @@ static void loadWithoutAFuckingRespring() {
 
 }
 
+%end
+
+
+%hook UITableViewCellSelectedBackground
+
+
+-(void)didMoveToWindow {
+
+
+	%orig;
+
+
+	self.alpha = 0;
+
+}
+
+
+-(void)setSelectionTintColor:(id)arg1 {
+
+
+	%orig;
+
+	arg1 = [UIColor clearColor];
+
+}
+
+
+-(void)setNoneStyleBackgroundColor:(id)arg1 {
+
+
+	%orig;
+
+	arg1 = [UIColor clearColor];
+
+
+}
 
 %end
 

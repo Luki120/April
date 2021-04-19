@@ -198,6 +198,46 @@
 		</dict>
 		<dict>
 			<key>cell</key>
+			<string>PSLinkListCell</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>defaults</key>
+			<string>me.luki.aprilprefs</string>
+			<key>default</key>
+			<integer>0</integer>
+			<key>key</key>
+			<string>gradientDirection</string>
+			<key>label</key>
+			<string>Gradient Direction</string>
+			<key>validValues</key>
+            <array>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>2</integer>
+				<integer>3</integer>
+				<integer>4</integer>
+				<integer>5</integer>
+				<integer>6</integer>
+				<integer>7</integer>
+           	 </array>
+                <key>validTitles</key>
+           	 <array>
+				<string>Bottom to Top</string>
+				<string>Top to Bottom</string>
+				<string>Left to Right</string>
+				<string>Right to Left</string>
+				<string>Upper Left Lower Right</string>
+				<string>Lower Left Upper Right</string>
+				<string>Upper Right Lower Left</string>
+				<string>Lower Right Upper Left</string>
+            	</array>
+			</dict> 
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
 			<string>PSLinkCell</string>
 			<key>cellClass</key>
 			<string>AprilTableCell</string>

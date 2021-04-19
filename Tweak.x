@@ -198,14 +198,14 @@ static void loadWithoutAFuckingRespring() {
 
 		view = [[UIView alloc] initWithFrame:self.backgroundView.bounds];
 		[view setClipsToBounds:YES];
-   		gradient = [CAGradientLayer layer];
+		gradient = [CAGradientLayer layer];
 		//gradient.type = kCAGradientLayerConic;
-    	gradient.frame = view.frame;
-    	gradient.startPoint = CGPointMake(0,0); // Lower right to upper left
-    	gradient.endPoint = CGPointMake(1,1);
-    	gradient.colors = [NSArray arrayWithObjects:(id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"] CGColor],(id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"]  CGColor], nil]; // (id)firstColor.CGColor, (id)secondColor.CGColor, nil];
-    	[view.layer addSublayer:gradient];
-    	self.backgroundView = view;
+		gradient.frame = view.frame;
+		gradient.startPoint = CGPointMake(0,0); // Lower right to upper left
+		gradient.endPoint = CGPointMake(1,1);
+		gradient.colors = [NSArray arrayWithObjects:(id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"] CGColor],(id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"]  CGColor], nil]; // (id)firstColor.CGColor, (id)secondColor.CGColor, nil];
+		[view.layer addSublayer:gradient];
+		self.backgroundView = view;
 		
 	}
 	
@@ -264,7 +264,7 @@ static void loadWithoutAFuckingRespring() {
 
 		case 7: // Lower right upper left
 			gradient.startPoint = CGPointMake(1,1);
-    		gradient.endPoint = CGPointMake(0,0);
+			gradient.endPoint = CGPointMake(0,0);
 			break;
 
 	}
@@ -291,47 +291,10 @@ static void loadWithoutAFuckingRespring() {
 	%orig;
 	
 	[self setImage];
+
 	[self setGradient];
 	
 	[self setBlur];
-		
-
-}
-
-%end
-
-
-%hook UITableViewCellSelectedBackground
-
-
--(void)didMoveToWindow {
-
-
-	%orig;
-
-
-	self.alpha = 0;
-
-}
-
-
--(void)setSelectionTintColor:(id)arg1 {
-
-
-	%orig;
-
-	arg1 = [UIColor clearColor];
-
-}
-
-
--(void)setNoneStyleBackgroundColor:(id)arg1 {
-
-
-	%orig;
-
-	arg1 = [UIColor clearColor];
-
 
 }
 

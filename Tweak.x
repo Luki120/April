@@ -78,7 +78,7 @@ static void loadWithoutAFuckingRespring() {
 
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:plistPath];
 	NSMutableDictionary *prefs = dict ? [dict mutableCopy] : [NSMutableDictionary dictionary];
-    yes = prefs[@"yes"] ? [prefs[@"yes"] boolValue] : NO;
+	yes = prefs[@"yes"] ? [prefs[@"yes"] boolValue] : NO;
 	blur = prefs[@"blur"] ? [prefs[@"blur"] boolValue] : NO;
 	setGradientAsBackground = prefs[@"setGradientAsBackground"] ? [prefs[@"setGradientAsBackground"] boolValue] : NO;
 	alpha = prefs[@"alphaEnabled"] ? [prefs[@"alphaEnabled"] boolValue] : YES;
@@ -112,7 +112,7 @@ static void loadWithoutAFuckingRespring() {
 		self.backgroundView = backgroundImageView;
 
 		//[backgroundImageView setClipsToBounds:YES];
-        //[backgroundImageView setContentMode: UIViewContentModeScaleAspectFill];
+		//[backgroundImageView setContentMode: UIViewContentModeScaleAspectFill];
 
 	}
 

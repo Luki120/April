@@ -4,13 +4,6 @@
 
 
 static NSString *plistPath = @"/var/mobile/Library/Preferences/me.luki.aprilprefs.plist";
-static BOOL yes;
-static BOOL blur;
-static BOOL setGradientAsBackground;
-static BOOL alpha;
-static int blurType;
-float cellAlpha = 1.0f;
-float intensity = 1.0f;
 
 
 #define tint [UIColor colorWithRed: 1.00 green: 0.55 blue: 0.73 alpha: 1.00]
@@ -19,6 +12,7 @@ float intensity = 1.0f;
 static void postNSNotification() {
 
 	[NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:@"changeGradient" object:NULL];
     [NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
 
 }
@@ -42,7 +36,7 @@ static void postNSNotification() {
 	[super viewDidLoad];
 	
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/imageChanged"), NULL, 0);
-    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/blurSet"), NULL, 0);
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/gradientChanged"), NULL, 0);
 
 	UIImage *banner = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/epicbanner.png"];
 	
@@ -143,21 +137,6 @@ static void postNSNotification() {
 }
 
 
--(void)loadWithoutAFuckingRespring {
-
-	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:plistPath];
-	NSMutableDictionary *prefs = dict ? [dict mutableCopy] : [NSMutableDictionary dictionary];
-    yes = prefs[@"yes"] ? [prefs[@"yes"] boolValue] : NO;
-	blur = prefs[@"blur"] ? [prefs[@"blur"] boolValue] : NO;
-	setGradientAsBackground = prefs[@"setGradientAsBackground"] ? [prefs[@"setGradientAsBackground"] boolValue] : NO;
-	alpha = prefs[@"alphaEnabled"] ? [prefs[@"alphaEnabled"] boolValue] : YES;
-	blurType = prefs[@"blurType"] ? [prefs[@"blurType"] integerValue] : 2;
-	cellAlpha = prefs[@"cellAlpha"] ? [prefs[@"cellAlpha"] floatValue] : 1.0f;
-	intensity = prefs[@"intensity"] ? [prefs[@"intensity"] floatValue] : 1.0f;
-
-}
-
-
 -(id)readPreferenceValue:(PSSpecifier*)specifier {
 	NSMutableDictionary *settings = [NSMutableDictionary dictionary];
 	[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:plistPath]];
@@ -167,19 +146,14 @@ static void postNSNotification() {
 
 -(void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier {
     
-    NSMutableDictionary *settings = [NSMutableDictionary dictionary];
-    [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:plistPath]];
+    NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:plistPath];
     [settings setObject:value forKey:specifier.properties[@"key"]];
     [settings writeToFile:plistPath atomically:YES];
-    CFStringRef notificationName = (__bridge CFStringRef)specifier.properties[@"PostNotification"];
-    if (notificationName) {
-        [self loadWithoutAFuckingRespring];
-    }
 	
 	[NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"changeAlpha" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"changeGradient" object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
 
 }
 

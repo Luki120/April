@@ -221,51 +221,51 @@ static void loadWithoutAFuckingRespring() {
 
 
 		case 0: // Bottom to Top	
-		gradient.startPoint = CGPointMake(0.5,1);
-		gradient.endPoint = CGPointMake(0.5,0);
-		break;
+			gradient.startPoint = CGPointMake(0.5,1);
+			gradient.endPoint = CGPointMake(0.5,0);
+			break;
 
 
 		case 1: // Top to Bottom
-    	gradient.startPoint = CGPointMake(0.5,0);
-    	gradient.endPoint = CGPointMake(0.5,1);
-    	break;
+			gradient.startPoint = CGPointMake(0.5,0);
+			gradient.endPoint = CGPointMake(0.5,1);
+			break;
 
 
 		case 2: // Left to Right
-		gradient.startPoint = CGPointMake(0,0.5);
-    	gradient.endPoint = CGPointMake(1,0.5);
-		break;
+			gradient.startPoint = CGPointMake(0,0.5);
+			gradient.endPoint = CGPointMake(1,0.5);
+			break;
 
 
-		case 3: // Right to Left
-    	gradient.startPoint = CGPointMake(1,0.5);
-    	gradient.endPoint = CGPointMake(0,0.5);
-    	break;
+		case 3: // Right to Left	
+			gradient.startPoint = CGPointMake(1,0.5);
+			gradient.endPoint = CGPointMake(0,0.5);
+			break;
 
 
- 	 	case 4: // Upper Left lower right
-   	 	gradient.startPoint = CGPointMake(0,0);
-    	gradient.endPoint = CGPointMake(1,1);
-    	break;
+		case 4: // Upper Left lower right
+			gradient.startPoint = CGPointMake(0,0);
+			gradient.endPoint = CGPointMake(1,1);
+			break;
 
 
-  		case 5: // Lower left upper right
-    	gradient.startPoint = CGPointMake(0,1);
-    	gradient.endPoint = CGPointMake(1,0);
-    	break;
+		case 5: // Lower left upper right
+			gradient.startPoint = CGPointMake(0,1);
+			gradient.endPoint = CGPointMake(1,0);
+			break;
 
 
-  		case 6: // Upper right lower left
-    	gradient.startPoint = CGPointMake(1,0);
-    	gradient.endPoint = CGPointMake(0,1);
-    	break;
+		case 6: // Upper right lower left
+			gradient.startPoint = CGPointMake(1,0);
+			gradient.endPoint = CGPointMake(0,1);
+			break;
 
 
 		case 7: // Lower right upper left
-    	gradient.startPoint = CGPointMake(1,1);
-    	gradient.endPoint = CGPointMake(0,0);
-    	break;
+			gradient.startPoint = CGPointMake(1,1);
+    		gradient.endPoint = CGPointMake(0,0);
+			break;
 
 	}
 

@@ -11,11 +11,6 @@
 @end
 
 
-@interface PSUIPrefsListController : UIViewController
--(void)setImage;
-@end
-
-
 @interface UITableView ()
 - (void)setImage;
 - (void)setBlur;
@@ -25,10 +20,6 @@
 
 @interface PSTableCell : UIView
 - (void)applyAlpha;
-@end
-
-
-@interface UITableViewCellSelectedBackground : UITableViewCell
 @end
 
 
@@ -56,10 +47,6 @@ static int blurType;
 static int gradientDirection;
 float cellAlpha = 1.0f;
 float intensity = 1.0f;
-
-
-//NSString* gradientFirstColor = @"ffffff";
-//NSString* gradientSecondColor = @"ffffff";
 
 
 

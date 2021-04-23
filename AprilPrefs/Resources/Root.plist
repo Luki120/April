@@ -14,7 +14,7 @@
 			<key>key</key>
 			<string>yes</string>
 			<key>label</key>
-			<string>Yes</string>
+			<string>Enable</string>
 		</dict>
 		<dict>
 			<key>cell</key>

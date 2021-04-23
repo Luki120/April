@@ -11,8 +11,8 @@ static NSString *plistPath = @"/var/mobile/Library/Preferences/me.luki.aprilpref
 
 static void postNSNotification() {
 
-	[NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"changeGradient" object:NULL];
+    [NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
+    [NSNotificationCenter.defaultCenter postNotificationName:@"changeGradient" object:NULL];
     [NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
 
 }
@@ -37,7 +37,7 @@ static void postNSNotification() {
 	
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/imageChanged"), NULL, 0);
     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/gradientChanged"), NULL, 0);
-
+    
 	UIImage *banner = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/epicbanner.png"];
 	
     self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0,0,UIScreen.mainScreen.bounds.size.width,UIScreen.mainScreen.bounds.size.width * banner.size.height / banner.size.width)];
@@ -146,15 +146,17 @@ static void postNSNotification() {
 
 -(void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier {
     
-    NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:plistPath];
-    [settings setObject:value forKey:specifier.properties[@"key"]];
-    [settings writeToFile:plistPath atomically:YES];
-	
-	[NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"changeAlpha" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"changeGradient" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
+    
+	NSMutableDictionary *settings = [NSMutableDictionary dictionary];
+	[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:plistPath]];
+	[settings setObject:value forKey:specifier.properties[@"key"]];
+	[settings writeToFile:plistPath atomically:YES];
 
+    [NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
+    [NSNotificationCenter.defaultCenter postNotificationName:@"changeAlpha" object:NULL];
+    [NSNotificationCenter.defaultCenter postNotificationName:@"changeGradient" object:NULL];
+    [NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
+	
 }
 
 

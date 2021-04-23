@@ -90,7 +90,6 @@ static void loadWithoutAFuckingRespring() {
 
 	loadWithoutAFuckingRespring();
 
-
 	if(yes) {
 
 		image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bImage"];
@@ -102,7 +101,7 @@ static void loadWithoutAFuckingRespring() {
 		//[backgroundImageView setContentMode: UIViewContentModeScaleAspectFill];
 
 	}
-
+	
 	else {
 		
 		if(setGradientAsBackground) [self setGradient];
@@ -280,10 +279,11 @@ static void loadWithoutAFuckingRespring() {
 	[self setImage];
 
 	[self setGradient];
-	
+
 	[self setBlur];
 
 }
+
 
 %end
 

@@ -51,8 +51,6 @@
 			<false/>
 			<key>defaults</key>
 			<string>me.luki.aprilprefs</string>
-			<key>PostNotification</key>
-			<string>me.luki.aprilprefs/blurSet</string>
 			<key>key</key>
 			<string>blur</string>
 			<key>label</key>

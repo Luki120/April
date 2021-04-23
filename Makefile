@@ -4,6 +4,8 @@ export TARGET := iphone:clang:latest:latest
 DEBUG = O
 FINALPACKAGE = 1
 
+THEOS_DEVICE_IP = 192.168.0.7
+
 INSTALL_TARGET_PROCESSES = Preferences
 
 include $(THEOS)/makefiles/common.mk
@@ -17,5 +19,5 @@ April_FRAMEWORKS = UIKit
 export April_LIBRARIES = gcuniversal
 
 include $(THEOS_MAKE_PATH)/tweak.mk
-SUBPROJECTS += aprilprefs
+SUBPROJECTS += AprilPrefs
 include $(THEOS_MAKE_PATH)/aggregate.mk

@@ -12,7 +12,9 @@
 * Custom Blur: Light, Dark, or Epic.
 * Custom Cell Alpha.
 
+
 * Gradients with directions:
+
 
 * Botttom To Top.
 * Top To Bottom.
@@ -22,6 +24,7 @@
 * Lower Left Upper Right.
 * Upper Right Lower Left.
 * Lower Right Upper Left.
+
 
 * [Twitter](https://twitter.com/Lukii120)
 * [Support on Discord](https://discord.com/invite/MtmMxRVjXV)

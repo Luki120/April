@@ -290,16 +290,13 @@ static void loadWithoutAFuckingRespring() {
 
 
 
-// https://github.com/PopsicleTreehouse/SettingsWallpaper
-
-
 %hook PSTableCell
 
 
 %new
 
 
--(void)applyAlpha {
+-(void)applyAlpha { // https://github.com/PopsicleTreehouse/SettingsWallpaper
 
 	loadWithoutAFuckingRespring();
 

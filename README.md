@@ -4,7 +4,7 @@
 
 ## Spice your settings app with a custom background image of your choice!
 
-## On the fly preferences ;)
+## On the fly preferences
 
 * Features:
 

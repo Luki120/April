@@ -1,7 +1,7 @@
 export ARCHS = arm64 arm64e
 export TARGET := iphone:clang:latest:latest
 
-DEBUG = O
+DEBUG = 0
 FINALPACKAGE = 1
 
 THEOS_DEVICE_IP = 192.168.0.7

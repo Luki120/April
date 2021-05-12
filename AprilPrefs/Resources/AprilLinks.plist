@@ -8,7 +8,7 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Lead Developer</string>
+			<string>Maybe</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -18,17 +18,45 @@
 			<key>default</key>
 			<false/>
 			<key>defaults</key>
-			<string>com.luki.arizonaprefs</string>
+			<string>me.luki.aprilprefs</string>
 			<key>action</key>
-			<string>luki</string>
+			<string>discord</string>
 			<key>label</key>
-			<string>Luki120</string>
+			<string>Chat With Us On Discord</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>AprilTableCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>me.luki.aprilprefs</string>
+			<key>action</key>
+			<string>paypal</string>
+			<key>label</key>
+			<string>Donate To Luki 🥰</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>AprilTableCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>me.luki.aprilprefs</string>
+			<key>action</key>
+			<string>github</string>
+			<key>label</key>
+			<string>Source Code 🔥</string>
 		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Wizard</string>
+			<string>You Might Like</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -38,91 +66,37 @@
 			<key>default</key>
 			<false/>
 			<key>defaults</key>
-			<string>com.luki.arizonaprefs</string>
+			<string>me.luki.aprilprefs</string>
 			<key>action</key>
-			<string>wizard</string>
+			<string>arizona</string>
 			<key>label</key>
-			<string>RuntimeOverflow</string>
+			<string>Arizona</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>AprilTableCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>me.luki.aprilprefs</string>
+			<key>action</key>
+			<string>meredith</string>
+			<key>label</key>
+			<string>Meredith</string>
 		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>Help With Specifiers</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSButtonCell</string>
 			<key>cellClass</key>
 			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>com.luki.arizonaprefs</string>
-			<key>action</key>
-			<string>miguelaka</string>
-			<key>label</key>
-			<string>Miguelaka95</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>Epic Blur</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>com.luki.arizonaprefs</string>
-			<key>action</key>
-			<string>ethn</string>
-			<key>label</key>
-			<string>ETHN</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>Pretty Icon And Banner</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>com.luki.arizonaprefs</string>
-			<key>action</key>
-			<string>ben</string>
-			<key>label</key>
-			<string>Ben Sova</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>Pretty Twitter Cells</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>com.luki.arizonaprefs</string>
-			<key>action</key>
-			<string>GCGamer</string>
-			<key>label</key>
-			<string>MrGCGamer</string>
+			<key>footerAlignment</key>
+			<real>1</real>
+			<key>footerText</key>
+			<string>made by Luki with ❤️</string>
+			<key>isStaticText</key>
+			<true/>
 		</dict>
 	</array>
 	<key>title</key>

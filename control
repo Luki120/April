@@ -1,9 +1,10 @@
 Package: me.luki.april
 Name: April
-Version: 1.0.1
+Version: 1.0.3
 Architecture: iphoneos-arm
 Description: ;)
 Maintainer: Luki
 Author: Luki
 Section: Tweaks
 Depends: mobilesubstrate, preferenceloader, com.mrgcgamer.libgcuniversal
+Conflicts: com.midnightchips.bettersettings

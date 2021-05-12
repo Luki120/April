@@ -4,8 +4,6 @@ export TARGET := iphone:clang:latest:latest
 DEBUG = 0
 FINALPACKAGE = 1
 
-THEOS_DEVICE_IP = 192.168.0.7
-
 INSTALL_TARGET_PROCESSES = Preferences
 
 include $(THEOS)/makefiles/common.mk

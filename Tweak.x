@@ -94,6 +94,7 @@ static void loadWithoutAFuckingRespring() {
 
 	loadWithoutAFuckingRespring();
 
+
 	if(yes) {
 
 
@@ -206,16 +207,17 @@ static void loadWithoutAFuckingRespring() {
 		if(setGradientAnimation) {
 
 
-    		CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"colors"];
-    		animation.fromValue = [NSArray arrayWithObjects:(id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"] CGColor], (id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"]  CGColor], nil];
-    		animation.toValue = [NSArray arrayWithObjects:(id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"]  CGColor], (id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"] CGColor], nil];
-    		animation.duration = 4.5;
-    		animation.removedOnCompletion = NO;
-    		animation.autoreverses = YES;
+			CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"colors"];
+			animation.fromValue = [NSArray arrayWithObjects:(id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"] CGColor], (id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"]  CGColor], nil];
+			animation.toValue = [NSArray arrayWithObjects:(id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"]  CGColor], (id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"] CGColor], nil];
+			animation.duration = 4.5;
+			animation.removedOnCompletion = NO;
+			animation.autoreverses = YES;
 			animation.repeatCount = HUGE_VALF; // Loop the animation forever
-    		animation.fillMode = kCAFillModeBoth;
-    		animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-    		[gradient addAnimation:animation forKey:@"animateGradient"];
+			animation.fillMode = kCAFillModeBoth;
+			animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+			[gradient addAnimation:animation forKey:@"animateGradient"];
+
 
 		}
 
@@ -363,6 +365,7 @@ static void loadWithoutAFuckingRespring() {
 	loadWithoutAFuckingRespring();
 
 	%orig;
+	
 	[self applyAlpha];
 
 

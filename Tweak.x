@@ -149,28 +149,30 @@ static void loadWithoutAFuckingRespring() {
 			[self.backgroundView insertSubview:blurView atIndex:1];
 
 
-		} else{
+		} else {
+
+
 			if(blurType == 0)
 
 
-			blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+				blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
 
 
 			else if(blurType == 1)
 
 
 				blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+
 			
-			UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-			blurEffectView.tag = 1337;
-			blurEffectView.alpha = intensity;
-			blurEffectView.frame = self.backgroundView.bounds;
-			blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-			[self.backgroundView addSubview:blurEffectView];
+				UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+				blurEffectView.tag = 1337;
+				blurEffectView.alpha = intensity;
+				blurEffectView.frame = self.backgroundView.bounds;
+				blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+				[self.backgroundView addSubview:blurEffectView];
+
+
 		}
-
-
-		
 
 
 	}

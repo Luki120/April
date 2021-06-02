@@ -54,6 +54,7 @@ float intensity = 1.0f;
 
 
 CAGradientLayer *gradient;
+UIBlurEffect *blurEffect;
 UIView *view;
 
 
@@ -72,7 +73,7 @@ static void loadWithoutAFuckingRespring() {
 	setGradientAsBackground = prefs[@"setGradientAsBackground"] ? [prefs[@"setGradientAsBackground"] boolValue] : NO;
 	setGradientAnimation = prefs[@"setGradientAnimation"] ? [prefs[@"setGradientAnimation"] boolValue] : NO;
 	alpha = prefs[@"alphaEnabled"] ? [prefs[@"alphaEnabled"] boolValue] : YES;
-	blurType = prefs[@"blurType"] ? [prefs[@"blurType"] integerValue] : 2;
+	blurType = prefs[@"blurType"] ? [prefs[@"blurType"] integerValue] : 0;
 	gradientDirection = prefs[@"gradientDirection"] ? [prefs[@"gradientDirection"] integerValue] : 0;
 	cellAlpha = prefs[@"cellAlpha"] ? [prefs[@"cellAlpha"] floatValue] : 1.0f;
 	intensity = prefs[@"intensity"] ? [prefs[@"intensity"] floatValue] : 1.0f;
@@ -128,30 +129,10 @@ static void loadWithoutAFuckingRespring() {
 	loadWithoutAFuckingRespring();
 	
 	[[self.backgroundView viewWithTag:1337] removeFromSuperview];
-	
-	
-	if(blur && blurType == 2) {
 
 
-		_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
+	if(blur) {
 
-		_UIBackdropView *blurView = [[_UIBackdropView alloc] initWithFrame:CGRectZero
-		autosizesToFitSuperview:YES settings:settings];
-		blurView.blurRadiusSetOnce = NO;
-		blurView._blurRadius = 80.0;
-		blurView._blurQuality = @"high";
-		blurView.tag = 1337;
-		blurView.alpha = intensity;
-		[self.backgroundView insertSubview:blurView atIndex:1];
-
-
-	}
-
-
-	else if(blur && blurType == 1) {
-
-
-		UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
 
 		UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
 		blurEffectView.tag = 1337;
@@ -159,21 +140,36 @@ static void loadWithoutAFuckingRespring() {
 		blurEffectView.frame = self.backgroundView.bounds;
 		blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[self.backgroundView addSubview:blurEffectView];
+	
+	
+		if(blur && blurType == 2) {
 
 
-	}
+			_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
+
+			_UIBackdropView *blurView = [[_UIBackdropView alloc] initWithFrame:CGRectZero
+			autosizesToFitSuperview:YES settings:settings];
+			blurView.blurRadiusSetOnce = NO;
+			blurView._blurRadius = 80.0;
+			blurView._blurQuality = @"high";
+			blurView.tag = 1337;
+			blurView.alpha = intensity;
+			[self.backgroundView insertSubview:blurView atIndex:1];
 
 
-	else if(blur && blurType == 0) {
+		}
 
 
-		UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-		UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-		blurEffectView.tag = 1337;
-		blurEffectView.alpha = intensity;
-		blurEffectView.frame = self.backgroundView.bounds;
-		blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		[self.backgroundView addSubview:blurEffectView];
+		else if(blur && blurType == 0)
+
+
+			blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+
+
+		else if(blur && blurType == 1)
+
+
+			blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
 
 
 	}

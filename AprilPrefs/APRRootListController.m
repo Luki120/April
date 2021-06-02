@@ -200,8 +200,7 @@ static void postNSNotification() {
 
     [super viewDidAppear:animated];
 
-    if(!self.navigationItem.titleView) {
-        APPAnimatedTitleView *titleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 1.0.4" minimumScrollOffsetRequired:-68];
+
         self.navigationItem.titleView = titleView;
         self.titleView.superview.clipsToBounds = YES;
 

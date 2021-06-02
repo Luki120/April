@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-#import <GcColorPickerUtils.h>
-#import <GcImagePickerUtils.h>
+#import <GcUniversal/GcColorPickerUtils.h>
+#import <GcUniversal/GcImagePickerUtils.h>
 
 
 
@@ -132,17 +132,9 @@ static void loadWithoutAFuckingRespring() {
 
 
 	if(blur) {
-
-
-		UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-		blurEffectView.tag = 1337;
-		blurEffectView.alpha = intensity;
-		blurEffectView.frame = self.backgroundView.bounds;
-		blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		[self.backgroundView addSubview:blurEffectView];
 	
 	
-		if(blur && blurType == 2) {
+		if(blurType == 2) {
 
 
 			_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
@@ -157,19 +149,28 @@ static void loadWithoutAFuckingRespring() {
 			[self.backgroundView insertSubview:blurView atIndex:1];
 
 
-		}
-
-
-		else if(blur && blurType == 0)
+		} else{
+			if(blurType == 0)
 
 
 			blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
 
 
-		else if(blur && blurType == 1)
+			else if(blurType == 1)
 
 
-			blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+				blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+			
+			UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+			blurEffectView.tag = 1337;
+			blurEffectView.alpha = intensity;
+			blurEffectView.frame = self.backgroundView.bounds;
+			blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+			[self.backgroundView addSubview:blurEffectView];
+		}
+
+
+		
 
 
 	}

@@ -1,4 +1,12 @@
+// Credits for the implementation of the changelog controller:
+// https://github.com/nahtedetihw
+// https://github.com/nahtedetihw/MusicBackground
+
+
+
+
 #include "APRRootListController.h"
+#import <AudioToolbox/AudioServices.h>
 
 
 
@@ -7,6 +15,9 @@ static NSString *plistPath = @"/var/mobile/Library/Preferences/me.luki.aprilpref
 
 
 #define tint [UIColor colorWithRed: 1.00 green: 0.55 blue: 0.73 alpha: 1.00]
+
+
+UIColor *tintDynamicColor;
 
 
 
@@ -25,9 +36,8 @@ static void postNSNotification() {
 @implementation APRRootListController
 
 
-
-
 - (NSArray *)specifiers {
+
     if (!_specifiers) {
         _specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
         NSArray *chosenIDs = @[@"GroupCell-1", @"Image", /*@"GroupCell-2",*/ @"SegmentCell", @"BlurValue", /*@"GroupCell-3",*/ @"AlphaValue", /*@"GroupCell-4",*/ @"GroupCell-5", @"AnimateGradientSwitch", @"FirstColor", @"SecondColor", @"GroupCell-6", @"GroupCell-7", @"GradientDirection"];
@@ -53,7 +63,6 @@ static void postNSNotification() {
     else if (![self containsSpecifier:self.savedSpecifiers[@"GroupCell-1"]]) {
         [self insertSpecifier:self.savedSpecifiers[@"GroupCell-1"] afterSpecifierID:@"YesSwitch" animated:NO];
         [self insertSpecifier:self.savedSpecifiers[@"Image"] afterSpecifierID:@"GroupCell-1" animated:NO];
-
     }
 
     if (![[self readPreferenceValue:[self specifierForID:@"BlurSwitch"]] boolValue]) {
@@ -63,25 +72,19 @@ static void postNSNotification() {
     else if (![self containsSpecifier:self.savedSpecifiers[@"SegmentCell"]]) {
         [self insertSpecifier:self.savedSpecifiers[@"SegmentCell"] afterSpecifierID:@"BlurSwitch" animated:NO];
         [self insertSpecifier:self.savedSpecifiers[@"BlurValue"] afterSpecifierID:@"SegmentCell" animated:NO];
-
     }
 
     if (![[self readPreferenceValue:[self specifierForID:@"AlphaSwitch"]] boolValue]) {
         [self removeSpecifier:self.savedSpecifiers[@"AlphaValue"] animated:NO];
-        //[self removeSpecifier:self.savedSpecifiers[@"GroupCell-3"] animated:NO];
     }
     else if (![self containsSpecifier:self.savedSpecifiers[@"AlphaValue"]]) {
         [self insertSpecifier:self.savedSpecifiers[@"AlphaValue"] afterSpecifierID:@"AlphaSwitch" animated:NO];
-        //[self insertSpecifier:self.savedSpecifiers[@"GroupCell-3"] afterSpecifierID:@"AlphaValue" animated:NO];
-    
     }
 
     if (![[self readPreferenceValue:[self specifierForID:@"GradientSwitch"]] boolValue]) {
-        //[self removeSpecifier:self.savedSpecifiers[@"GroupCell-4"] animated:NO];
         [self removeContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell-5"], self.savedSpecifiers[@"AnimateGradientSwitch"], self.savedSpecifiers[@"GroupCell-6"], self.savedSpecifiers[@"FirstColor"], self.savedSpecifiers[@"SecondColor"], self.savedSpecifiers[@"GroupCell-7"], self.savedSpecifiers[@"GradientDirection"]] animated:NO];
     }
     else if (![self containsSpecifier:self.savedSpecifiers[@"GroupCell-5"]]) {    
-        //[self insertSpecifier:self.savedSpecifiers[@"GroupCell-4"] afterSpecifierID:@"AlphaValue" animated:NO];
         [self insertContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell-5"], self.savedSpecifiers[@"AnimateGradientSwitch"], self.savedSpecifiers[@"GroupCell-6"], self.savedSpecifiers[@"FirstColor"], self.savedSpecifiers[@"SecondColor"], self.savedSpecifiers[@"GroupCell-7"], self.savedSpecifiers[@"GradientDirection"]] afterSpecifierID:@"GradientSwitch" animated:NO];
     }
 
@@ -107,41 +110,102 @@ static void postNSNotification() {
 
     [self.headerView addSubview:self.headerImageView];
 
+    UIButton *changelogButton =  [UIButton buttonWithType:UIButtonTypeCustom];
+    changelogButton.frame = CGRectMake(0,0,30,30);
+    changelogButton.layer.cornerRadius = changelogButton.frame.size.height / 2;
+    changelogButton.layer.masksToBounds = YES;
+    [changelogButton setImage:[UIImage systemImageNamed:@"checkmark.circle"] forState:UIControlStateNormal];
+    [changelogButton addTarget:self action:@selector(showWtfChangedInThisVersion:) forControlEvents:UIControlEventTouchUpInside];
+    changelogButton.tintColor = [UIColor colorWithRed: 1.00 green: 0.55 blue: 0.73 alpha: 1.00];
 
-    self.navigationItem.titleView = [UIView new];
-    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,10,10)];
-    self.titleLabel.font = [UIFont boldSystemFontOfSize:17];
-    self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.titleLabel.text = @"1.0.3";
-    if ([[self traitCollection] userInterfaceStyle] == UIUserInterfaceStyleDark) self.titleLabel.textColor = [UIColor whiteColor];
-    else if ([[self traitCollection] userInterfaceStyle] == UIUserInterfaceStyleLight) self.titleLabel.textColor = [UIColor blackColor];
-    self.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.navigationItem.titleView addSubview:self.titleLabel];
 
-    self.iconView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,10,10)];
-    self.iconView.contentMode = UIViewContentModeScaleAspectFit;
-    self.iconView.image = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/icon@2x.png"];
-    self.iconView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.iconView.alpha = 0.0;
-    [self.navigationItem.titleView addSubview:self.iconView];
+    changelogButtonItem = [[UIBarButtonItem alloc] initWithCustomView:changelogButton];
+
+    self.navigationItem.rightBarButtonItem = changelogButtonItem;
+
 
     [NSLayoutConstraint activateConstraints:@[
+
         [self.headerImageView.topAnchor constraintEqualToAnchor:self.headerView.topAnchor],
         [self.headerImageView.leadingAnchor constraintEqualToAnchor:self.headerView.leadingAnchor],
         [self.headerImageView.trailingAnchor constraintEqualToAnchor:self.headerView.trailingAnchor],   
         [self.headerImageView.bottomAnchor constraintEqualToAnchor:self.headerView.bottomAnchor],
-        [self.titleLabel.topAnchor constraintEqualToAnchor:self.navigationItem.titleView.topAnchor],
-        [self.titleLabel.leadingAnchor constraintEqualToAnchor:self.navigationItem.titleView.leadingAnchor],
-        [self.titleLabel.trailingAnchor constraintEqualToAnchor:self.navigationItem.titleView.trailingAnchor],
-        [self.titleLabel.bottomAnchor constraintEqualToAnchor:self.navigationItem.titleView.bottomAnchor],
-        [self.iconView.topAnchor constraintEqualToAnchor:self.navigationItem.titleView.topAnchor],
-        [self.iconView.leadingAnchor constraintEqualToAnchor:self.navigationItem.titleView.leadingAnchor],
-        [self.iconView.trailingAnchor constraintEqualToAnchor:self.navigationItem.titleView.trailingAnchor],
-        [self.iconView.bottomAnchor constraintEqualToAnchor:self.navigationItem.titleView.bottomAnchor],
 
     ]];
 
     _table.tableHeaderView = self.headerView;
+
+}
+
+
+- (void)showWtfChangedInThisVersion:(id)sender {
+    
+    AudioServicesPlaySystemSound(1521);
+
+    self.changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"1.0.4" icon:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/April.png"]];
+
+    [self.changelogController addBulletedListItemWithTitle:@"This" description:@"Changelog View" image:[UIImage systemImageNamed:@"exclamationmark.circle.fill"]];
+  
+    [self.changelogController addBulletedListItemWithTitle:@"Is" description:@"Fucking Hot" image:[UIImage systemImageNamed:@"exclamationmark.circle.fill"]];
+
+    _UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
+
+    _UIBackdropView *backdropView = [[_UIBackdropView alloc] initWithSettings:settings];
+    backdropView.layer.masksToBounds = YES;
+    backdropView.clipsToBounds = YES;
+    backdropView.frame = self.changelogController.viewIfLoaded.frame;
+    [self.changelogController.viewIfLoaded insertSubview:backdropView atIndex:0];
+    
+    backdropView.translatesAutoresizingMaskIntoConstraints = NO;
+    [backdropView.bottomAnchor constraintEqualToAnchor:self.changelogController.viewIfLoaded.bottomAnchor constant:0].active = YES;
+    [backdropView.leftAnchor constraintEqualToAnchor:self.changelogController.viewIfLoaded.leftAnchor constant:0].active = YES;
+    [backdropView.rightAnchor constraintEqualToAnchor:self.changelogController.viewIfLoaded.rightAnchor constant:0].active = YES;
+    [backdropView.topAnchor constraintEqualToAnchor:self.changelogController.viewIfLoaded.topAnchor constant:0].active = YES;
+
+    self.changelogController.viewIfLoaded.backgroundColor = [UIColor clearColor];
+    self.changelogController.view.tintColor = [UIColor colorWithRed: 1.00 green: 0.55 blue: 0.73 alpha: 1.00];
+    self.changelogController.modalPresentationStyle = UIModalPresentationPageSheet;
+    self.changelogController.modalInPresentation = NO;
+    [self presentViewController:self.changelogController animated:YES completion:nil];
+
+}
+
+
+- (void)dismissVC {
+
+    [self.changelogController dismissViewControllerAnimated:YES completion:nil];
+
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+
+    [super viewWillDisappear:animated];
+
+    self.title = @"April 1.0.4";
+
+
+    if ([[self traitCollection] userInterfaceStyle] == UIUserInterfaceStyleDark)
+
+        [self.navigationController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    
+    else if ([[self traitCollection] userInterfaceStyle] == UIUserInterfaceStyleLight)
+
+        [self.navigationController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+
+}
+
+
+- (void)viewDidAppear:(BOOL)animated {
+
+    [super viewDidAppear:animated];
+
+    if(!self.navigationItem.titleView) {
+        APPAnimatedTitleView *titleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 1.0.4" minimumScrollOffsetRequired:-68];
+        self.navigationItem.titleView = titleView;
+        self.titleView.superview.clipsToBounds = YES;
+
+    }
 
 }
 
@@ -153,73 +217,38 @@ static void postNSNotification() {
     CGRect frame = self.table.bounds;
     frame.origin.y = -frame.size.height;
 
-
     [self.navigationController.navigationController.navigationBar setShadowImage: [UIImage new]];
     self.navigationController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
 }
 
 
-/*- (void)viewDidAppear:(BOOL)animated {
-    
-    [super viewDidAppear:animated];
-
-    //Create view and set as titleView of your navigation bar
-    //Set the title and the minimum scroll offset before starting the animation
-    /*if(!self.navigationItem.titleView) {
-        APPAnimatedTitleView *titleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April" minimumScrollOffsetRequired:100];
-        self.navigationItem.titleView = titleView;
-    }
-
-}*/
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    tableView.tableHeaderView = self.headerView;
-    return [super tableView:tableView cellForRowAtIndexPath:indexPath];
-}
-
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+
     CGFloat offsetY = scrollView.contentOffset.y;
-
-    /*if([self.navigationItem.titleView respondsToSelector:@selector(adjustLabelPositionToScrollOffset:)]) {
-        [(APPAnimatedTitleView *)self.navigationItem.titleView adjustLabelPositionToScrollOffset:scrollView.contentOffset.y];
-    }*/
-
-    if (offsetY > 200) {
-        [UIView animateWithDuration:0.2 animations:^{
-            self.iconView.alpha = 1.0;
-            self.titleLabel.alpha = 0.0;
-        }];
-    } else {
-        [UIView animateWithDuration:0.2 animations:^{
-            self.iconView.alpha = 0.0;
-            self.titleLabel.alpha = 1.0;
-        }];
-    }
 
     if (offsetY > 0) offsetY = 0;
     self.headerImageView.frame = CGRectMake(0, offsetY, self.headerView.frame.size.width, 200 - offsetY);
 
+
+    if([self.navigationItem.titleView respondsToSelector:@selector(adjustLabelPositionToScrollOffset:)]) {
+        [(APPAnimatedTitleView *)self.navigationItem.titleView adjustLabelPositionToScrollOffset:scrollView.contentOffset.y];
+
+    }
+
 }
 
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    [super viewWillDisappear:animated];
-
-    if ([[self traitCollection] userInterfaceStyle] == UIUserInterfaceStyleDark)
-
-        [self.navigationController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-    
-    else if ([[self traitCollection] userInterfaceStyle] == UIUserInterfaceStyleLight)
-        [self.navigationController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+    tableView.tableHeaderView = self.headerView;
+    return [super tableView:tableView cellForRowAtIndexPath:indexPath];
 
 }
 
 
 - (id)readPreferenceValue:(PSSpecifier*)specifier {
+
     NSMutableDictionary *settings = [NSMutableDictionary dictionary];
     [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:plistPath]];
     return (settings[specifier.properties[@"key"]]) ?: specifier.properties[@"default"];
@@ -228,7 +257,6 @@ static void postNSNotification() {
 
 
 - (void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier {
-    
     
     NSMutableDictionary *settings = [NSMutableDictionary dictionary];
     [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:plistPath]];
@@ -268,20 +296,18 @@ static void postNSNotification() {
         else if (![self containsSpecifier:self.savedSpecifiers[@"BlurValue"]]) {
             [self insertSpecifier:self.savedSpecifiers[@"SegmentCell"] afterSpecifierID:@"BlurSwitch" animated:YES];
             [self insertSpecifier:self.savedSpecifiers[@"BlurValue"] afterSpecifierID:@"SegmentCell" animated:YES];
-            //[self insertSpecifier:self.savedSpecifiers[@"GroupCell-2"] afterSpecifierID:@"BlurValue" animated:YES];
         }
+       
     }
 
     if([key isEqualToString:@"alphaEnabled"]) {
         
         if (![value boolValue]) {
             [self removeSpecifier:self.savedSpecifiers[@"AlphaValue"] animated:YES];
-            //[self removeSpecifier:self.savedSpecifiers[@"GroupCell-3"] animated:YES];
         }
 
         else if (![self containsSpecifier:self.savedSpecifiers[@"AlphaValue"]]) {
             [self insertSpecifier:self.savedSpecifiers[@"AlphaValue"] afterSpecifierID:@"AlphaSwitch" animated:YES];
-            //[self insertSpecifier:self.savedSpecifiers[@"GroupCell-3"] afterSpecifierID:@"AlphaValue" animated:YES];
         }
 
     }
@@ -289,11 +315,10 @@ static void postNSNotification() {
     if([key isEqualToString:@"setGradientAsBackground"]) {
         
         if (![value boolValue]) {
-            //[self removeSpecifier:self.savedSpecifiers[@"GroupCell-4"] animated:YES];
             [self removeContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell-5"], self.savedSpecifiers[@"AnimateGradientSwitch"], self.savedSpecifiers[@"GroupCell-6"], self.savedSpecifiers[@"FirstColor"], self.savedSpecifiers[@"SecondColor"], self.savedSpecifiers[@"GroupCell-7"], self.savedSpecifiers[@"GradientDirection"]] animated:YES];
         }
+
         else if (![self containsSpecifier:self.savedSpecifiers[@"GroupCell-5"]]) {    
-            //[self insertSpecifier:self.savedSpecifiers[@"GroupCell-4"] afterSpecifierID:@"AlphaValue" animated:YES];
             [self insertContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell-5"], self.savedSpecifiers[@"AnimateGradientSwitch"], self.savedSpecifiers[@"GroupCell-6"], self.savedSpecifiers[@"FirstColor"], self.savedSpecifiers[@"SecondColor"], self.savedSpecifiers[@"GroupCell-7"], self.savedSpecifiers[@"GradientDirection"]] afterSpecifierID:@"GradientSwitch" animated:YES];
         }
 
@@ -430,6 +455,15 @@ static void postNSNotification() {
 
 
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://twitter.com/mrgcgamer"] options:@{} completionHandler:nil];
+
+
+}
+
+
+- (void)Kenny {
+
+
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://twitter.com/_Kennyroo"] options:@{} completionHandler:nil];
 
 
 }

@@ -166,7 +166,7 @@ static void postNSNotification() {
 
     //Create view and set as titleView of your navigation bar
     //Set the title and the minimum scroll offset before starting the animation
-    /*if(!self.navigationItem.titleView) {
+    if(!self.navigationItem.titleView) {
         APPAnimatedTitleView *titleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April" minimumScrollOffsetRequired:100];
         self.navigationItem.titleView = titleView;
     }

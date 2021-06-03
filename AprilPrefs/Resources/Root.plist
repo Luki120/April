@@ -94,7 +94,7 @@
 				<key>defaults</key>
 				<string>me.luki.aprilprefs</string>
 				<key>default</key>
-				<string>2</string>
+				<string>0</string>
 				<key>key</key>
 				<string>blurType</string>
 				<key>validValues</key>
@@ -102,12 +102,16 @@
 					<string>0</string>
 					<string>1</string>
 					<string>2</string>
+					<string>3</string>
+					<string>4</string>
 				</array>
 				<key>validTitles</key>
 				<array>
-					<string>Light</string>
-					<string>Dark</string>
 					<string>Epic</string>
+					<string>Dark</string>
+					<string>Light</string>
+					<string>Adaptive</string>
+					<string>Thin Material</string>
 				</array>
 				<key>id</key>
 				<string>SegmentCell</string>
@@ -356,6 +360,6 @@
 			</dict>
 		</array>
 		<key>title</key>
-		<string>April</string>
+		<string></string>
 	</dict>
 </plist>

@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-#import <GcUniversal/GcColorPickerUtils.h>
-#import <GcUniversal/GcImagePickerUtils.h>
+#import <GcColorPickerUtils.h>
+#import <GcImagePickerUtils.h>
 
 
 
@@ -134,7 +134,7 @@ static void loadWithoutAFuckingRespring() {
 	if(blur) {
 	
 	
-		if(blurType == 2) {
+		if(blurType == 0) {
 
 
 			_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
@@ -152,16 +152,38 @@ static void loadWithoutAFuckingRespring() {
 		} else {
 
 
-			if(blurType == 0)
+			switch(blurType) {
 
 
-				blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-
-
-			else if(blurType == 1)
+				case 1:
 
 
 				blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+				break;
+
+
+				case 2:
+
+
+				blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+				break;
+
+
+				case 3:
+
+
+				blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
+				break;
+
+
+				case 4:
+
+
+				blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemUltraThinMaterial];
+				break;
+
+
+			}
 
 			
 				UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];

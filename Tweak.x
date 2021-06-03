@@ -186,12 +186,12 @@ static void loadWithoutAFuckingRespring() {
 			}
 
 			
-				UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-				blurEffectView.tag = 1337;
-				blurEffectView.alpha = intensity;
-				blurEffectView.frame = self.backgroundView.bounds;
-				blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-				[self.backgroundView addSubview:blurEffectView];
+			UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+			blurEffectView.tag = 1337;
+			blurEffectView.alpha = intensity;
+			blurEffectView.frame = self.backgroundView.bounds;
+			blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+			[self.backgroundView addSubview:blurEffectView];
 
 
 		}

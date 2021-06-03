@@ -114,7 +114,7 @@ static void postNSNotification() {
     changelogButton.frame = CGRectMake(0,0,30,30);
     changelogButton.layer.cornerRadius = changelogButton.frame.size.height / 2;
     changelogButton.layer.masksToBounds = YES;
-    [changelogButton setImage:[UIImage systemImageNamed:@"checkmark.circle"] forState:UIControlStateNormal];
+    [changelogButton setImage:[UIImage systemImageNamed:@"atom"] forState:UIControlStateNormal];
     [changelogButton addTarget:self action:@selector(showWtfChangedInThisVersion:) forControlEvents:UIControlEventTouchUpInside];
     changelogButton.tintColor = [UIColor colorWithRed: 1.00 green: 0.55 blue: 0.73 alpha: 1.00];
 
@@ -144,9 +144,11 @@ static void postNSNotification() {
 
     self.changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"1.0.4" icon:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/April.png"]];
 
-    [self.changelogController addBulletedListItemWithTitle:@"This" description:@"Changelog View" image:[UIImage systemImageNamed:@"exclamationmark.circle.fill"]];
+    [self.changelogController addBulletedListItemWithTitle:@"Blur" description:@"Added adaptive and thin material styles." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
   
-    [self.changelogController addBulletedListItemWithTitle:@"Is" description:@"Fucking Hot" image:[UIImage systemImageNamed:@"exclamationmark.circle.fill"]];
+    [self.changelogController addBulletedListItemWithTitle:@"Code" description:@"Blur code was refactored to improve performance." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
+
+    [self.changelogController addBulletedListItemWithTitle:@"Prefs" description:@"Added a pretty title animation when scrolling through the preferences panel." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
 
     _UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
 
@@ -198,11 +200,19 @@ static void postNSNotification() {
 
 - (void)viewDidAppear:(BOOL)animated {
 
+
     [super viewDidAppear:animated];
+
+
+    if(!self.navigationItem.titleView) {
+
+
+        APPAnimatedTitleView *titleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 1.0.4" minimumScrollOffsetRequired:-68];
 
 
         self.navigationItem.titleView = titleView;
         self.titleView.superview.clipsToBounds = YES;
+
 
     }
 
@@ -427,6 +437,15 @@ static void postNSNotification() {
 
 
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://www.reddit.com/user/Miguelaka95/"] options:@{} completionHandler:nil];
+
+
+}
+
+
+- (void)lacertosus {
+
+
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://twitter.com/lacertosusdeus"] options:@{} completionHandler:nil];
 
 
 }

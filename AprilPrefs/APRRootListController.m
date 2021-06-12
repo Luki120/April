@@ -148,7 +148,7 @@ static void postNSNotification() {
   
     [self.changelogController addBulletedListItemWithTitle:@"Code" description:@"Blur code was refactored to improve performance." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
 
-    [self.changelogController addBulletedListItemWithTitle:@"Prefs" description:@"Added a pretty title animation when scrolling through the preferences panel." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
+    [self.changelogController addBulletedListItemWithTitle:@"Prefs" description:@"Added a pretty title animation when scrolling through the preferences panel & pretty libGC twitter cells for contributors." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
 
     _UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
 

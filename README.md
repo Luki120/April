@@ -2,18 +2,18 @@
 
 # April
 
-## Spice your settings app with a custom background image of your choice!
+## Spice your settings app with a custom background image or gradients of your choice!
 
-## On the fly preferences
+## On the fly preferences.
 
-* Features:
+## Features:
 
 * Custom Background Image.
-* Custom Blur: Light, Dark, or Epic.
-* Custom Cell Alpha.
+* Custom Blurs: Light, Dark, Epic, Adaptive & Thin Material.
+* Custom Table Cell Alpha.
 
 
-* Gradients with directions:
+## Gradients with directions:
 
 
 * Botttom To Top.
@@ -25,6 +25,8 @@
 * Upper Right Lower Left.
 * Lower Right Upper Left.
 
+
+## Socials:
 
 * [Twitter](https://twitter.com/Lukii120)
 * [Support on Discord](https://discord.com/invite/MtmMxRVjXV)

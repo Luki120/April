@@ -14,15 +14,13 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
-			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.luki.aprilprefs</string>
-			<key>action</key>
-			<string>luki</string>
-			<key>label</key>
+			<string>GcTwitterCell</string>
+			<key>accountLabel</key>
 			<string>Luki120</string>
+			<key>account</key>
+			<string>Lukii120</string>
+			<key>URL</key>
+			<string>https://avatars.githubusercontent.com/u/74214115?v=4</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -34,15 +32,13 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
-			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.luki.aprilprefs</string>
-			<key>action</key>
-			<string>wizard</string>
-			<key>label</key>
+			<string>GcTwitterCell</string>
+			<key>accountLabel</key>
 			<string>RuntimeOverflow</string>
+			<key>account</key>
+			<string>RuntimeOverflow</string>
+			<key>URL</key>
+			<string>https://avatars.githubusercontent.com/u/38386956?v=4</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -54,15 +50,13 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
-			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.luki.aprilprefs</string>
-			<key>action</key>
-			<string>miguelaka</string>
-			<key>label</key>
+			<string>GcTwitterCell</string>
+			<key>accountLabel</key>
+			<string>Miguelaka</string>
+			<key>account</key>
 			<string>Miguelaka95</string>
+			<key>URL</key>
+			<string>https://pbs.twimg.com/profile_images/1352713271435014148/_N-NLFJv_400x400.jpg</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -74,15 +68,13 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
-			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.luki.aprilprefs</string>
-			<key>action</key>
-			<string>lacertosus</string>
-			<key>label</key>
+			<string>GcTwitterCell</string>
+			<key>accountLabel</key>
 			<string>Lacertosus</string>
+			<key>account</key>
+			<string>LacertosusDeus</string>
+			<key>URL</key>
+			<string>https://avatars.githubusercontent.com/u/14306024?v=4</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -94,15 +86,13 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
-			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.luki.aprilprefs</string>
-			<key>action</key>
-			<string>ethn</string>
-			<key>label</key>
+			<string>GcTwitterCell</string>
+			<key>accountLabel</key>
 			<string>ETHN</string>
+			<key>account</key>
+			<string>EthanWhited</string>
+			<key>URL</key>
+			<string>https://avatars.githubusercontent.com/u/41249541?v=4</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -114,15 +104,13 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
-			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.luki.aprilprefs</string>
-			<key>action</key>
-			<string>ben</string>
-			<key>label</key>
-			<string>Ben Sova</string>
+			<string>GcTwitterCell</string>
+			<key>accountLabel</key>
+			<string>Ben</string>
+			<key>account</key>
+			<string>BenOwl3</string>
+			<key>URL</key>
+			<string>https://avatars.githubusercontent.com/u/65474198?v=4</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -134,15 +122,13 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
-			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.luki.aprilprefs</string>
-			<key>action</key>
-			<string>GCGamer</string>
-			<key>label</key>
-			<string>MrGCGamer</string>
+			<string>GcTwitterCell</string>
+			<key>accountLabel</key>
+			<string>MrGcGamer</string>
+			<key>account</key>
+			<string>MrGcGamer</string>
+			<key>URL</key>
+			<string>https://avatars.githubusercontent.com/u/32813275?v=4</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -154,15 +140,13 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
-			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.luki.aprilprefs</string>
-			<key>action</key>
+			<string>GcTwitterCell</string>
+			<key>accountLabel</key>
 			<string>Kenny</string>
-			<key>label</key>
-			<string>Kennyroo</string>
+			<key>account</key>
+			<string>_Kennyroo</string>
+			<key>URL</key>
+			<string>https://pbs.twimg.com/profile_images/1399943105378328577/5Yksj_XV_400x400.jpg</string>
 		</dict>
 	</array>
 	<key>title</key>

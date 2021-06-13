@@ -341,6 +341,23 @@ static void postNSNotification() {
 
 
 
+@implementation AprilContributorsRootListController
+
+
+- (NSArray *)specifiers {
+    if (!_specifiers) {
+        _specifiers = [self loadSpecifiersFromPlistName:@"AprilContributors" target:self];
+    }
+
+    return _specifiers;
+}
+
+
+@end
+
+
+
+
 @implementation AprilLinksRootListController
 
 
@@ -393,95 +410,6 @@ static void postNSNotification() {
 
 
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://repo.twickd.com/get/com.twickd.luki120.meredith"] options:@{} completionHandler:nil];
-
-
-}
-
-
-@end
-
-
-
-
-@implementation AprilContributorsRootListController
-
-
-- (NSArray *)specifiers {
-	if (!_specifiers) {
-		_specifiers = [self loadSpecifiersFromPlistName:@"AprilContributors" target:self];
-	}
-
-	return _specifiers;
-}
-
-
-- (void)luki {
-
-
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://twitter.com/Lukii120"] options:@{} completionHandler:nil];
-
-
-}
-
-
-- (void)wizard {
-
-
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://twitter.com/runtimeoverflow"] options:@{} completionHandler:nil];
-
-
-}
-
-
-- (void)miguelaka {
-
-
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://www.reddit.com/user/Miguelaka95/"] options:@{} completionHandler:nil];
-
-
-}
-
-
-- (void)lacertosus {
-
-
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://twitter.com/lacertosusdeus"] options:@{} completionHandler:nil];
-
-
-}
-
-
-- (void)ethn {
-
-
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://twitter.com/ethanwhited"] options:@{} completionHandler:nil];
-
-
-}
-
-
-- (void)ben {
-
-
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://twitter.com/BenOwl3"] options:@{} completionHandler:nil];
-
-
-}
-
-
-- (void)GCGamer {
-
-
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://twitter.com/mrgcgamer"] options:@{} completionHandler:nil];
-
-
-}
-
-
-- (void)Kenny {
-
-
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://twitter.com/_Kennyroo"] options:@{} completionHandler:nil];
 
 
 }

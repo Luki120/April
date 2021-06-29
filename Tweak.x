@@ -25,6 +25,8 @@
 
 
 @interface UITableView (April)
+@property (nonatomic, strong) UIImageView *hotGoodLookingImageView;
+@property (nonatomic, strong) UIImage *hotGoodLookingImage;
 - (void)setImage;
 - (void)setBlur;
 - (void)setGradient;
@@ -58,9 +60,6 @@ UIBlurEffect *blurEffect;
 UIView *view;
 
 
-UIImage *image;
-
-
 
 
 static void loadWithoutAFuckingRespring() {
@@ -87,6 +86,10 @@ static void loadWithoutAFuckingRespring() {
 %hook UITableView
 
 
+%property (nonatomic, strong) UIImageView *hotGoodLookingImageView;
+%property (nonatomic, strong) UIImage *hotGoodLookingImage;
+
+
 %new
 
 
@@ -99,10 +102,15 @@ static void loadWithoutAFuckingRespring() {
 	if(yes) {
 
 
-		image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bImage"];
-		UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:image];
-		[backgroundImageView setFrame:self.frame];
-		self.backgroundView = backgroundImageView;
+		self.hotGoodLookingImageView = [[UIImageView alloc] initWithImage:self.hotGoodLookingImage];
+		self.hotGoodLookingImageView.frame = self.frame;
+
+
+		if(self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bImage"];
+		else self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bLightImage"];
+
+
+		self.backgroundView = self.hotGoodLookingImageView;
 
 
 	}
@@ -116,6 +124,21 @@ static void loadWithoutAFuckingRespring() {
 
 
 	}
+
+}
+
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection { // handle transition between light/dark mode dynamically
+
+ 
+	%orig(previousTraitCollection);
+
+
+	if(previousTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bLightImage"];
+
+
+	else self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bImage"];
+
 
 }
 
@@ -158,29 +181,29 @@ static void loadWithoutAFuckingRespring() {
 				case 1:
 
 
-				blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-				break;
+					blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+					break;
 
 
 				case 2:
 
 
-				blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-				break;
+					blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+					break;
 
 
 				case 3:
 
 
-				blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
-				break;
+					blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
+					break;
 
 
 				case 4:
 
 
-				blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemUltraThinMaterial];
-				break;
+					blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemUltraThinMaterial];
+					break;
 
 
 			}
@@ -357,9 +380,9 @@ static void loadWithoutAFuckingRespring() {
 	loadWithoutAFuckingRespring();
 
 
-		CGFloat red = 0.0, green = 0.0, blue = 0.0, dAlpha = 0.0;
-		[self.backgroundColor getRed:&red green:&green blue:&blue alpha:&dAlpha];
-		self.backgroundColor = [[UIColor alloc] initWithRed:red green:green blue:blue alpha:alpha ? cellAlpha : 1];
+	CGFloat red = 0.0, green = 0.0, blue = 0.0, dAlpha = 0.0;
+	[self.backgroundColor getRed:&red green:&green blue:&blue alpha:&dAlpha];
+	self.backgroundColor = [[UIColor alloc] initWithRed:red green:green blue:blue alpha:alpha ? cellAlpha : 1];
 
 
 }

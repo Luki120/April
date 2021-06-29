@@ -29,4 +29,4 @@
 ## Socials:
 
 * [Twitter](https://twitter.com/Lukii120)
-* [Support on Discord](https://discord.com/invite/MtmMxRVjXV)
+* [Support on Discord](https://discord.gg/pKekktctUK)

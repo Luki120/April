@@ -1,9 +1,6 @@
 export ARCHS = arm64 arm64e
 export TARGET := iphone:clang:latest:latest
 
-DEBUG = 0
-FINALPACKAGE = 1
-
 INSTALL_TARGET_PROCESSES = Preferences
 
 include $(THEOS)/makefiles/common.mk

@@ -40,7 +40,7 @@ static void postNSNotification() {
 
     if (!_specifiers) {
         _specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
-        NSArray *chosenIDs = @[@"GroupCell-1", @"Image", /*@"GroupCell-2",*/ @"SegmentCell", @"BlurValue", /*@"GroupCell-3",*/ @"AlphaValue", /*@"GroupCell-4",*/ @"GroupCell-5", @"AnimateGradientSwitch", @"FirstColor", @"SecondColor", @"GroupCell-6", @"GroupCell-7", @"GradientDirection"];
+        NSArray *chosenIDs = @[@"GroupCell-1", @"Image", @"LightImage", @"SegmentCell", @"BlurValue", @"AlphaValue", @"GroupCell-5", @"AnimateGradientSwitch", @"FirstColor", @"SecondColor", @"GroupCell-6", @"GroupCell-7", @"GradientDirection"];
         self.savedSpecifiers = (self.savedSpecifiers) ?: [[NSMutableDictionary alloc] init];
         for(PSSpecifier *specifier in _specifiers) {
             if([chosenIDs containsObject:[specifier propertyForKey:@"id"]]) {
@@ -57,36 +57,59 @@ static void postNSNotification() {
     [super reloadSpecifiers];
 
     if (![[self readPreferenceValue:[self specifierForID:@"YesSwitch"]] boolValue]) {
+
         [self removeSpecifier:self.savedSpecifiers[@"GroupCell-1"] animated:NO];
         [self removeSpecifier:self.savedSpecifiers[@"Image"] animated:NO];
+        [self removeSpecifier:self.savedSpecifiers[@"LightImage"] animated:NO];
+
     }
+
+
     else if (![self containsSpecifier:self.savedSpecifiers[@"GroupCell-1"]]) {
+
         [self insertSpecifier:self.savedSpecifiers[@"GroupCell-1"] afterSpecifierID:@"YesSwitch" animated:NO];
         [self insertSpecifier:self.savedSpecifiers[@"Image"] afterSpecifierID:@"GroupCell-1" animated:NO];
+        [self insertSpecifier:self.savedSpecifiers[@"LightImage"] afterSpecifierID:@"Image" animated:NO];
+
     }
+
 
     if (![[self readPreferenceValue:[self specifierForID:@"BlurSwitch"]] boolValue]) {
+
         [self removeSpecifier:self.savedSpecifiers[@"SegmentCell"] animated:NO];
         [self removeSpecifier:self.savedSpecifiers[@"BlurValue"] animated:NO];
+
     }
+
+
     else if (![self containsSpecifier:self.savedSpecifiers[@"SegmentCell"]]) {
+
         [self insertSpecifier:self.savedSpecifiers[@"SegmentCell"] afterSpecifierID:@"BlurSwitch" animated:NO];
         [self insertSpecifier:self.savedSpecifiers[@"BlurValue"] afterSpecifierID:@"SegmentCell" animated:NO];
+
     }
 
-    if (![[self readPreferenceValue:[self specifierForID:@"AlphaSwitch"]] boolValue]) {
+
+    if (![[self readPreferenceValue:[self specifierForID:@"AlphaSwitch"]] boolValue])
+
         [self removeSpecifier:self.savedSpecifiers[@"AlphaValue"] animated:NO];
-    }
-    else if (![self containsSpecifier:self.savedSpecifiers[@"AlphaValue"]]) {
-        [self insertSpecifier:self.savedSpecifiers[@"AlphaValue"] afterSpecifierID:@"AlphaSwitch" animated:NO];
-    }
 
-    if (![[self readPreferenceValue:[self specifierForID:@"GradientSwitch"]] boolValue]) {
+
+    else if (![self containsSpecifier:self.savedSpecifiers[@"AlphaValue"]])
+
+        [self insertSpecifier:self.savedSpecifiers[@"AlphaValue"] afterSpecifierID:@"AlphaSwitch" animated:NO];
+
+
+
+    if (![[self readPreferenceValue:[self specifierForID:@"GradientSwitch"]] boolValue])
+
         [self removeContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell-5"], self.savedSpecifiers[@"AnimateGradientSwitch"], self.savedSpecifiers[@"GroupCell-6"], self.savedSpecifiers[@"FirstColor"], self.savedSpecifiers[@"SecondColor"], self.savedSpecifiers[@"GroupCell-7"], self.savedSpecifiers[@"GradientDirection"]] animated:NO];
-    }
-    else if (![self containsSpecifier:self.savedSpecifiers[@"GroupCell-5"]]) {    
+
+
+    else if (![self containsSpecifier:self.savedSpecifiers[@"GroupCell-5"]])
+
         [self insertContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell-5"], self.savedSpecifiers[@"AnimateGradientSwitch"], self.savedSpecifiers[@"GroupCell-6"], self.savedSpecifiers[@"FirstColor"], self.savedSpecifiers[@"SecondColor"], self.savedSpecifiers[@"GroupCell-7"], self.savedSpecifiers[@"GradientDirection"]] afterSpecifierID:@"GradientSwitch" animated:NO];
-    }
+
 
 }
 
@@ -142,13 +165,11 @@ static void postNSNotification() {
     
     AudioServicesPlaySystemSound(1521);
 
-    self.changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"1.0.4" icon:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/April.png"]];
+    self.changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"1.0.5" icon:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/April.png"]];
 
-    [self.changelogController addBulletedListItemWithTitle:@"Blur" description:@"Added adaptive and thin material styles." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
-  
-    [self.changelogController addBulletedListItemWithTitle:@"Code" description:@"Blur code was refactored to improve performance." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
+    [self.changelogController addBulletedListItemWithTitle:@"General" description:@"Added light/dark mode option for background image." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
 
-    [self.changelogController addBulletedListItemWithTitle:@"Prefs" description:@"Added a pretty title animation when scrolling through the preferences panel & pretty libGC twitter cells for contributors." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
+    [self.changelogController addBulletedListItemWithTitle:@"Prefs" description:@"Added pretty libGC twitter cells for contributors." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
 
     _UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
 
@@ -184,7 +205,7 @@ static void postNSNotification() {
 
     [super viewWillDisappear:animated];
 
-    self.title = @"April 1.0.4";
+    self.title = @"April 1.0.5";
 
 
     if ([[self traitCollection] userInterfaceStyle] == UIUserInterfaceStyleDark)
@@ -207,7 +228,7 @@ static void postNSNotification() {
     if(!self.navigationItem.titleView) {
 
 
-        APPAnimatedTitleView *titleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 1.0.4" minimumScrollOffsetRequired:-68];
+        APPAnimatedTitleView *titleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 1.0.5" minimumScrollOffsetRequired:-68];
 
 
         self.navigationItem.titleView = titleView;
@@ -285,11 +306,13 @@ static void postNSNotification() {
         if (![value boolValue]) {
             [self removeSpecifier:self.savedSpecifiers[@"GroupCell-1"] animated:YES];
             [self removeSpecifier:self.savedSpecifiers[@"Image"] animated:YES];
+            [self removeSpecifier:self.savedSpecifiers[@"LightImage"] animated:NO];
         }
 
         else if (![self containsSpecifier:self.savedSpecifiers[@"Image"]]) {
             [self insertSpecifier:self.savedSpecifiers[@"GroupCell-1"] afterSpecifierID:@"YesSwitch" animated:YES];
             [self insertSpecifier:self.savedSpecifiers[@"Image"] afterSpecifierID:@"GroupCell-1" animated:YES];
+            [self insertSpecifier:self.savedSpecifiers[@"LightImage"] afterSpecifierID:@"Image" animated:NO];        
         }
 
     }

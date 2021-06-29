@@ -50,7 +50,7 @@
 				<key>cellClass</key>
 				<string>GcImagePickerCell</string>
 				<key>label</key>
-				<string>Choose Image</string>
+				<string>Dark Image</string>
 				<key>defaults</key>
 				<string>me.luki.aprilprefs</string>
 				<key>PostNotification</key>
@@ -59,6 +59,28 @@
 				<string>Image</string>
 				<key>key</key>
 				<string>bImage</string>
+				<key>usesPhotos</key>
+				<true/>
+				<key>usesVideos</key>
+				<false/>
+				<key>videoQuality</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSLinkCell</string>
+				<key>cellClass</key>
+				<string>GcImagePickerCell</string>
+				<key>label</key>
+				<string>Light Image</string>
+				<key>defaults</key>
+				<string>me.luki.aprilprefs</string>
+				<key>PostNotification</key>
+				<string>me.luki.aprilprefs/imageChanged</string>
+				<key>id</key>
+				<string>LightImage</string>
+				<key>key</key>
+				<string>bLightImage</string>
 				<key>usesPhotos</key>
 				<true/>
 				<key>usesVideos</key>

@@ -1,8 +1,8 @@
 Package: me.luki.april
 Name: April
-Version: 1.0.5
+Version: 1.0.6
 Architecture: iphoneos-arm
-Description: ;)
+Description: Augment your settings app to the next level on the fly
 Maintainer: Luki
 Author: Luki
 Section: Tweaks

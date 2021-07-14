@@ -165,11 +165,11 @@ static void postNSNotification() {
     
     AudioServicesPlaySystemSound(1521);
 
-    self.changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"1.0.5" icon:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/April.png"]];
+    self.changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"1.0.6" icon:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/April.png"]];
 
-    [self.changelogController addBulletedListItemWithTitle:@"General" description:@"Added light/dark mode option for background image." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
+    [self.changelogController addBulletedListItemWithTitle:@"General" description:@"Fixed a bug in which rotating the device on settings would change the background image despite the interface style being the same (light/dark mode)." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
 
-    [self.changelogController addBulletedListItemWithTitle:@"Prefs" description:@"Added pretty libGC twitter cells for contributors." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
+//    [self.changelogController addBulletedListItemWithTitle:@"Prefs" description:@"Added pretty libGC twitter cells for contributors." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
 
     _UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
 
@@ -180,10 +180,10 @@ static void postNSNotification() {
     [self.changelogController.viewIfLoaded insertSubview:backdropView atIndex:0];
     
     backdropView.translatesAutoresizingMaskIntoConstraints = NO;
-    [backdropView.bottomAnchor constraintEqualToAnchor:self.changelogController.viewIfLoaded.bottomAnchor constant:0].active = YES;
-    [backdropView.leftAnchor constraintEqualToAnchor:self.changelogController.viewIfLoaded.leftAnchor constant:0].active = YES;
-    [backdropView.rightAnchor constraintEqualToAnchor:self.changelogController.viewIfLoaded.rightAnchor constant:0].active = YES;
-    [backdropView.topAnchor constraintEqualToAnchor:self.changelogController.viewIfLoaded.topAnchor constant:0].active = YES;
+    [backdropView.bottomAnchor constraintEqualToAnchor:self.changelogController.viewIfLoaded.bottomAnchor].active = YES;
+    [backdropView.leftAnchor constraintEqualToAnchor:self.changelogController.viewIfLoaded.leftAnchor].active = YES;
+    [backdropView.rightAnchor constraintEqualToAnchor:self.changelogController.viewIfLoaded.rightAnchor].active = YES;
+    [backdropView.topAnchor constraintEqualToAnchor:self.changelogController.viewIfLoaded.topAnchor].active = YES;
 
     self.changelogController.viewIfLoaded.backgroundColor = [UIColor clearColor];
     self.changelogController.view.tintColor = [UIColor colorWithRed: 1.00 green: 0.55 blue: 0.73 alpha: 1.00];
@@ -205,16 +205,9 @@ static void postNSNotification() {
 
     [super viewWillDisappear:animated];
 
-    self.title = @"April 1.0.5";
-
-
-    if ([[self traitCollection] userInterfaceStyle] == UIUserInterfaceStyleDark)
-
-        [self.navigationController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    if ([[self traitCollection] userInterfaceStyle] == UIUserInterfaceStyleDark) [self.navigationController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     
-    else if ([[self traitCollection] userInterfaceStyle] == UIUserInterfaceStyleLight)
-
-        [self.navigationController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+    else if ([[self traitCollection] userInterfaceStyle] == UIUserInterfaceStyleLight) [self.navigationController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
 
 }
 
@@ -228,8 +221,7 @@ static void postNSNotification() {
     if(!self.navigationItem.titleView) {
 
 
-        APPAnimatedTitleView *titleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 1.0.5" minimumScrollOffsetRequired:-68];
-
+        APPAnimatedTitleView *titleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 1.0.6" minimumScrollOffsetRequired:-68];
 
         self.navigationItem.titleView = titleView;
         self.titleView.superview.clipsToBounds = YES;

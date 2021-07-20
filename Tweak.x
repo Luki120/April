@@ -5,6 +5,28 @@
 
 
 
+// imagine having to subclass a UIView to properly handle
+// a layer's frame without breaking on rotation smfh
+
+
+@interface GradientView : UIView
+@property (nonatomic, strong, readonly) CAGradientLayer *layer;
+@end
+
+
+@implementation GradientView
+
+@dynamic layer;
+
++ (Class)layerClass {
+
+	return [CAGradientLayer class];
+
+}
+
+@end
+
+
 @interface PSTableCell : UITableViewCell
 - (void)applyAlpha;
 @end
@@ -16,9 +38,9 @@
 
 
 @interface _UIBackdropView : UIView
-@property (assign,nonatomic) BOOL blurRadiusSetOnce;
-@property (nonatomic,copy) NSString * _blurQuality;
-@property (assign,nonatomic) double _blurRadius;
+@property (assign, nonatomic) BOOL blurRadiusSetOnce;
+@property (nonatomic, copy) NSString * _blurQuality;
+@property (assign, nonatomic) double _blurRadius;
 - (id)initWithFrame:(CGRect)arg1 autosizesToFitSuperview:(BOOL)arg2 settings:(id)arg3;
 - (id)initWithSettings:(id)arg1;
 @end
@@ -27,6 +49,7 @@
 @interface UITableView (April)
 @property (nonatomic, strong) UIImageView *hotGoodLookingImageView;
 @property (nonatomic, strong) UIImage *hotGoodLookingImage;
+@property (nonatomic, strong) GradientView *neatGradientView;
 - (void)setImage;
 - (void)setBlur;
 - (void)setGradient;
@@ -53,11 +76,7 @@ float cellAlpha = 1.0f;
 float intensity = 1.0f;
 
 
-
-
-CAGradientLayer *gradient;
 UIBlurEffect *blurEffect;
-UIView *view;
 
 
 
@@ -67,7 +86,7 @@ static void loadWithoutAFuckingRespring() {
 
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:plistPath];
 	NSMutableDictionary *prefs = dict ? [dict mutableCopy] : [NSMutableDictionary dictionary];
-	yes = prefs[@"yes"] ? [prefs[@"yes"] boolValue] : YES;
+	yes = prefs[@"yes"] ? [prefs[@"yes"] boolValue] : NO;
 	blur = prefs[@"blur"] ? [prefs[@"blur"] boolValue] : NO;
 	setGradientAsBackground = prefs[@"setGradientAsBackground"] ? [prefs[@"setGradientAsBackground"] boolValue] : NO;
 	setGradientAnimation = prefs[@"setGradientAnimation"] ? [prefs[@"setGradientAnimation"] boolValue] : NO;
@@ -88,6 +107,7 @@ static void loadWithoutAFuckingRespring() {
 
 %property (nonatomic, strong) UIImageView *hotGoodLookingImageView;
 %property (nonatomic, strong) UIImage *hotGoodLookingImage;
+%property (nonatomic, strong) GradientView *neatGradientView;
 
 
 %new
@@ -115,31 +135,16 @@ static void loadWithoutAFuckingRespring() {
 
 
 	}
-	
+
 
 	else {
-		
+
 
 		if(setGradientAsBackground) [self setGradient];
 		else self.backgroundView = NULL;
 
 
 	}
-
-}
-
-
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection { // handle transition between light/dark mode dynamically
-
- 
-	%orig;
-
-
-	if(self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bImage"];
-
-
-	else self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bLightImage"];
-
 
 }
 
@@ -151,15 +156,14 @@ static void loadWithoutAFuckingRespring() {
 
 
 	loadWithoutAFuckingRespring();
-	
+
 	[[self.backgroundView viewWithTag:1337] removeFromSuperview];
 
 
 	if(blur) {
-	
-	
-		if(blurType == 0) {
 
+
+		if(blurType == 0) {
 
 			_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
 
@@ -181,13 +185,11 @@ static void loadWithoutAFuckingRespring() {
 
 				case 1:
 
-
 					blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
 					break;
 
 
 				case 2:
-
 
 					blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
 					break;
@@ -195,13 +197,11 @@ static void loadWithoutAFuckingRespring() {
 
 				case 3:
 
-
 					blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
 					break;
 
 
 				case 4:
-
 
 					blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemUltraThinMaterial];
 					break;
@@ -209,7 +209,7 @@ static void loadWithoutAFuckingRespring() {
 
 			}
 
-			
+
 			UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
 			blurEffectView.tag = 1337;
 			blurEffectView.alpha = intensity;
@@ -227,7 +227,7 @@ static void loadWithoutAFuckingRespring() {
 }
 
 
-%new 
+%new
 
 
 - (void)setGradient {
@@ -239,35 +239,35 @@ static void loadWithoutAFuckingRespring() {
 	if(setGradientAsBackground) {
 
 
-		view = [[UIView alloc] initWithFrame:self.backgroundView.bounds];
-		[view setClipsToBounds:YES];
-		gradient = [CAGradientLayer layer];
-		gradient.frame = view.frame;
-		gradient.colors = [NSArray arrayWithObjects:(id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"] CGColor],(id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"]  CGColor], nil];
-		gradient.locations = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.00], [NSNumber numberWithFloat:0.50] , nil];
-		[view.layer insertSublayer:gradient atIndex:0];
-		self.backgroundView = view;
+		UIColor *firstColor = [GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"];
+		UIColor *secondColor = [GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"];
+
+		self.neatGradientView = [[GradientView alloc] initWithFrame:self.backgroundView.bounds];
+		self.neatGradientView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		self.neatGradientView.layer.colors = [NSArray arrayWithObjects:(id)firstColor.CGColor, (id)secondColor.CGColor, nil];
+		self.neatGradientView.layer.locations = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.00], [NSNumber numberWithFloat:0.50] , nil];
+		self.backgroundView = self.neatGradientView;
 
 
 		if(setGradientAnimation) {
 
 
 			CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"colors"];
-			animation.fromValue = [NSArray arrayWithObjects:(id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"] CGColor], (id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"]  CGColor], nil];
-			animation.toValue = [NSArray arrayWithObjects:(id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"]  CGColor], (id)[[GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"] CGColor], nil];
+			animation.fromValue = [NSArray arrayWithObjects:(id)firstColor.CGColor, (id)secondColor.CGColor, nil];
+			animation.toValue = [NSArray arrayWithObjects:(id)secondColor.CGColor, (id)firstColor.CGColor, nil];
 			animation.duration = 4.5;
 			animation.removedOnCompletion = NO;
 			animation.autoreverses = YES;
 			animation.repeatCount = HUGE_VALF; // Loop the animation forever
 			animation.fillMode = kCAFillModeBoth;
 			animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-			[gradient addAnimation:animation forKey:@"animateGradient"];
+			[self.neatGradientView.layer addAnimation:animation forKey:@"animateGradient"];
 
 
 		}
 
 	}
-	
+
 
 	else {
 
@@ -282,54 +282,75 @@ static void loadWithoutAFuckingRespring() {
 	switch(gradientDirection) {
 
 
-		case 0: // Bottom to Top	
-			gradient.startPoint = CGPointMake(0.5,1);
-			gradient.endPoint = CGPointMake(0.5,0);
+		case 0: // Bottom to Top
+
+			self.neatGradientView.layer.startPoint = CGPointMake(0.5,1);
+			self.neatGradientView.layer.endPoint = CGPointMake(0.5,0);
 			break;
 
 
 		case 1: // Top to Bottom
-			gradient.startPoint = CGPointMake(0.5,0);
-			gradient.endPoint = CGPointMake(0.5,1);
+
+			self.neatGradientView.layer.startPoint = CGPointMake(0.5,0);
+			self.neatGradientView.layer.endPoint = CGPointMake(0.5,1);
 			break;
 
 
 		case 2: // Left to Right
-			gradient.startPoint = CGPointMake(0,0.5);
-			gradient.endPoint = CGPointMake(1,0.5);
+
+			self.neatGradientView.layer.startPoint = CGPointMake(0,0.5);
+			self.neatGradientView.layer.endPoint = CGPointMake(1,0.5);
 			break;
 
 
-		case 3: // Right to Left	
-			gradient.startPoint = CGPointMake(1,0.5);
-			gradient.endPoint = CGPointMake(0,0.5);
+		case 3: // Right to Left
+
+			self.neatGradientView.layer.startPoint = CGPointMake(1,0.5);
+			self.neatGradientView.layer.endPoint = CGPointMake(0,0.5);
 			break;
 
 
 		case 4: // Upper Left lower right
-			gradient.startPoint = CGPointMake(0,0);
-			gradient.endPoint = CGPointMake(1,1);
+
+			self.neatGradientView.layer.startPoint = CGPointMake(0,0);
+			self.neatGradientView.layer.endPoint = CGPointMake(1,1);
 			break;
 
 
 		case 5: // Lower left upper right
-			gradient.startPoint = CGPointMake(0,1);
-			gradient.endPoint = CGPointMake(1,0);
+
+			self.neatGradientView.layer.startPoint = CGPointMake(0,1);
+			self.neatGradientView.layer.endPoint = CGPointMake(1,0);
 			break;
 
 
 		case 6: // Upper right lower left
-			gradient.startPoint = CGPointMake(1,0);
-			gradient.endPoint = CGPointMake(0,1);
+
+			self.neatGradientView.layer.startPoint = CGPointMake(1,0);
+			self.neatGradientView.layer.endPoint = CGPointMake(0,1);
 			break;
 
 
 		case 7: // Lower right upper left
-			gradient.startPoint = CGPointMake(1,1);
-			gradient.endPoint = CGPointMake(0,0);
+
+			self.neatGradientView.layer.startPoint = CGPointMake(1,1);
+			self.neatGradientView.layer.endPoint = CGPointMake(0,0);
 			break;
 
 	}
+
+}
+
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection { // handle transition between light/dark mode dynamically
+
+
+	%orig;
+
+	if(self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bImage"];
+
+	else self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bLightImage"];
+
 
 }
 
@@ -338,7 +359,6 @@ static void loadWithoutAFuckingRespring() {
 
 
 	%orig;
-	
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
@@ -353,7 +373,7 @@ static void loadWithoutAFuckingRespring() {
 
 
 	%orig;
-	
+
 	[self setImage];
 
 	[self setGradient];
@@ -380,7 +400,6 @@ static void loadWithoutAFuckingRespring() {
 
 	loadWithoutAFuckingRespring();
 
-
 	CGFloat red = 0.0, green = 0.0, blue = 0.0, dAlpha = 0.0;
 	[self.backgroundColor getRed:&red green:&green blue:&blue alpha:&dAlpha];
 	self.backgroundColor = [[UIColor alloc] initWithRed:red green:green blue:blue alpha:alpha ? cellAlpha : 1];
@@ -392,11 +411,10 @@ static void loadWithoutAFuckingRespring() {
 - (void)didMoveToWindow {
 
 
-	loadWithoutAFuckingRespring();
-
 	%orig;
+
 	[self applyAlpha];
-	
+
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applyAlpha) name:@"changeAlpha" object:nil];
 
@@ -407,11 +425,26 @@ static void loadWithoutAFuckingRespring() {
 - (void)refreshCellContentsWithSpecifier:(id)arg1 {
 
 
-	loadWithoutAFuckingRespring();
+	%orig;
+
+	[self applyAlpha];
+
+
+}
+
+
+// since we extracted the color components, they get "unlinked" to the preset system colors
+// so we need to manually update them again so they switch dynamically following the user interface style
+
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+
 
 	%orig;
-	
-	[self applyAlpha];
+
+	if(self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) self.backgroundColor = [UIColor colorWithRed: 0.11 green: 0.11 blue: 0.12 alpha:alpha ? cellAlpha : 1];
+
+	else self.backgroundColor = [UIColor colorWithRed: 1.00 green: 1.00 blue: 1.00 alpha:alpha ? cellAlpha : 1];
 
 
 }
@@ -442,6 +475,6 @@ static void loadWithoutAFuckingRespring() {
 
 %ctor {
 
-    loadWithoutAFuckingRespring();
+	loadWithoutAFuckingRespring();
 
 }

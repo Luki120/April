@@ -115,15 +115,15 @@ static void postNSNotification() {
 
 
 - (void)viewDidLoad {
-	
+
     [super viewDidLoad];
     [self reloadSpecifiers];
-	
+
     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/imageChanged"), NULL, 0);
     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/gradientChanged"), NULL, 0);
-    
+
     UIImage *banner = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/epicbanner.png"];
-	
+
     self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0,0,UIScreen.mainScreen.bounds.size.width,UIScreen.mainScreen.bounds.size.width * banner.size.height / banner.size.width)];
     self.headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,200,200)];
     self.headerImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -151,7 +151,7 @@ static void postNSNotification() {
 
         [self.headerImageView.topAnchor constraintEqualToAnchor:self.headerView.topAnchor],
         [self.headerImageView.leadingAnchor constraintEqualToAnchor:self.headerView.leadingAnchor],
-        [self.headerImageView.trailingAnchor constraintEqualToAnchor:self.headerView.trailingAnchor],   
+        [self.headerImageView.trailingAnchor constraintEqualToAnchor:self.headerView.trailingAnchor],
         [self.headerImageView.bottomAnchor constraintEqualToAnchor:self.headerView.bottomAnchor],
 
     ]];
@@ -162,14 +162,16 @@ static void postNSNotification() {
 
 
 - (void)showWtfChangedInThisVersion:(id)sender {
-    
+
     AudioServicesPlaySystemSound(1521);
 
-    self.changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"1.0.6" icon:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/April.png"]];
+    self.changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"1.0.7" icon:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/April.png"]];
 
-    [self.changelogController addBulletedListItemWithTitle:@"General" description:@"Fixed a bug in which rotating the device on settings would change the background image despite the interface style being the same (light/dark mode)." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
+    [self.changelogController addBulletedListItemWithTitle:@"Tweak" description:@"Fixed a bug in which gradients would break upon rotation." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
 
-//    [self.changelogController addBulletedListItemWithTitle:@"Prefs" description:@"Added pretty libGC twitter cells for contributors." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
+    [self.changelogController addBulletedListItemWithTitle:@"" description:@"Fixed table cells not updating dynamically when switching Light/Dark mode." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
+
+    [self.changelogController addBulletedListItemWithTitle:@"Preferences" description:@"Added a website link to get nice gradient presets & reset preferences button." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
 
     _UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
 
@@ -178,7 +180,7 @@ static void postNSNotification() {
     backdropView.clipsToBounds = YES;
     backdropView.frame = self.changelogController.viewIfLoaded.frame;
     [self.changelogController.viewIfLoaded insertSubview:backdropView atIndex:0];
-    
+
     backdropView.translatesAutoresizingMaskIntoConstraints = NO;
     [backdropView.bottomAnchor constraintEqualToAnchor:self.changelogController.viewIfLoaded.bottomAnchor].active = YES;
     [backdropView.leftAnchor constraintEqualToAnchor:self.changelogController.viewIfLoaded.leftAnchor].active = YES;
@@ -206,7 +208,7 @@ static void postNSNotification() {
     [super viewWillDisappear:animated];
 
     if ([[self traitCollection] userInterfaceStyle] == UIUserInterfaceStyleDark) [self.navigationController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-    
+
     else if ([[self traitCollection] userInterfaceStyle] == UIUserInterfaceStyleLight) [self.navigationController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
 
 }
@@ -221,7 +223,7 @@ static void postNSNotification() {
     if(!self.navigationItem.titleView) {
 
 
-        APPAnimatedTitleView *titleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 1.0.6" minimumScrollOffsetRequired:-68];
+        APPAnimatedTitleView *titleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 1.0.7" minimumScrollOffsetRequired:-68];
 
         self.navigationItem.titleView = titleView;
         self.titleView.superview.clipsToBounds = YES;
@@ -279,7 +281,7 @@ static void postNSNotification() {
 
 
 - (void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier {
-    
+
     NSMutableDictionary *settings = [NSMutableDictionary dictionary];
     [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:plistPath]];
     [settings setObject:value forKey:specifier.properties[@"key"]];
@@ -294,17 +296,21 @@ static void postNSNotification() {
     NSString *key = [specifier propertyForKey:@"key"];
 
     if([key isEqualToString:@"yes"]) {
-        
+
         if (![value boolValue]) {
+
             [self removeSpecifier:self.savedSpecifiers[@"GroupCell-1"] animated:YES];
             [self removeSpecifier:self.savedSpecifiers[@"Image"] animated:YES];
             [self removeSpecifier:self.savedSpecifiers[@"LightImage"] animated:NO];
+
         }
 
         else if (![self containsSpecifier:self.savedSpecifiers[@"Image"]]) {
+
             [self insertSpecifier:self.savedSpecifiers[@"GroupCell-1"] afterSpecifierID:@"YesSwitch" animated:YES];
             [self insertSpecifier:self.savedSpecifiers[@"Image"] afterSpecifierID:@"GroupCell-1" animated:YES];
-            [self insertSpecifier:self.savedSpecifiers[@"LightImage"] afterSpecifierID:@"Image" animated:NO];        
+            [self insertSpecifier:self.savedSpecifiers[@"LightImage"] afterSpecifierID:@"Image" animated:NO];
+
         }
 
     }
@@ -313,43 +319,125 @@ static void postNSNotification() {
     if([key isEqualToString:@"blur"]) {
 
         if (![value boolValue]) {
+
             [self removeSpecifier:self.savedSpecifiers[@"SegmentCell"] animated:YES];
             [self removeSpecifier:self.savedSpecifiers[@"BlurValue"] animated:YES];
+
         }
-        
+
         else if (![self containsSpecifier:self.savedSpecifiers[@"BlurValue"]]) {
+
             [self insertSpecifier:self.savedSpecifiers[@"SegmentCell"] afterSpecifierID:@"BlurSwitch" animated:YES];
             [self insertSpecifier:self.savedSpecifiers[@"BlurValue"] afterSpecifierID:@"SegmentCell" animated:YES];
+
         }
-       
+
     }
+
 
     if([key isEqualToString:@"alphaEnabled"]) {
-        
-        if (![value boolValue]) {
-            [self removeSpecifier:self.savedSpecifiers[@"AlphaValue"] animated:YES];
-        }
 
-        else if (![self containsSpecifier:self.savedSpecifiers[@"AlphaValue"]]) {
+        if (![value boolValue])
+
+            [self removeSpecifier:self.savedSpecifiers[@"AlphaValue"] animated:YES];
+
+        else if (![self containsSpecifier:self.savedSpecifiers[@"AlphaValue"]])
+
             [self insertSpecifier:self.savedSpecifiers[@"AlphaValue"] afterSpecifierID:@"AlphaSwitch" animated:YES];
-        }
 
     }
 
-    if([key isEqualToString:@"setGradientAsBackground"]) {
-        
-        if (![value boolValue]) {
-            [self removeContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell-5"], self.savedSpecifiers[@"AnimateGradientSwitch"], self.savedSpecifiers[@"GroupCell-6"], self.savedSpecifiers[@"FirstColor"], self.savedSpecifiers[@"SecondColor"], self.savedSpecifiers[@"GroupCell-7"], self.savedSpecifiers[@"GradientDirection"]] animated:YES];
-        }
 
-        else if (![self containsSpecifier:self.savedSpecifiers[@"GroupCell-5"]]) {    
+    if([key isEqualToString:@"setGradientAsBackground"]) {
+
+        if (![value boolValue])
+
+            [self removeContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell-5"], self.savedSpecifiers[@"AnimateGradientSwitch"], self.savedSpecifiers[@"GroupCell-6"], self.savedSpecifiers[@"FirstColor"], self.savedSpecifiers[@"SecondColor"], self.savedSpecifiers[@"GroupCell-7"], self.savedSpecifiers[@"GradientDirection"]] animated:YES];
+
+        else if (![self containsSpecifier:self.savedSpecifiers[@"GroupCell-5"]])
+
             [self insertContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell-5"], self.savedSpecifiers[@"AnimateGradientSwitch"], self.savedSpecifiers[@"GroupCell-6"], self.savedSpecifiers[@"FirstColor"], self.savedSpecifiers[@"SecondColor"], self.savedSpecifiers[@"GroupCell-7"], self.savedSpecifiers[@"GradientDirection"]] afterSpecifierID:@"GradientSwitch" animated:YES];
-        }
 
     }
 
 }
 
+
+- (void)gradientPresets {
+
+
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://digitalsynopsis.com/design/beautiful-gradient-color-palettes/"] options:@{} completionHandler:nil];
+
+
+}
+
+
+- (void)shatterThePrefsToPieces {
+
+
+    AudioServicesPlaySystemSound(1521);
+
+    UIAlertController* resetAlert = [UIAlertController alertControllerWithTitle:@"April"
+    message:@"Do you want to start fresh?"
+    preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* confirmAction = [UIAlertAction actionWithTitle:@"Shoot" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+
+        BOOL success = [fileManager removeItemAtPath:@"var/mobile/Library/Preferences/me.luki.aprilprefs.plist" error:nil];
+        BOOL successTwo = [fileManager removeItemAtPath:@"var/mobile/Library/Preferences/me.luki.aprilprefs" error:nil];
+
+        if((success) || (successTwo)) {
+
+            [self blurEffect];
+
+        }
+
+    }];
+
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Meh" style:UIAlertActionStyleCancel handler:nil];
+
+    [resetAlert addAction:confirmAction];
+    [resetAlert addAction:cancelAction];
+
+    [self presentViewController:resetAlert animated:YES completion:nil];
+
+
+}
+
+- (void)blurEffect {
+
+    _UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
+
+    _UIBackdropView *backdropView = [[_UIBackdropView alloc] initWithSettings:settings];
+    backdropView.layer.masksToBounds = YES;
+    backdropView.clipsToBounds = YES;
+    backdropView.alpha = 0;
+    backdropView.frame = self.view.bounds;
+    [self.view addSubview:backdropView];
+
+    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+
+        [backdropView setAlpha:1.0];
+
+    } completion:^(BOOL finished) {
+
+        [self killSettings];
+
+    }];
+
+}
+
+- (void)killSettings {
+
+
+    pid_t pid;
+    const char* args[] = {"killall", "Preferences", NULL};
+    posix_spawn(&pid, "/usr/bin/killall", NULL, NULL, (char* const*)args, NULL);
+
+
+}
 
 @end
 

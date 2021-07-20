@@ -2,7 +2,8 @@
 #import <Preferences/PSTableCell.h>
 #import <Preferences/PSListController.h>
 #import "APPAnimatedTitleView.h"
-
+#import <AudioToolbox/AudioServices.h>
+#import <spawn.h>
 
 
 UIBarButtonItem *changelogButtonItem;
@@ -76,4 +77,6 @@ UIBarButtonItem *changelogButtonItem;
 @property (nonatomic, retain) UIView *headerView;
 @property (nonatomic, retain) UIImageView *iconView;
 @property (nonatomic, retain) UIImageView *headerImageView;
+- (void)shatterThePrefsToPieces;
+- (void)killSettings;
 @end

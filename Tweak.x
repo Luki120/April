@@ -53,6 +53,7 @@
 - (void)setImage;
 - (void)setBlur;
 - (void)setGradient;
+- (id)_viewControllerForAncestor;
 @end
 
 
@@ -77,6 +78,7 @@ float intensity = 1.0f;
 
 
 UIBlurEffect *blurEffect;
+UIViewController *ancestor;
 
 
 
@@ -118,31 +120,36 @@ static void loadWithoutAFuckingRespring() {
 
 	loadWithoutAFuckingRespring();
 
+	ancestor = [self _viewControllerForAncestor];
 
-	if(yes) {
+	if(![ancestor isKindOfClass:%c(LCTTMessagesController)]) {
 
-
-		self.hotGoodLookingImageView = [[UIImageView alloc] initWithImage:self.hotGoodLookingImage];
-		self.hotGoodLookingImageView.frame = self.frame;
-		self.hotGoodLookingImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		if(yes) {
 
 
-		if(self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bImage"];
-		else self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bLightImage"];
+			self.hotGoodLookingImageView = [[UIImageView alloc] initWithImage:self.hotGoodLookingImage];
+			self.hotGoodLookingImageView.frame = self.frame;
+			self.hotGoodLookingImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
 
-		self.backgroundView = self.hotGoodLookingImageView;
+			if(self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bImage"];
+			else self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bLightImage"];
 
 
-	}
+			self.backgroundView = self.hotGoodLookingImageView;
 
 
-	else {
+		}
 
 
-		if(setGradientAsBackground) [self setGradient];
-		else self.backgroundView = NULL;
+		else {
 
+
+			if(setGradientAsBackground) [self setGradient];
+			else self.backgroundView = NULL;
+
+
+		}
 
 	}
 

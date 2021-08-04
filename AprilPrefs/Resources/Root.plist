@@ -334,6 +334,106 @@
 			</dict>
 			<dict>
 				<key>cell</key>
+				<string>PSSwitchCell</string>
+				<key>default</key>
+				<false/>
+				<key>defaults</key>
+				<string>me.luki.aprilprefs</string>
+				<key>key</key>
+				<string>scheduledImages</string>
+				<key>label</key>
+				<string>Scheduled Images</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSLinkCell</string>
+				<key>cellClass</key>
+				<string>GcImagePickerCell</string>
+				<key>label</key>
+				<string>Morning Image</string>
+				<key>defaults</key>
+				<string>me.luki.aprilprefs</string>
+				<key>PostNotification</key>
+				<string>me.luki.aprilprefs/scheduledImageChanged</string>
+				<key>key</key>
+				<string>imageMorning</string>
+				<key>usesPhotos</key>
+				<true/>
+				<key>usesVideos</key>
+				<false/>
+				<key>videoQuality</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSLinkCell</string>
+				<key>cellClass</key>
+				<string>GcImagePickerCell</string>
+				<key>label</key>
+				<string>Afternoon Image</string>
+				<key>defaults</key>
+				<string>me.luki.aprilprefs</string>
+				<key>PostNotification</key>
+				<string>me.luki.aprilprefs/scheduledImageChanged</string>
+				<key>key</key>
+				<string>imageAfternoon</string>
+				<key>usesPhotos</key>
+				<true/>
+				<key>usesVideos</key>
+				<false/>
+				<key>videoQuality</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSLinkCell</string>
+				<key>cellClass</key>
+				<string>GcImagePickerCell</string>
+				<key>label</key>
+				<string>Sunset Image</string>
+				<key>defaults</key>
+				<string>me.luki.aprilprefs</string>
+				<key>PostNotification</key>
+				<string>me.luki.aprilprefs/scheduledImageChanged</string>
+				<key>key</key>
+				<string>imageSunset</string>
+				<key>usesPhotos</key>
+				<true/>
+				<key>usesVideos</key>
+				<false/>
+				<key>videoQuality</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSLinkCell</string>
+				<key>cellClass</key>
+				<string>GcImagePickerCell</string>
+				<key>label</key>
+				<string>Midnight Image</string>
+				<key>defaults</key>
+				<string>me.luki.aprilprefs</string>
+				<key>PostNotification</key>
+				<string>me.luki.aprilprefs/scheduledImageChanged</string>
+				<key>key</key>
+				<string>imageMidnight</string>
+				<key>usesPhotos</key>
+				<true/>
+				<key>usesVideos</key>
+				<false/>
+				<key>videoQuality</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+			</dict>
+			<dict>
+				<key>cell</key>
 				<string>PSButtonCell</string>
 				<key>cellClass</key>
 				<string>AprilTableCell</string>

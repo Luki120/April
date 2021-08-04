@@ -48,11 +48,16 @@
 
 @interface UITableView (April)
 @property (nonatomic, strong) UIImageView *hotGoodLookingImageView;
+@property (nonatomic, strong) UIImageView *hotGoodLookingScheduledImageView;
 @property (nonatomic, strong) UIImage *hotGoodLookingImage;
+@property (nonatomic, strong) UIImage *hotGoodLookingScheduledImage;
 @property (nonatomic, strong) GradientView *neatGradientView;
+@property (readonly) NSTimeInterval timeIntervalSinceNow;
 - (void)setImage;
 - (void)setBlur;
 - (void)setGradient;
+- (void)setScheduledImages;
+- (void)updateScheduledImage:(NSTimer *)timer;
 - (id)_viewControllerForAncestor;
 @end
 
@@ -81,6 +86,16 @@ UIBlurEffect *blurEffect;
 UIViewController *ancestor;
 
 
+static BOOL scheduledImages;
+
+UIImage *imageMorning;
+UIImage *imageAfternoon;
+UIImage *imageSunset;
+UIImage *imageMidnight;
+
+
+NSTimer *imagesTimer;
+
 
 
 static void loadWithoutAFuckingRespring() {
@@ -97,6 +112,7 @@ static void loadWithoutAFuckingRespring() {
 	gradientDirection = prefs[@"gradientDirection"] ? [prefs[@"gradientDirection"] integerValue] : 0;
 	cellAlpha = prefs[@"cellAlpha"] ? [prefs[@"cellAlpha"] floatValue] : 1.0f;
 	intensity = prefs[@"intensity"] ? [prefs[@"intensity"] floatValue] : 1.0f;
+	scheduledImages = prefs[@"scheduledImages"] ? [prefs[@"scheduledImages"] boolValue] : NO;
 
 
 }
@@ -108,7 +124,9 @@ static void loadWithoutAFuckingRespring() {
 
 
 %property (nonatomic, strong) UIImageView *hotGoodLookingImageView;
+%property (nonatomic, strong) UIImageView *hotGoodLookingScheduledImageView;
 %property (nonatomic, strong) UIImage *hotGoodLookingImage;
+%property (nonatomic, strong) UIImage *hotGoodLookingScheduledImage;
 %property (nonatomic, strong) GradientView *neatGradientView;
 
 
@@ -152,6 +170,88 @@ static void loadWithoutAFuckingRespring() {
 		}
 
 	}
+
+}
+
+
+%new
+
+
+- (void)setScheduledImages {
+
+
+	loadWithoutAFuckingRespring();
+
+
+	if(scheduledImages) {
+
+
+		self.hotGoodLookingScheduledImageView = [[UIImageView alloc] initWithImage:self.hotGoodLookingScheduledImage];
+		self.hotGoodLookingScheduledImageView.frame = self.bounds;
+		self.hotGoodLookingScheduledImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+		self.backgroundView = self.hotGoodLookingScheduledImageView;
+
+
+		int seconds = [NSCalendar.currentCalendar dateBySettingUnit:NSCalendarUnitHour value:22 ofDate:[NSCalendar.currentCalendar dateFromComponents:[NSCalendar.currentCalendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:NSDate.date]] options:0].timeIntervalSinceNow;
+		
+		if (seconds >= 22) { // 10 pm
+
+
+			imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
+			self.hotGoodLookingScheduledImageView.image = imageMidnight;
+
+
+		} else if (seconds >= 18) { // 6 pm
+
+
+			imageSunset = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageSunset"];
+			self.hotGoodLookingScheduledImageView.image = imageSunset;
+
+
+		} else if (seconds >= 12) { // 12 pm
+
+
+			imageAfternoon = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageAfternoon"];
+			self.hotGoodLookingScheduledImageView.image = imageAfternoon;
+
+
+		} else if (seconds >= 6) { // 8 am
+
+
+			imageMorning = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMorning"];
+			self.hotGoodLookingScheduledImageView.image = imageMorning;
+
+
+		} else { // time before 8 am, so loop back to midnight wallpaper
+
+			imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
+			self.hotGoodLookingScheduledImageView.image = imageMidnight;
+
+		
+		}
+
+
+        imagesTimer = [NSTimer scheduledTimerWithTimeInterval:seconds
+                                                target:self
+                                                selector:@selector(updateScheduledImage:)
+                                                userInfo:nil
+                                                repeats:NO];
+
+	
+	}
+
+}
+
+
+%new
+
+
+- (void)updateScheduledImage:(NSTimer *)timer {
+
+
+	[self setScheduledImages];
+
 
 }
 
@@ -371,6 +471,7 @@ static void loadWithoutAFuckingRespring() {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGradient) name:@"changeGradient" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setScheduledImages) name:@"applyScheduledImage" object:nil];
 
 
 }
@@ -387,6 +488,7 @@ static void loadWithoutAFuckingRespring() {
 
 	[self setBlur];
 
+	[self setScheduledImages];
 
 }
 

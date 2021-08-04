@@ -28,6 +28,7 @@ static void postNSNotification() {
     [NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
     [NSNotificationCenter.defaultCenter postNotificationName:@"changeGradient" object:NULL];
     [NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
+    [NSNotificationCenter.defaultCenter postNotificationName:@"applyScheduledImage" object:NULL];
 
 
 }
@@ -121,6 +122,7 @@ static void postNSNotification() {
 
     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/imageChanged"), NULL, 0);
     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/gradientChanged"), NULL, 0);
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/scheduledImageChanged"), NULL, 0);
 
     UIImage *banner = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/epicbanner.png"];
 
@@ -291,6 +293,7 @@ static void postNSNotification() {
     [NSNotificationCenter.defaultCenter postNotificationName:@"changeAlpha" object:NULL];
     [NSNotificationCenter.defaultCenter postNotificationName:@"changeGradient" object:NULL];
     [NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
+    [NSNotificationCenter.defaultCenter postNotificationName:@"applyScheduledImage" object:NULL];
 
 
     NSString *key = [specifier propertyForKey:@"key"];

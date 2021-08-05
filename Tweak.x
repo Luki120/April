@@ -192,31 +192,31 @@ static void loadWithoutAFuckingRespring() {
 
 		self.backgroundView = self.hotGoodLookingScheduledImageView;
 
-		int hour = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:NSDate.date];
+		int hours = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:NSDate.date];
 		int seconds = [NSCalendar.currentCalendar dateBySettingUnit:NSCalendarUnitHour value:22 ofDate:[NSCalendar.currentCalendar dateFromComponents:[NSCalendar.currentCalendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:NSDate.date]] options:0].timeIntervalSinceNow;
 		
-		if (hour >= 22) { // 10 pm
+		if (hours >= 22) { // 10 pm
 
 
 			imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
 			self.hotGoodLookingScheduledImageView.image = imageMidnight;
 
 
-		} else if (hour >= 18) { // 6 pm
+		} else if (hours >= 18) { // 6 pm
 
 
 			imageSunset = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageSunset"];
 			self.hotGoodLookingScheduledImageView.image = imageSunset;
 
 
-		} else if (hour >= 12) { // 12 pm
+		} else if (hours >= 12) { // 12 pm
 
 
 			imageAfternoon = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageAfternoon"];
 			self.hotGoodLookingScheduledImageView.image = imageAfternoon;
 
 
-		} else if (hour >= 6) { // 8 am
+		} else if (hours >= 8) { // 8 am
 
 
 			imageMorning = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMorning"];
@@ -232,11 +232,11 @@ static void loadWithoutAFuckingRespring() {
 		}
 
 
-        imagesTimer = [NSTimer scheduledTimerWithTimeInterval:seconds
-                                                target:self
-                                                selector:@selector(updateScheduledImage:)
-                                                userInfo:nil
-                                                repeats:NO];
+        	imagesTimer = [NSTimer scheduledTimerWithTimeInterval:seconds
+                                                	target:self
+                                                	selector:@selector(updateScheduledImage:)
+                                                	userInfo:nil
+                                                	repeats:NO];
 
 	
 	}

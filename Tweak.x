@@ -1,4 +1,4 @@
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import <GcColorPickerUtils.h>
 #import <GcImagePickerUtils.h>
 
@@ -571,17 +571,17 @@ static void loadWithoutAFuckingRespring() {
 
 		int seconds = [NSCalendar.currentCalendar dateBySettingUnit:NSCalendarUnitHour value:22 ofDate:[NSCalendar.currentCalendar dateFromComponents:[NSCalendar.currentCalendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:NSDate.date]] options:0].timeIntervalSinceNow;
 
-        	imagesTimer = [NSTimer timerWithTimeInterval:seconds
-                                                	repeats:NO
-                                                	block:^(NSTimer *time) {
+		imagesTimer = [NSTimer timerWithTimeInterval:seconds
+													repeats:NO
+													block:^(NSTimer *time) {
 
-                                                		[NSNotificationCenter.defaultCenter postNotificationName:@"timerApplied" object:nil];
+														[NSNotificationCenter.defaultCenter postNotificationName:@"timerApplied" object:nil];
 
 
-                                                	}];
+													}];
 
-			NSRunLoop *runner = [NSRunLoop currentRunLoop];
-			[runner addTimer:imagesTimer forMode: NSDefaultRunLoopMode];
+		NSRunLoop *runner = [NSRunLoop currentRunLoop];
+		[runner addTimer:imagesTimer forMode: NSDefaultRunLoopMode];
 
 
 }

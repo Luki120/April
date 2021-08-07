@@ -193,7 +193,6 @@ static void loadWithoutAFuckingRespring() {
 		self.backgroundView = self.hotGoodLookingScheduledImageView;
 
 		int hours = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:NSDate.date];
-		int seconds = [NSCalendar.currentCalendar dateBySettingUnit:NSCalendarUnitHour value:22 ofDate:[NSCalendar.currentCalendar dateFromComponents:[NSCalendar.currentCalendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:NSDate.date]] options:0].timeIntervalSinceNow;
 		
 		if (hours >= 22) { // 10 pm
 
@@ -231,26 +230,8 @@ static void loadWithoutAFuckingRespring() {
 		
 		}
 
-
-        	imagesTimer = [NSTimer scheduledTimerWithTimeInterval:seconds
-                                                	target:self
-                                                	selector:@selector(updateScheduledImage:)
-                                                	userInfo:nil
-                                                	repeats:NO];
-
 	
 	}
-
-}
-
-
-%new
-
-
-- (void)updateScheduledImage:(NSTimer *)timer {
-
-
-	[self setScheduledImages];
 
 
 }
@@ -472,6 +453,7 @@ static void loadWithoutAFuckingRespring() {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGradient) name:@"changeGradient" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setScheduledImages) name:@"applyScheduledImage" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setScheduledImages) name:@"timerApplied" object:nil];
 
 
 }
@@ -584,6 +566,22 @@ static void loadWithoutAFuckingRespring() {
 
 %ctor {
 
+
 	loadWithoutAFuckingRespring();
+
+		int seconds = [NSCalendar.currentCalendar dateBySettingUnit:NSCalendarUnitHour value:22 ofDate:[NSCalendar.currentCalendar dateFromComponents:[NSCalendar.currentCalendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:NSDate.date]] options:0].timeIntervalSinceNow;
+
+        	imagesTimer = [NSTimer timerWithTimeInterval:seconds
+                                                	repeats:NO
+                                                	block:^(NSTimer *time) {
+
+                                                		[NSNotificationCenter.defaultCenter postNotificationName:@"timerApplied" object:nil];
+
+
+                                                	}];
+
+			NSRunLoop *runner = [NSRunLoop currentRunLoop];
+			[runner addTimer:imagesTimer forMode: NSDefaultRunLoopMode];
+
 
 }

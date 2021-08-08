@@ -583,14 +583,12 @@ void scheduleTimer() {
 	if(seconds < 0) seconds = [NSCalendar.currentCalendar dateByAddingUnit:NSCalendarUnitDay value:1 toDate:[NSCalendar.currentCalendar dateBySettingUnit:NSCalendarUnitHour value:targetHour ofDate:[NSCalendar.currentCalendar dateFromComponents:[NSCalendar.currentCalendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:NSDate.date]] options:0] options:0].timeIntervalSinceNow;
 	
 
-	imagesTimer = [NSTimer timerWithTimeInterval:seconds
-					repeats:NO
-					block:^(NSTimer *time) {
+	imagesTimer = [NSTimer timerWithTimeInterval:seconds repeats:NO block:^(NSTimer *time) {
 
 						[NSNotificationCenter.defaultCenter postNotificationName:@"timerApplied" object:nil];
 						scheduleTimer();
 
-					}];
+						}];
 	
 	[[NSRunLoop currentRunLoop] addTimer:imagesTimer forMode: NSDefaultRunLoopMode];
 

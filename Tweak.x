@@ -588,7 +588,7 @@ void scheduleTimer() {
 					block:^(NSTimer *time) {
 
 						[NSNotificationCenter.defaultCenter postNotificationName:@"timerApplied" object:nil];
-													scheduleTimer();
+						scheduleTimer();
 
 					}];
 	

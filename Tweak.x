@@ -184,53 +184,60 @@ static void loadWithoutAFuckingRespring() {
 
 	if(scheduledImages) {
 
+
 		if(self.hotGoodLookingScheduledImageView) [self.hotGoodLookingScheduledImageView removeFromSuperview];
-		
-		self.hotGoodLookingScheduledImageView = [[UIImageView alloc] initWithImage:self.hotGoodLookingScheduledImage];
-		self.hotGoodLookingScheduledImageView.frame = self.bounds;
-		self.hotGoodLookingScheduledImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
-		self.backgroundView = self.hotGoodLookingScheduledImageView;
-
-		int hours = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:[NSCalendar.currentCalendar dateByAddingUnit:NSCalendarUnitSecond value:10 toDate:NSDate.date options:0]];
-		
-		if (hours >= 22) { // 10 pm
-
-
-			imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
-			self.hotGoodLookingScheduledImageView.image = imageMidnight;
-
-
-		} else if (hours >= 18) { // 6 pm
-
-
-			imageSunset = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageSunset"];
-			self.hotGoodLookingScheduledImageView.image = imageSunset;
-
-
-		} else if (hours >= 12) { // 12 pm
-
-
-			imageAfternoon = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageAfternoon"];
-			self.hotGoodLookingScheduledImageView.image = imageAfternoon;
-
-
-		} else if (hours >= 8) { // 8 am
-
-
-			imageMorning = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMorning"];
-			self.hotGoodLookingScheduledImageView.image = imageMorning;
-
-
-		} else { // time before 8 am, so loop back to midnight wallpaper
-
-			imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
-			self.hotGoodLookingScheduledImageView.image = imageMidnight;
 
 		
+			self.hotGoodLookingScheduledImageView = [[UIImageView alloc] initWithImage:self.hotGoodLookingScheduledImage];
+			self.hotGoodLookingScheduledImageView.frame = self.bounds;
+			self.hotGoodLookingScheduledImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+			self.backgroundView = self.hotGoodLookingScheduledImageView;
+
+
+			int hours = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:[NSCalendar.currentCalendar dateByAddingUnit:NSCalendarUnitSecond value:10 toDate:NSDate.date options:0]];
+
+
+			if (hours >= 22) { // 10 pm
+
+
+				imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
+				self.hotGoodLookingScheduledImageView.image = imageMidnight;
+
+
+			} else if (hours >= 18) { // 6 pm
+
+
+				imageSunset = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageSunset"];
+				self.hotGoodLookingScheduledImageView.image = imageSunset;
+
+
+			} else if (hours >= 12) { // 12 pm
+
+
+				imageAfternoon = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageAfternoon"];
+				self.hotGoodLookingScheduledImageView.image = imageAfternoon;
+
+
+			} else if (hours >= 8) { // 8 am
+
+
+				imageMorning = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMorning"];
+				self.hotGoodLookingScheduledImageView.image = imageMorning;
+
+
+			} else { // time before 8 am, so loop back to midnight wallpaper
+
+				imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
+				self.hotGoodLookingScheduledImageView.image = imageMidnight;
+
+		
+			}
+
+
 		}
 
-	
+
 	}
 
 
@@ -563,25 +570,32 @@ static void loadWithoutAFuckingRespring() {
 
 
 void scheduleTimer() {
+
 	int hour = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:NSDate.date];
 	int targetHour = 8;
 	
 	if(hour < 8) targetHour = 8;
+	
 	else if(hour < 12) targetHour = 12;
 	else if(hour < 18) targetHour = 18;
 	else if(hour < 22) targetHour = 22;
 	
 	int seconds = [NSCalendar.currentCalendar dateBySettingUnit:NSCalendarUnitHour value:targetHour ofDate:[NSCalendar.currentCalendar dateFromComponents:[NSCalendar.currentCalendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:NSDate.date]] options:0].timeIntervalSinceNow;
+	
+	if(seconds < 0) seconds = [NSCalendar.currentCalendar dateByAddingUnit:NSCalendarUnitDay value:1 toDate:[NSCalendar.currentCalendar dateBySettingUnit:NSCalendarUnitHour value:targetHour ofDate:[NSCalendar.currentCalendar dateFromComponents:[NSCalendar.currentCalendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:NSDate.date]] options:0] options:0].timeIntervalSinceNow;
+	
+
 	imagesTimer = [NSTimer timerWithTimeInterval:seconds
-						repeats:NO
-						block:^(NSTimer *time) {
+												repeats:NO
+												block:^(NSTimer *time) {
 
-							[NSNotificationCenter.defaultCenter postNotificationName:@"timerApplied" object:nil];
-							scheduleTimer();
+													[NSNotificationCenter.defaultCenter postNotificationName:@"timerApplied" object:nil];
+													scheduleTimer();
 
-						}];
+													}];
 	
 	[[NSRunLoop currentRunLoop] addTimer:imagesTimer forMode: NSDefaultRunLoopMode];
+
 }
 
 
@@ -589,8 +603,7 @@ void scheduleTimer() {
 
 
 	loadWithoutAFuckingRespring();
-
-		
+	
 	scheduleTimer();
 
 }

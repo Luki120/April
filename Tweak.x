@@ -584,13 +584,13 @@ void scheduleTimer() {
 	
 
 	imagesTimer = [NSTimer timerWithTimeInterval:seconds
-												repeats:NO
-												block:^(NSTimer *time) {
+					repeats:NO
+					block:^(NSTimer *time) {
 
-													[NSNotificationCenter.defaultCenter postNotificationName:@"timerApplied" object:nil];
+						[NSNotificationCenter.defaultCenter postNotificationName:@"timerApplied" object:nil];
 													scheduleTimer();
 
-													}];
+					}];
 	
 	[[NSRunLoop currentRunLoop] addTimer:imagesTimer forMode: NSDefaultRunLoopMode];
 

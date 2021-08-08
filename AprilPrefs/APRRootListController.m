@@ -3,12 +3,7 @@
 // https://github.com/nahtedetihw/MusicBackground
 
 
-
-
 #include "APRRootListController.h"
-#import <AudioToolbox/AudioServices.h>
-
-
 
 
 static NSString *plistPath = @"/var/mobile/Library/Preferences/me.luki.aprilprefs.plist";
@@ -40,16 +35,23 @@ static void postNSNotification() {
 - (NSArray *)specifiers {
 
     if (!_specifiers) {
+        
         _specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
-        NSArray *chosenIDs = @[@"GroupCell-1", @"Image", @"LightImage", @"SegmentCell", @"BlurValue", @"AlphaValue", @"GroupCell-5", @"AnimateGradientSwitch", @"FirstColor", @"SecondColor", @"GroupCell-6", @"GroupCell-7", @"GradientDirection"];
+        
+        NSArray *chosenIDs = @[@"GroupCell-1", @"Image", @"LightImage", @"SegmentCell", @"BlurValue", @"AlphaValue", @"GroupCell-5", @"AnimateGradientSwitch", @"FirstColor", @"SecondColor", @"GroupCell-6", @"GroupCell-7", @"GradientDirection", @"GroupCell8", @"MorningImage", @"AfternoonImage", @"SunsetImage", @"MidnightImage"];
+        
         self.savedSpecifiers = (self.savedSpecifiers) ?: [[NSMutableDictionary alloc] init];
-        for(PSSpecifier *specifier in _specifiers) {
-            if([chosenIDs containsObject:[specifier propertyForKey:@"id"]]) {
+        
+        for(PSSpecifier *specifier in _specifiers)
+            
+            if([chosenIDs containsObject:[specifier propertyForKey:@"id"]])
+                
                 [self.savedSpecifiers setObject:specifier forKey:[specifier propertyForKey:@"id"]];
-            }
-        }
+
     }
+
     return _specifiers;
+
 }
 
 
@@ -111,6 +113,16 @@ static void postNSNotification() {
 
         [self insertContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell-5"], self.savedSpecifiers[@"AnimateGradientSwitch"], self.savedSpecifiers[@"GroupCell-6"], self.savedSpecifiers[@"FirstColor"], self.savedSpecifiers[@"SecondColor"], self.savedSpecifiers[@"GroupCell-7"], self.savedSpecifiers[@"GradientDirection"]] afterSpecifierID:@"GradientSwitch" animated:NO];
 
+
+
+    if (![[self readPreferenceValue:[self specifierForID:@"ScheduledImagesSwitch"]] boolValue])
+
+        [self removeContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell8"], self.savedSpecifiers[@"MorningImage"], self.savedSpecifiers[@"AfternoonImage"], self.savedSpecifiers[@"SunsetImage"], self.savedSpecifiers[@"MidnightImage"]] animated:NO];
+
+
+    else if (![self containsSpecifier:self.savedSpecifiers[@"GroupCell8"]])
+
+        [self insertContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell8"], self.savedSpecifiers[@"MorningImage"], self.savedSpecifiers[@"AfternoonImage"], self.savedSpecifiers[@"SunsetImage"], self.savedSpecifiers[@"MidnightImage"]] afterSpecifierID:@"ScheduledImagesSwitch" animated:NO];
 
 }
 
@@ -361,6 +373,22 @@ static void postNSNotification() {
 
             [self insertContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell-5"], self.savedSpecifiers[@"AnimateGradientSwitch"], self.savedSpecifiers[@"GroupCell-6"], self.savedSpecifiers[@"FirstColor"], self.savedSpecifiers[@"SecondColor"], self.savedSpecifiers[@"GroupCell-7"], self.savedSpecifiers[@"GradientDirection"]] afterSpecifierID:@"GradientSwitch" animated:YES];
 
+    }
+
+
+    if([key isEqualToString:@"scheduledImages"]) {
+
+
+        if (![[self readPreferenceValue:[self specifierForID:@"ScheduledImagesSwitch"]] boolValue])
+
+            [self removeContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell8"], self.savedSpecifiers[@"MorningImage"], self.savedSpecifiers[@"AfternoonImage"], self.savedSpecifiers[@"SunsetImage"], self.savedSpecifiers[@"MidnightImage"]] animated:YES];
+
+
+        else if (![self containsSpecifier:self.savedSpecifiers[@"GroupCell8"]])
+
+            [self insertContiguousSpecifiers:@[self.savedSpecifiers[@"GroupCell8"], self.savedSpecifiers[@"MorningImage"], self.savedSpecifiers[@"AfternoonImage"], self.savedSpecifiers[@"SunsetImage"], self.savedSpecifiers[@"MidnightImage"]] afterSpecifierID:@"ScheduledImagesSwitch" animated:YES];    
+
+    
     }
 
 }

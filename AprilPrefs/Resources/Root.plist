@@ -343,10 +343,14 @@
 				<string>scheduledImages</string>
 				<key>label</key>
 				<string>Scheduled Images</string>
+				<key>id</key>
+				<string>ScheduledImagesSwitch</string>
 			</dict>
 			<dict>
 				<key>cell</key>
 				<string>PSGroupCell</string>
+				<key>id</key>
+				<string>GroupCell8</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -359,6 +363,8 @@
 				<string>me.luki.aprilprefs</string>
 				<key>PostNotification</key>
 				<string>me.luki.aprilprefs/scheduledImageChanged</string>
+				<key>id</key>
+				<string>MorningImage</string>
 				<key>key</key>
 				<string>imageMorning</string>
 				<key>usesPhotos</key>
@@ -379,6 +385,8 @@
 				<string>me.luki.aprilprefs</string>
 				<key>PostNotification</key>
 				<string>me.luki.aprilprefs/scheduledImageChanged</string>
+				<key>id</key>
+				<string>AfternoonImage</string>
 				<key>key</key>
 				<string>imageAfternoon</string>
 				<key>usesPhotos</key>
@@ -399,6 +407,8 @@
 				<string>me.luki.aprilprefs</string>
 				<key>PostNotification</key>
 				<string>me.luki.aprilprefs/scheduledImageChanged</string>
+				<key>id</key>
+				<string>SunsetImage</string>
 				<key>key</key>
 				<string>imageSunset</string>
 				<key>usesPhotos</key>
@@ -419,6 +429,8 @@
 				<string>me.luki.aprilprefs</string>
 				<key>PostNotification</key>
 				<string>me.luki.aprilprefs/scheduledImageChanged</string>
+				<key>id</key>
+				<string>MidnightImage</string>
 				<key>key</key>
 				<string>imageMidnight</string>
 				<key>usesPhotos</key>

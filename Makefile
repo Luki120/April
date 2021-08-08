@@ -9,9 +9,7 @@ TWEAK_NAME = April
 
 April_FILES = Tweak.x
 April_CFLAGS = -fobjc-arc
-April_FRAMEWORKS = UIKit
-
-export April_LIBRARIES = gcuniversal
+April_LIBRARIES = gcuniversal
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 SUBPROJECTS += AprilPrefs

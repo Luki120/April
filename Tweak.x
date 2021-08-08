@@ -188,53 +188,51 @@ static void loadWithoutAFuckingRespring() {
 		if(self.hotGoodLookingScheduledImageView) [self.hotGoodLookingScheduledImageView removeFromSuperview];
 
 		
-			self.hotGoodLookingScheduledImageView = [[UIImageView alloc] initWithImage:self.hotGoodLookingScheduledImage];
-			self.hotGoodLookingScheduledImageView.frame = self.bounds;
-			self.hotGoodLookingScheduledImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		self.hotGoodLookingScheduledImageView = [[UIImageView alloc] initWithImage:self.hotGoodLookingScheduledImage];
+		self.hotGoodLookingScheduledImageView.frame = self.bounds;
+		self.hotGoodLookingScheduledImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-			self.backgroundView = self.hotGoodLookingScheduledImageView;
-
-
-			int hours = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:[NSCalendar.currentCalendar dateByAddingUnit:NSCalendarUnitSecond value:10 toDate:NSDate.date options:0]];
+		self.backgroundView = self.hotGoodLookingScheduledImageView;
 
 
-			if (hours >= 22) { // 10 pm
+		int hours = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:[NSCalendar.currentCalendar dateByAddingUnit:NSCalendarUnitSecond value:10 toDate:NSDate.date options:0]];
 
 
-				imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
-				self.hotGoodLookingScheduledImageView.image = imageMidnight;
+		if (hours >= 22) { // 10 pm
 
 
-			} else if (hours >= 18) { // 6 pm
+			imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
+			self.hotGoodLookingScheduledImageView.image = imageMidnight;
 
 
-				imageSunset = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageSunset"];
-				self.hotGoodLookingScheduledImageView.image = imageSunset;
+		} else if (hours >= 18) { // 6 pm
 
 
-			} else if (hours >= 12) { // 12 pm
+			imageSunset = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageSunset"];
+			self.hotGoodLookingScheduledImageView.image = imageSunset;
 
 
-				imageAfternoon = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageAfternoon"];
-				self.hotGoodLookingScheduledImageView.image = imageAfternoon;
+		} else if (hours >= 12) { // 12 pm
 
 
-			} else if (hours >= 8) { // 8 am
+			imageAfternoon = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageAfternoon"];
+			self.hotGoodLookingScheduledImageView.image = imageAfternoon;
 
 
-				imageMorning = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMorning"];
-				self.hotGoodLookingScheduledImageView.image = imageMorning;
+		} else if (hours >= 8) { // 8 am
 
 
-			} else { // time before 8 am, so loop back to midnight wallpaper
+			imageMorning = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMorning"];
+			self.hotGoodLookingScheduledImageView.image = imageMorning;
 
-				imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
-				self.hotGoodLookingScheduledImageView.image = imageMidnight;
+
+		} else { // time before 8 am, so loop back to midnight wallpaper
+
+				
+			imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
+			self.hotGoodLookingScheduledImageView.image = imageMidnight;
 
 		
-			}
-
-
 		}
 
 

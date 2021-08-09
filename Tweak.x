@@ -267,7 +267,7 @@ static void loadWithoutAFuckingRespring() {
 			blurView._blurQuality = @"high";
 			blurView.tag = 1337;
 			blurView.alpha = intensity;
-			[self.backgroundView insertSubview:blurView atIndex:1];
+			[self.backgroundView insertSubview:blurView atIndex:0];
 
 
 		} else {
@@ -453,13 +453,12 @@ static void loadWithoutAFuckingRespring() {
 
 	%orig;
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGradient) name:@"changeGradient" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setScheduledImages) name:@"applyScheduledImage" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setScheduledImages) name:@"timerApplied" object:nil];
-
+	[NSNotificationCenter.defaultCenter removeObserver:self];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setGradient) name:@"changeGradient" object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setScheduledImages) name:@"applyScheduledImage" object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setScheduledImages) name:@"timerApplied" object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
 
 }
 
@@ -473,9 +472,10 @@ static void loadWithoutAFuckingRespring() {
 
 	[self setGradient];
 
+	[self setScheduledImages];
+
 	[self setBlur];
 
-	[self setScheduledImages];
 
 }
 
@@ -511,8 +511,8 @@ static void loadWithoutAFuckingRespring() {
 
 	[self applyAlpha];
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applyAlpha) name:@"changeAlpha" object:nil];
+	[NSNotificationCenter.defaultCenter removeObserver:self];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applyAlpha) name:@"changeAlpha" object:nil];
 
 
 }

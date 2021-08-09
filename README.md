@@ -17,7 +17,7 @@
 * Morning Image (8AM)
 * Afternoon Image (12PM)
 * Sunset Image (6PM)
-* Midnight IMage (10PM)
+* Midnight Image (10PM)
 
 ## Gradients with directions:
 

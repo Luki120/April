@@ -22,9 +22,8 @@ static void postNSNotification() {
 
     [NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
     [NSNotificationCenter.defaultCenter postNotificationName:@"changeGradient" object:NULL];
-    [NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
     [NSNotificationCenter.defaultCenter postNotificationName:@"applyScheduledImage" object:NULL];
-
+    [NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
 
 }
 
@@ -179,13 +178,9 @@ static void postNSNotification() {
 
     AudioServicesPlaySystemSound(1521);
 
-    self.changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"1.0.7" icon:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/April.png"]];
+    self.changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"2.0" icon:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/April.png"]];
 
-    [self.changelogController addBulletedListItemWithTitle:@"Tweak" description:@"Fixed a bug in which gradients would break upon rotation." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
-
-    [self.changelogController addBulletedListItemWithTitle:@"" description:@"Fixed table cells not updating dynamically when switching Light/Dark mode." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
-
-    [self.changelogController addBulletedListItemWithTitle:@"Preferences" description:@"Added a website link to get nice gradient presets & reset preferences button." image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
+    [self.changelogController addBulletedListItemWithTitle:@"Tweak" description:@"Introducing April 2.0 with scheduled images as background. Yes that's right, you can choose 4 images: \n• Morning Image (8AM-12PM) \n• Afternoon Image (12PM-6PM) \n• Sunset Image (6PM-10PM) \n• Midnight Image (10PM-8AM)" image:[UIImage systemImageNamed:@"checkmark.circle.fill"]];
 
     _UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
 
@@ -237,7 +232,7 @@ static void postNSNotification() {
     if(!self.navigationItem.titleView) {
 
 
-        APPAnimatedTitleView *titleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 1.0.7" minimumScrollOffsetRequired:-68];
+        APPAnimatedTitleView *titleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 2.0" minimumScrollOffsetRequired:-68];
 
         self.navigationItem.titleView = titleView;
         self.titleView.superview.clipsToBounds = YES;
@@ -304,8 +299,9 @@ static void postNSNotification() {
     [NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
     [NSNotificationCenter.defaultCenter postNotificationName:@"changeAlpha" object:NULL];
     [NSNotificationCenter.defaultCenter postNotificationName:@"changeGradient" object:NULL];
-    [NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
     [NSNotificationCenter.defaultCenter postNotificationName:@"applyScheduledImage" object:NULL];
+    [NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
+
 
 
     NSString *key = [specifier propertyForKey:@"key"];

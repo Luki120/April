@@ -2,24 +2,24 @@
 
 # April
 
-## Spice your settings app with a custom background image or gradients of your choice!
+## Spice your settings app with a custom background image or gradients of your choice.
 
 ## On the fly preferences.
 
-## Features:
+## Features
 
 * Custom Background Image.
-* Custom Blurs: Light, Dark, Epic, Adaptive & Thin Material.
+* Custom Blurs: Light, Dark, Epic (Gaussian), Adaptive & Thin Material.
 * Custom Table Cell Alpha.
 
-## Scheduled images:
+## Scheduled images
 
 * Morning Image (8AM)
 * Afternoon Image (12PM)
 * Sunset Image (6PM)
 * Midnight Image (10PM)
 
-## Gradients with directions:
+## Gradients with directions
 
 * Botttom To Top.
 * Top To Bottom.
@@ -31,18 +31,23 @@
 * Lower Right Upper Left.
 
 
-## Socials:
+## Socials
 
 * [Twitter](https://twitter.com/Lukii120)
 * [Support on Discord](https://discord.gg/pKekktctUK)
 
-## Contributing:
+## Contributing
 
 * Contributions are more than welcomed, but should follow this etiquette:
 * Push small commits (e.g if you changed 2 directories, commit one directory, then commit the other directory and only THEN push)
 * Keep commit titles short and then explain them in comments.
 * You **should NOT** push to main branch, preferably push to a new branch and *then* create the PR.
 
-## LICENSE:
+## LICENSE
 
 [Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0)
+
+
+## Assets LICENSE
+
+* Under no means shall the visual assets of this repository – i.e., all photo-, picto-, icono-, and videographic material – (if any) be altered and/or redistributed for any independent commercial or non-commercial intent beyond it's original function in this project. Permissible usage of such content is restricted solely to it's express application in this repository and any forks that retain the material in it's original, unaltered form only.

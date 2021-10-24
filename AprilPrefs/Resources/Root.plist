@@ -18,7 +18,7 @@
 				<key>secondAccount</key>
 				<string>BenOwl3</string>
 				<key>secondURL</key>
-				<string>https://pbs.twimg.com/profile_images/1388934413103161345/et7cnoR1_400x400.jpg</string>
+				<string>https://avatars.githubusercontent.com/u/91443760?v=4</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -445,18 +445,30 @@
 				<string>PSGroupCell</string>
 			</dict>
 			<dict>
+				<key>action</key>
+				<string>shatterThePrefsToPieces</string>
 				<key>cell</key>
 				<string>PSButtonCell</string>
 				<key>cellClass</key>
 				<string>AprilTableCell</string>
-				<key>default</key>
-				<false/>
-				<key>defaults</key>
-				<string>me.luki.aprilprefs</string>
-				<key>action</key>
-				<string>gradientPresets</string>
 				<key>label</key>
-				<string>Gradient Presets</string>
+				<string>Reset Preferences</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSLinkCell</string>
+				<key>cellClass</key>
+				<string>AprilTableCell</string>
+				<key>detail</key>
+				<string>AprilContributorsRootListController</string>
+				<key>isController</key>
+				<true/>
+				<key>label</key>
+				<string>Contributors</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -480,29 +492,17 @@
 			</dict>
 			<dict>
 				<key>cell</key>
-				<string>PSLinkCell</string>
-				<key>cellClass</key>
-				<string>AprilTableCell</string>
-				<key>detail</key>
-				<string>AprilContributorsRootListController</string>
-				<key>isController</key>
-				<true/>
-				<key>label</key>
-				<string>Contributors</string>
-			</dict>
-			<dict>
-				<key>cell</key>
-				<string>PSGroupCell</string>
-			</dict>
-			<dict>
-				<key>action</key>
-				<string>shatterThePrefsToPieces</string>
-				<key>cell</key>
 				<string>PSButtonCell</string>
 				<key>cellClass</key>
 				<string>AprilTableCell</string>
+				<key>default</key>
+				<false/>
+				<key>defaults</key>
+				<string>me.luki.aprilprefs</string>
+				<key>action</key>
+				<string>gradientPresets</string>
 				<key>label</key>
-				<string>Reset Preferences</string>
+				<string>Gradient Presets</string>
 			</dict>
 			<dict>
 				<key>cell</key>

@@ -68,9 +68,11 @@
 			<key>defaults</key>
 			<string>me.luki.aprilprefs</string>
 			<key>action</key>
-			<string>arizona</string>
+			<string>amelija</string>
 			<key>label</key>
-			<string>Arizona</string>
+			<string>Amēlija</string>
+			<key>icon</key>
+			<string>Assets/Amēlija</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -85,6 +87,8 @@
 			<string>meredith</string>
 			<key>label</key>
 			<string>Meredith</string>
+			<key>icon</key>
+			<string>Assets/Meredith@2x</string>
 		</dict>
 		<dict>
 			<key>cell</key>

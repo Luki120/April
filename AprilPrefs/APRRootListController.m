@@ -12,15 +12,12 @@ static NSString *const plistPath = @"/var/mobile/Library/Preferences/me.luki.apr
 #define tint [UIColor colorWithRed: 1.00 green: 0.55 blue: 0.73 alpha: 1.00]
 
 
-UIColor *tintDynamicColor;
-
-
 static void postNSNotification() {
 
-	[NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"changeGradient" object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:@"applyImage" object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:@"applyGradient" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"applyScheduledImage" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:@"applyBlur" object:NULL];
 
 }
 
@@ -261,11 +258,11 @@ static void postNSNotification() {
 	[settings setObject:value forKey:specifier.properties[@"key"]];
 	[settings writeToFile:plistPath atomically:YES];
 
-	[NSNotificationCenter.defaultCenter postNotificationName:@"changeImage" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"changeAlpha" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"changeGradient" object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:@"applyImage" object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:@"applyAlpha" object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:@"applyGradient" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"applyScheduledImage" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"changeBlur" object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:@"applyBlur" object:NULL];
 
 	NSString *key = [specifier propertyForKey:@"key"];
 

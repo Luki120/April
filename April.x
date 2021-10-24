@@ -7,12 +7,12 @@
 // a layer's frame without breaking on rotation smfh
 
 
-@interface GradientView : UIView
+@interface AprilGradientView : UIView
 @property (nonatomic, strong, readonly) CAGradientLayer *layer;
 @end
 
 
-@implementation GradientView
+@implementation AprilGradientView
 
 @dynamic layer;
 
@@ -47,8 +47,7 @@
 @interface UITableView (April)
 @property (nonatomic, strong) UIImageView *hotGoodLookingImageView;
 @property (nonatomic, strong) UIImageView *hotGoodLookingScheduledImageView;
-@property (nonatomic, strong) UIImage *hotGoodLookingScheduledImage;
-@property (nonatomic, strong) GradientView *neatGradientView;
+@property (nonatomic, strong) AprilGradientView *neatGradientView;
 @property (readonly) NSTimeInterval timeIntervalSinceNow;
 - (void)setImage;
 - (void)setBlur;
@@ -121,8 +120,7 @@ static void loadWithoutAFuckingRespring() {
 
 %property (nonatomic, strong) UIImageView *hotGoodLookingImageView;
 %property (nonatomic, strong) UIImageView *hotGoodLookingScheduledImageView;
-%property (nonatomic, strong) UIImage *hotGoodLookingScheduledImage;
-%property (nonatomic, strong) GradientView *neatGradientView;
+%property (nonatomic, strong) AprilGradientView *neatGradientView;
 
 
 %new
@@ -141,8 +139,9 @@ static void loadWithoutAFuckingRespring() {
 		if(yes) {
 
 			self.hotGoodLookingImageView = [UIImageView new];
-			self.hotGoodLookingImageView.frame = self.frame;
+			self.hotGoodLookingImageView.frame = self.backgroundView.bounds;
 			self.hotGoodLookingImageView.image = kUserInterfaceStyle ? hotGoodLookingDarkImage : hotGoodLookingLightImage;
+			self.hotGoodLookingImageView.contentMode = UIViewContentModeScaleAspectFill;
 			self.hotGoodLookingImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 			self.backgroundView = self.hotGoodLookingImageView;
 
@@ -179,8 +178,9 @@ static void loadWithoutAFuckingRespring() {
 
 			if(self.hotGoodLookingScheduledImageView) [self.hotGoodLookingScheduledImageView removeFromSuperview];
 
-			self.hotGoodLookingScheduledImageView = [[UIImageView alloc] initWithImage:self.hotGoodLookingScheduledImage];
-			self.hotGoodLookingScheduledImageView.frame = self.bounds;
+			self.hotGoodLookingScheduledImageView = [UIImageView new];
+			self.hotGoodLookingScheduledImageView.frame = self.backgroundView.bounds;
+			self.hotGoodLookingScheduledImageView.contentMode = UIViewContentModeScaleAspectFill;
 			self.hotGoodLookingScheduledImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
 			self.backgroundView = self.hotGoodLookingScheduledImageView;
@@ -301,7 +301,7 @@ static void loadWithoutAFuckingRespring() {
 		UIColor *firstColor = [GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"];
 		UIColor *secondColor = [GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"];
 
-		self.neatGradientView = [[GradientView alloc] initWithFrame:self.backgroundView.bounds];
+		self.neatGradientView = [[AprilGradientView alloc] initWithFrame:self.backgroundView.bounds];
 		self.neatGradientView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		self.neatGradientView.layer.colors = [NSArray arrayWithObjects:(id)firstColor.CGColor, (id)secondColor.CGColor, nil];
 		self.neatGradientView.layer.locations = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.00], [NSNumber numberWithFloat:0.50] , nil];
@@ -409,27 +409,18 @@ static void loadWithoutAFuckingRespring() {
 
 	%orig;
 
+	[self setImage];
+	[self setGradient];
+	[self setScheduledImages];
+
+	[self setBlur];
+
 	[NSNotificationCenter.defaultCenter removeObserver:self];
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setGradient) name:@"changeGradient" object:nil];
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setScheduledImages) name:@"applyScheduledImage" object:nil];
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setScheduledImages) name:@"timerApplied" object:nil];
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
-
-}
-
-
-- (void)didMoveToWindow {
-
-	%orig;
-
-	[self setImage];
-
-	[self setGradient];
-
-	[self setScheduledImages];
-
-	[self setBlur];
 
 }
 

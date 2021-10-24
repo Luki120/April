@@ -1,9 +1,7 @@
-#import <UIKit/UIKit.h>
-
-
+@import UIKit;
 
 
 @interface APPAnimatedTitleView : UIView
--(instancetype)initWithTitle:(NSString *)title minimumScrollOffsetRequired:(CGFloat)minimumOffset;
--(void)adjustLabelPositionToScrollOffset:(CGFloat)offset;
+- (instancetype)initWithTitle:(NSString *)title minimumScrollOffsetRequired:(CGFloat)minimumOffset;
+- (void)adjustLabelPositionToScrollOffset:(CGFloat)offset;
 @end

@@ -1,8 +1,6 @@
 @import UIKit;
-#import <GcColorPickerUtils.h>
-#import <GcImagePickerUtils.h>
-
-
+#import <GcUniversal/GcColorPickerUtils.h>
+#import <GcUniversal/GcImagePickerUtils.h>
 
 
 // imagine having to subclass a UIView to properly handle
@@ -39,17 +37,16 @@
 
 @interface _UIBackdropView : UIView
 @property (assign, nonatomic) BOOL blurRadiusSetOnce;
-@property (nonatomic, copy) NSString * _blurQuality;
 @property (assign, nonatomic) double _blurRadius;
-- (id)initWithFrame:(CGRect)arg1 autosizesToFitSuperview:(BOOL)arg2 settings:(id)arg3;
+@property (copy, nonatomic) NSString *_blurQuality;
 - (id)initWithSettings:(id)arg1;
+- (id)initWithFrame:(CGRect)arg1 autosizesToFitSuperview:(BOOL)arg2 settings:(id)arg3;
 @end
 
 
 @interface UITableView (April)
 @property (nonatomic, strong) UIImageView *hotGoodLookingImageView;
 @property (nonatomic, strong) UIImageView *hotGoodLookingScheduledImageView;
-@property (nonatomic, strong) UIImage *hotGoodLookingImage;
 @property (nonatomic, strong) UIImage *hotGoodLookingScheduledImage;
 @property (nonatomic, strong) GradientView *neatGradientView;
 @property (readonly) NSTimeInterval timeIntervalSinceNow;
@@ -57,7 +54,6 @@
 - (void)setBlur;
 - (void)setGradient;
 - (void)setScheduledImages;
-- (void)updateScheduledImage:(NSTimer *)timer;
 - (id)_viewControllerForAncestor;
 @end
 
@@ -68,56 +64,56 @@
 @end
 
 
+static NSString *const plistPath = @"/var/mobile/Library/Preferences/me.luki.aprilprefs.plist";
 
+#define kUserInterfaceStyle (UIScreen.mainScreen.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark)
 
-static NSString *plistPath = @"/var/mobile/Library/Preferences/me.luki.aprilprefs.plist";
 static BOOL yes;
 static BOOL blur;
+
+static int blurType;
+
+static float intensity = 1.0f;
+
+static BOOL alpha;
+
+static float cellAlpha = 1.0f;
+
 static BOOL setGradientAsBackground;
 static BOOL setGradientAnimation;
-static BOOL alpha;
-static int blurType;
+
 static int gradientDirection;
-float cellAlpha = 1.0f;
-float intensity = 1.0f;
-
-
-UIBlurEffect *blurEffect;
-UIViewController *ancestor;
-
 
 static BOOL scheduledImages;
 
-UIImage *imageMorning;
-UIImage *imageAfternoon;
-UIImage *imageSunset;
-UIImage *imageMidnight;
+UIBlurEffect *blurEffect;
 
+UIImage *hotGoodLookingDarkImage;
+UIImage *hotGoodLookingLightImage;
 
 NSTimer *imagesTimer;
 
-
-
 static void loadWithoutAFuckingRespring() {
-
 
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:plistPath];
 	NSMutableDictionary *prefs = dict ? [dict mutableCopy] : [NSMutableDictionary dictionary];
+
 	yes = prefs[@"yes"] ? [prefs[@"yes"] boolValue] : NO;
+
 	blur = prefs[@"blur"] ? [prefs[@"blur"] boolValue] : NO;
+	blurType = prefs[@"blurType"] ? [prefs[@"blurType"] integerValue] : 0;
+	intensity = prefs[@"intensity"] ? [prefs[@"intensity"] floatValue] : 1.0f;
+
+	alpha = prefs[@"alphaEnabled"] ? [prefs[@"alphaEnabled"] boolValue] : YES;
+	cellAlpha = prefs[@"cellAlpha"] ? [prefs[@"cellAlpha"] floatValue] : 1.0f;
+
 	setGradientAsBackground = prefs[@"setGradientAsBackground"] ? [prefs[@"setGradientAsBackground"] boolValue] : NO;
 	setGradientAnimation = prefs[@"setGradientAnimation"] ? [prefs[@"setGradientAnimation"] boolValue] : NO;
-	alpha = prefs[@"alphaEnabled"] ? [prefs[@"alphaEnabled"] boolValue] : YES;
-	blurType = prefs[@"blurType"] ? [prefs[@"blurType"] integerValue] : 0;
 	gradientDirection = prefs[@"gradientDirection"] ? [prefs[@"gradientDirection"] integerValue] : 0;
-	cellAlpha = prefs[@"cellAlpha"] ? [prefs[@"cellAlpha"] floatValue] : 1.0f;
-	intensity = prefs[@"intensity"] ? [prefs[@"intensity"] floatValue] : 1.0f;
+
 	scheduledImages = prefs[@"scheduledImages"] ? [prefs[@"scheduledImages"] boolValue] : NO;
 
-
 }
-
-
 
 
 %hook UITableView
@@ -125,48 +121,38 @@ static void loadWithoutAFuckingRespring() {
 
 %property (nonatomic, strong) UIImageView *hotGoodLookingImageView;
 %property (nonatomic, strong) UIImageView *hotGoodLookingScheduledImageView;
-%property (nonatomic, strong) UIImage *hotGoodLookingImage;
 %property (nonatomic, strong) UIImage *hotGoodLookingScheduledImage;
 %property (nonatomic, strong) GradientView *neatGradientView;
 
 
 %new
 
-
 - (void)setImage {
-
 
 	loadWithoutAFuckingRespring();
 
-	ancestor = [self _viewControllerForAncestor];
+	hotGoodLookingDarkImage = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bImage"];
+	hotGoodLookingLightImage = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bLightImage"];
+
+	UIViewController *ancestor = [self _viewControllerForAncestor];
 
 	if(![ancestor isKindOfClass:%c(LCTTMessagesController)]) {
 
 		if(yes) {
 
-
-			self.hotGoodLookingImageView = [[UIImageView alloc] initWithImage:self.hotGoodLookingImage];
+			self.hotGoodLookingImageView = [UIImageView new];
 			self.hotGoodLookingImageView.frame = self.frame;
+			self.hotGoodLookingImageView.image = kUserInterfaceStyle ? hotGoodLookingDarkImage : hotGoodLookingLightImage;
 			self.hotGoodLookingImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
-
-			if(self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bImage"];
-			else self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bLightImage"];
-
-
 			self.backgroundView = self.hotGoodLookingImageView;
-
 
 		}
 
-
 		else {
-
 
 			if(setGradientAsBackground) [self setGradient];
 			else self.backgroundView = NULL;
 
-
 		}
 
 	}
@@ -175,106 +161,95 @@ static void loadWithoutAFuckingRespring() {
 
 
 %new
-
 
 - (void)setScheduledImages {
 
-
 	loadWithoutAFuckingRespring();
 
-	if(scheduledImages) {
+	UIImage *imageMorning;
+	UIImage *imageAfternoon;
+	UIImage *imageSunset;
+	UIImage *imageMidnight;
+
+	UIViewController *ancestor = [self _viewControllerForAncestor];
+
+	if(![ancestor isKindOfClass:%c(LCTTMessagesController)]) {
+
+		if(scheduledImages) {
+
+			if(self.hotGoodLookingScheduledImageView) [self.hotGoodLookingScheduledImageView removeFromSuperview];
+
+			self.hotGoodLookingScheduledImageView = [[UIImageView alloc] initWithImage:self.hotGoodLookingScheduledImage];
+			self.hotGoodLookingScheduledImageView.frame = self.bounds;
+			self.hotGoodLookingScheduledImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+			self.backgroundView = self.hotGoodLookingScheduledImageView;
+
+			int hours = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:[NSCalendar.currentCalendar dateByAddingUnit:NSCalendarUnitSecond value:10 toDate:NSDate.date options:0]];
+
+			if(hours >= 22) { // 10 pm
+
+				imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
+				self.hotGoodLookingScheduledImageView.image = imageMidnight;
 
 
-		if(self.hotGoodLookingScheduledImageView) [self.hotGoodLookingScheduledImageView removeFromSuperview];
+			} else if(hours >= 18) { // 6 pm
 
-		
-		self.hotGoodLookingScheduledImageView = [[UIImageView alloc] initWithImage:self.hotGoodLookingScheduledImage];
-		self.hotGoodLookingScheduledImageView.frame = self.bounds;
-		self.hotGoodLookingScheduledImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
-		self.backgroundView = self.hotGoodLookingScheduledImageView;
+				imageSunset = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageSunset"];
+				self.hotGoodLookingScheduledImageView.image = imageSunset;
 
 
-		int hours = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:[NSCalendar.currentCalendar dateByAddingUnit:NSCalendarUnitSecond value:10 toDate:NSDate.date options:0]];
+			} else if(hours >= 12) { // 12 pm
+
+				imageAfternoon = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageAfternoon"];
+				self.hotGoodLookingScheduledImageView.image = imageAfternoon;
 
 
-		if (hours >= 22) { // 10 pm
+			} else if(hours >= 8) { // 8 am
+
+				imageMorning = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMorning"];
+				self.hotGoodLookingScheduledImageView.image = imageMorning;
 
 
-			imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
-			self.hotGoodLookingScheduledImageView.image = imageMidnight;
+			} else { // time before 8 am, so loop back to midnight wallpaper
 
+				imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
+				self.hotGoodLookingScheduledImageView.image = imageMidnight;
 
-		} else if (hours >= 18) { // 6 pm
+			}
 
-
-			imageSunset = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageSunset"];
-			self.hotGoodLookingScheduledImageView.image = imageSunset;
-
-
-		} else if (hours >= 12) { // 12 pm
-
-
-			imageAfternoon = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageAfternoon"];
-			self.hotGoodLookingScheduledImageView.image = imageAfternoon;
-
-
-		} else if (hours >= 8) { // 8 am
-
-
-			imageMorning = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMorning"];
-			self.hotGoodLookingScheduledImageView.image = imageMorning;
-
-
-		} else { // time before 8 am, so loop back to midnight wallpaper
-
-				
-			imageMidnight = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"imageMidnight"];
-			self.hotGoodLookingScheduledImageView.image = imageMidnight;
-
-		
 		}
 
-
 	}
-
 
 }
 
 
 %new
 
-
 - (void)setBlur {
-
 
 	loadWithoutAFuckingRespring();
 
 	[[self.backgroundView viewWithTag:1337] removeFromSuperview];
 
-
 	if(blur) {
-
 
 		if(blurType == 0) {
 
 			_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
 
-			_UIBackdropView *blurView = [[_UIBackdropView alloc] initWithFrame:CGRectZero
-			autosizesToFitSuperview:YES settings:settings];
-			blurView.blurRadiusSetOnce = NO;
-			blurView._blurRadius = 80.0;
-			blurView._blurQuality = @"high";
+			_UIBackdropView *blurView = [[_UIBackdropView alloc] initWithFrame:CGRectZero autosizesToFitSuperview:YES settings:settings];
 			blurView.tag = 1337;
 			blurView.alpha = intensity;
+			blurView._blurRadius = 80.0;
+			blurView._blurQuality = @"high";
+			blurView.blurRadiusSetOnce = NO;
 			[self.backgroundView insertSubview:blurView atIndex:0];
-
 
 		} else {
 
-
 			switch(blurType) {
-
 
 				case 1:
 
@@ -299,9 +274,7 @@ static void loadWithoutAFuckingRespring() {
 					blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemUltraThinMaterial];
 					break;
 
-
 			}
-
 
 			UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
 			blurEffectView.tag = 1337;
@@ -310,27 +283,20 @@ static void loadWithoutAFuckingRespring() {
 			blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 			[self.backgroundView addSubview:blurEffectView];
 
-
 		}
 
-
 	}
-
 
 }
 
 
 %new
 
-
 - (void)setGradient {
-
 
 	loadWithoutAFuckingRespring();
 
-
 	if(setGradientAsBackground) {
-
 
 		UIColor *firstColor = [GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"];
 		UIColor *secondColor = [GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"];
@@ -341,39 +307,31 @@ static void loadWithoutAFuckingRespring() {
 		self.neatGradientView.layer.locations = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.00], [NSNumber numberWithFloat:0.50] , nil];
 		self.backgroundView = self.neatGradientView;
 
-
 		if(setGradientAnimation) {
 
-
 			CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"colors"];
+			animation.fillMode = kCAFillModeBoth;
 			animation.fromValue = [NSArray arrayWithObjects:(id)firstColor.CGColor, (id)secondColor.CGColor, nil];
 			animation.toValue = [NSArray arrayWithObjects:(id)secondColor.CGColor, (id)firstColor.CGColor, nil];
 			animation.duration = 4.5;
-			animation.removedOnCompletion = NO;
-			animation.autoreverses = YES;
 			animation.repeatCount = HUGE_VALF; // Loop the animation forever
-			animation.fillMode = kCAFillModeBoth;
+			animation.autoreverses = YES;
 			animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+			animation.removedOnCompletion = NO;
 			[self.neatGradientView.layer addAnimation:animation forKey:@"animateGradient"];
-
 
 		}
 
 	}
 
-
 	else {
-
 
 		if(yes) [self setImage];
 		else self.backgroundView = NULL;
 
-
 	}
 
-
 	switch(gradientDirection) {
-
 
 		case 0: // Bottom to Top
 
@@ -437,19 +395,17 @@ static void loadWithoutAFuckingRespring() {
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection { // handle transition between light/dark mode dynamically
 
-
 	%orig;
 
-	if(self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bImage"];
+	hotGoodLookingDarkImage = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bImage"];
+	hotGoodLookingLightImage = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bLightImage"];
 
-	else self.hotGoodLookingImageView.image = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bLightImage"];
-
+	self.hotGoodLookingImageView.image = kUserInterfaceStyle ? hotGoodLookingDarkImage : hotGoodLookingLightImage;
 
 }
 
 
 - (void)didMoveToSuperview { // Add notification observers
-
 
 	%orig;
 
@@ -465,7 +421,6 @@ static void loadWithoutAFuckingRespring() {
 
 - (void)didMoveToWindow {
 
-
 	%orig;
 
 	[self setImage];
@@ -475,7 +430,6 @@ static void loadWithoutAFuckingRespring() {
 	[self setScheduledImages];
 
 	[self setBlur];
-
 
 }
 
@@ -490,9 +444,7 @@ static void loadWithoutAFuckingRespring() {
 
 %new
 
-
 - (void)applyAlpha { // https://github.com/PopsicleTreehouse/SettingsWallpaper
-
 
 	loadWithoutAFuckingRespring();
 
@@ -506,7 +458,6 @@ static void loadWithoutAFuckingRespring() {
 
 - (void)didMoveToWindow {
 
-
 	%orig;
 
 	[self applyAlpha];
@@ -514,17 +465,14 @@ static void loadWithoutAFuckingRespring() {
 	[NSNotificationCenter.defaultCenter removeObserver:self];
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applyAlpha) name:@"changeAlpha" object:nil];
 
-
 }
 
 
 - (void)refreshCellContentsWithSpecifier:(id)arg1 {
 
-
 	%orig;
 
 	[self applyAlpha];
-
 
 }
 
@@ -535,31 +483,26 @@ static void loadWithoutAFuckingRespring() {
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
 
-
 	%orig;
 
-	if(self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) self.backgroundColor = [UIColor colorWithRed: 0.11 green: 0.11 blue: 0.12 alpha:alpha ? cellAlpha : 1];
+	UIColor *darkModeColor = [UIColor colorWithRed: 0.11 green: 0.11 blue: 0.12 alpha:alpha ? cellAlpha : 1];
+	UIColor *lightModeColor = [UIColor colorWithRed: 1.00 green: 1.00 blue: 1.00 alpha:alpha ? cellAlpha : 1];
 
-	else self.backgroundColor = [UIColor colorWithRed: 1.00 green: 1.00 blue: 1.00 alpha:alpha ? cellAlpha : 1];
-
+	self.backgroundColor = kUserInterfaceStyle ? darkModeColor : lightModeColor;
 
 }
 
 
 - (void)setSelected:(BOOL)arg1 animated:(BOOL)arg2 {
 
-
 	%orig(NO, NO);
-
 
 }
 
 
 - (void)setHighlighted:(BOOL)arg1 animated:(BOOL)arg2 {
 
-
 	%orig(NO, NO);
-
 
 }
 
@@ -588,15 +531,14 @@ void scheduleTimer() {
 						[NSNotificationCenter.defaultCenter postNotificationName:@"timerApplied" object:nil];
 						scheduleTimer();
 
-						}];
+					}];
 	
-	[[NSRunLoop currentRunLoop] addTimer:imagesTimer forMode: NSDefaultRunLoopMode];
+	[NSRunLoop.currentRunLoop addTimer:imagesTimer forMode : NSDefaultRunLoopMode];
 
 }
 
 
 %ctor {
-
 
 	loadWithoutAFuckingRespring();
 	

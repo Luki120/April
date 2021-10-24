@@ -35,7 +35,7 @@
 
 		_minimumOffsetRequired = minimumOffset;
 
-    }
+	}
 
 	return self;
 
@@ -44,7 +44,7 @@
 
 - (void)adjustLabelPositionToScrollOffset:(CGFloat)offset {
 
-    CGFloat adjustment = 100 - (offset - _minimumOffsetRequired);
+	CGFloat adjustment = 100 - (offset - _minimumOffsetRequired);
 
 	if(offset > _minimumOffsetRequired) {
 

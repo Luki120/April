@@ -92,6 +92,8 @@ UIImage *hotGoodLookingLightImage;
 
 NSTimer *imagesTimer;
 
+UITableView *tableView = nil;
+
 static void loadWithoutAFuckingRespring() {
 
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:plistPath];
@@ -409,6 +411,8 @@ static void loadWithoutAFuckingRespring() {
 
 	%orig;
 
+	tableView = self; // get an instance of UITableView
+
 	[self setImage];
 	[self setGradient];
 	[self setScheduledImages];
@@ -416,18 +420,16 @@ static void loadWithoutAFuckingRespring() {
 	[self setBlur];
 
 	[NSNotificationCenter.defaultCenter removeObserver:self];
-	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setImage) name:@"changeImage" object:nil];
-	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setGradient) name:@"changeGradient" object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setImage) name:@"applyImage" object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setGradient) name:@"applyGradient" object:nil];
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setScheduledImages) name:@"applyScheduledImage" object:nil];
-	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setScheduledImages) name:@"timerApplied" object:nil];
-	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setBlur) name:@"changeBlur" object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setScheduledImages) name:@"applyTimer" object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setBlur) name:@"applyBlur" object:nil];
 
 }
 
 
 %end
-
-
 
 
 %hook PSTableCell
@@ -454,7 +456,7 @@ static void loadWithoutAFuckingRespring() {
 	[self applyAlpha];
 
 	[NSNotificationCenter.defaultCenter removeObserver:self];
-	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applyAlpha) name:@"changeAlpha" object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applyAlpha) name:@"applyAlpha" object:nil];
 
 }
 
@@ -520,6 +522,9 @@ void scheduleTimer() {
 	imagesTimer = [NSTimer timerWithTimeInterval:seconds repeats:NO block:^(NSTimer *time) {
 
 						[NSNotificationCenter.defaultCenter postNotificationName:@"timerApplied" object:nil];
+
+						[tableView setBlur];	
+
 						scheduleTimer();
 
 					}];

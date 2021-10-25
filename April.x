@@ -415,9 +415,6 @@ static void loadWithoutAFuckingRespring() {
 
 	[self setImage];
 	[self setGradient];
-	[self setScheduledImages];
-
-	[self setBlur];
 
 	[NSNotificationCenter.defaultCenter removeObserver:self];
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setImage) name:@"applyImage" object:nil];
@@ -425,6 +422,17 @@ static void loadWithoutAFuckingRespring() {
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setScheduledImages) name:@"applyScheduledImage" object:nil];
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setScheduledImages) name:@"applyTimer" object:nil];
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setBlur) name:@"applyBlur" object:nil];
+
+}
+
+
+- (void)didMoveToWindow {
+
+	%orig;
+
+	[self setScheduledImages];
+
+	[self setBlur];
 
 }
 

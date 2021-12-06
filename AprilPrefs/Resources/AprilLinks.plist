@@ -15,10 +15,6 @@
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
 			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.luki.aprilprefs</string>
 			<key>action</key>
 			<string>discord</string>
 			<key>label</key>
@@ -29,12 +25,8 @@
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
 			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.luki.aprilprefs</string>
 			<key>action</key>
-			<string>paypal</string>
+			<string>launchPayPal</string>
 			<key>label</key>
 			<string>Donate To Luki 🥰</string>
 		</dict>
@@ -43,12 +35,8 @@
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
 			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.luki.aprilprefs</string>
 			<key>action</key>
-			<string>github</string>
+			<string>launchGitHub</string>
 			<key>label</key>
 			<string>Source Code 🔥</string>
 		</dict>
@@ -63,32 +51,24 @@
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
 			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.luki.aprilprefs</string>
 			<key>action</key>
-			<string>amelija</string>
+			<string>launchAmelija</string>
 			<key>label</key>
 			<string>Amēlija</string>
 			<key>icon</key>
-			<string>Assets/Amēlija</string>
+			<string>Assets/Amēlija@2x.png</string>
 		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
 			<string>AprilTableCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>me.luki.aprilprefs</string>
 			<key>action</key>
-			<string>meredith</string>
+			<string>launchMeredith</string>
 			<key>label</key>
 			<string>Meredith</string>
 			<key>icon</key>
-			<string>Assets/Meredith@2x</string>
+			<string>Assets/Meredith@2x.png</string>
 		</dict>
 		<dict>
 			<key>cell</key>

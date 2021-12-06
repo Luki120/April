@@ -1,13 +1,11 @@
-#include "APPAnimatedTitleView.h"
+#import "APPAnimatedTitleView.h"
 
 
 @implementation APPAnimatedTitleView {
 
-
 	UILabel *_titleLabel;
 	NSLayoutConstraint *_yConstraint;
 	CGFloat _minimumOffsetRequired;
-
 
 }
 
@@ -19,8 +17,9 @@
 		_titleLabel = [UILabel new];
 		_titleLabel.text = title;
 		_titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightHeavy];
-		_titleLabel.textColor = UIColor.whiteColor;
+		_titleLabel.textColor = UIColor.labelColor;
 		_titleLabel.textAlignment = NSTextAlignmentCenter;
+		_titleLabel.clipsToBounds = YES;
 		_titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
 		[_titleLabel sizeToFit];
 

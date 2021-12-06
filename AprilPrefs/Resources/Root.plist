@@ -16,7 +16,7 @@
 				<key>secondLabel</key>
 				<string>Ben</string>
 				<key>secondAccount</key>
-				<string>BenOwl3</string>
+				<string>Ben216k</string>
 				<key>secondURL</key>
 				<string>https://avatars.githubusercontent.com/u/91443760?v=4</string>
 			</dict>
@@ -495,12 +495,8 @@
 				<string>PSButtonCell</string>
 				<key>cellClass</key>
 				<string>AprilTableCell</string>
-				<key>default</key>
-				<false/>
-				<key>defaults</key>
-				<string>me.luki.aprilprefs</string>
 				<key>action</key>
-				<string>gradientPresets</string>
+				<string>launchGradientPresets</string>
 				<key>label</key>
 				<string>Gradient Presets</string>
 			</dict>

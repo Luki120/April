@@ -302,11 +302,13 @@ static void loadWithoutAFuckingRespring() {
 
 		UIColor *firstColor = [GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"];
 		UIColor *secondColor = [GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"];
+		NSArray *gradientColors = [NSArray arrayWithObjects:(id)firstColor.CGColor, (id)secondColor.CGColor, nil];
+		NSArray *gradientLocations = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.00], [NSNumber numberWithFloat:0.50], nil];
 
 		self.neatGradientView = [[AprilGradientView alloc] initWithFrame:self.backgroundView.bounds];
 		self.neatGradientView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		self.neatGradientView.layer.colors = [NSArray arrayWithObjects:(id)firstColor.CGColor, (id)secondColor.CGColor, nil];
-		self.neatGradientView.layer.locations = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.00], [NSNumber numberWithFloat:0.50] , nil];
+		self.neatGradientView.layer.colors = gradientColors;
+		self.neatGradientView.layer.locations = gradientLocations;
 		self.backgroundView = self.neatGradientView;
 
 		if(setGradientAnimation) {
@@ -528,14 +530,14 @@ void scheduleTimer() {
 	
 
 	imagesTimer = [NSTimer timerWithTimeInterval:seconds repeats:NO block:^(NSTimer *time) {
+		
+		[NSNotificationCenter.defaultCenter postNotificationName:@"timerApplied" object:nil];
 
-						[NSNotificationCenter.defaultCenter postNotificationName:@"timerApplied" object:nil];
+		[tableView setBlur];	
 
-						[tableView setBlur];	
+		scheduleTimer();
 
-						scheduleTimer();
-
-					}];
+	}];
 	
 	[NSRunLoop.currentRunLoop addTimer:imagesTimer forMode : NSDefaultRunLoopMode];
 

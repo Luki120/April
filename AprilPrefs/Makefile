@@ -1,6 +1,6 @@
 BUNDLE_NAME = AprilPrefs
 
-AprilPrefs_FILES = APRRootListController.m APPAnimatedTitleView.m
+AprilPrefs_FILES = APPAnimatedTitleView.m AprilVC.m
 AprilPrefs_CFLAGS = -fobjc-arc
 AprilPrefs_LIBRARIES = gcuniversal
 AprilPrefs_FRAMEWORKS = UIKit

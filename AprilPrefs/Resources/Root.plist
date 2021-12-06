@@ -464,7 +464,7 @@
 				<key>cellClass</key>
 				<string>AprilTableCell</string>
 				<key>detail</key>
-				<string>AprilContributorsRootListController</string>
+				<string>AprilContributorsVC</string>
 				<key>isController</key>
 				<true/>
 				<key>label</key>
@@ -480,7 +480,7 @@
 				<key>cellClass</key>
 				<string>AprilTableCell</string>
 				<key>detail</key>
-				<string>AprilLinksRootListController</string>
+				<string>AprilLinksVC</string>
 				<key>isController</key>
 				<true/>
 				<key>label</key>

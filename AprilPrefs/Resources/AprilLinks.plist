@@ -16,7 +16,7 @@
 			<key>cellClass</key>
 			<string>AprilTableCell</string>
 			<key>action</key>
-			<string>discord</string>
+			<string>launchDiscord</string>
 			<key>label</key>
 			<string>Chat With Us On Discord</string>
 		</dict>

@@ -8,7 +8,7 @@ April_FILES = April.x
 April_CFLAGS = -fobjc-arc
 April_LIBRARIES = gcuniversal
 
-SUBPROJECTS += AprilPrefs
+SUBPROJECTS = AprilPrefs
 
 include $(THEOS)/makefiles/common.mk
 include $(THEOS_MAKE_PATH)/tweak.mk

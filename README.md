@@ -35,14 +35,14 @@
 ## Contributing
 
 * Contributions are more than welcomed, but should follow this etiquette:
+
 	* If you're a contributor with write access to this repository, you **should NOT** push to main branch, preferably push to a new one and *then* create the PR.
 	* Keep commit titles short and then explain them in comments or preferably in the commit's description.
 	* Push small commits (e.g if you changed 2 directories, commit one directory, then commit the other one and only THEN push)
 
 ## LICENSE
 
-[Apache-2.0 License](https://www.mozilla.org/en-US/MPL/2.0/)
-
+* [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/)
 
 ## Assets LICENSE
 

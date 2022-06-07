@@ -159,22 +159,8 @@
 			<dict>
 				<key>cell</key>
 				<string>PSGroupCell</string>
-				<key>id</key>
-				<string>GroupCell-3</string>
-			</dict>
-			<dict>
-				<key>cell</key>
-				<string>PSSwitchCell</string>
-				<key>default</key>
-				<false/>
-				<key>defaults</key>
-				<string>me.luki.aprilprefs</string>
-				<key>key</key>
-				<string>alphaEnabled</string>
 				<key>label</key>
-				<string>Table Cell Alpha</string>
-				<key>PostNotification</key>
-				<string>me.luki.aprilprefs/alphaChanged</string>
+				<string>Table cell alpha</string>
 				<key>id</key>
 				<string>AlphaSwitch</string>
 			</dict>
@@ -366,7 +352,7 @@
 				<key>id</key>
 				<string>MorningImage</string>
 				<key>key</key>
-				<string>imageMorning</string>
+				<string>morningImage</string>
 				<key>usesPhotos</key>
 				<true/>
 				<key>usesVideos</key>
@@ -388,7 +374,7 @@
 				<key>id</key>
 				<string>AfternoonImage</string>
 				<key>key</key>
-				<string>imageAfternoon</string>
+				<string>afternoonImage</string>
 				<key>usesPhotos</key>
 				<true/>
 				<key>usesVideos</key>
@@ -410,7 +396,7 @@
 				<key>id</key>
 				<string>SunsetImage</string>
 				<key>key</key>
-				<string>imageSunset</string>
+				<string>sunsetImage</string>
 				<key>usesPhotos</key>
 				<true/>
 				<key>usesVideos</key>
@@ -432,7 +418,7 @@
 				<key>id</key>
 				<string>MidnightImage</string>
 				<key>key</key>
-				<string>imageMidnight</string>
+				<string>midnightImage</string>
 				<key>usesPhotos</key>
 				<true/>
 				<key>usesVideos</key>
@@ -516,7 +502,7 @@
 				<key>footerAlignment</key>
 				<real>1</real>
 				<key>footerText</key>
-				<string>2021 © Luki120</string>
+				<string>2022 © Luki120</string>
 				<key>isStaticText</key>
 				<true/>
 			</dict>

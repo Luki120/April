@@ -11,14 +11,12 @@ static void postNSNotification() {
 	[NSNotificationCenter.defaultCenter postNotificationName:@"applyImage" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"applyGradient" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"applyScheduledImage" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"applyBlur" object:NULL];
 
 }
 
 
 @implementation AprilVC {
 
-	UITableView *_table;
 	APPAnimatedTitleView *aprilTitleView;
 	UIView *headerView;
 	UIImageView *headerImageView;
@@ -32,42 +30,39 @@ static void postNSNotification() {
 
 - (NSArray *)specifiers {
 
-	if(!_specifiers) {
+	if(_specifiers) return nil;
+	_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
 
-		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
+	NSArray *chosenIDs = @[
 
-		NSArray *chosenIDs = @[
+		@"GroupCell-1",
+		@"Image",
+		@"LightImage",
+		@"SegmentCell",
+		@"BlurValue",
+		@"AlphaValue",
+		@"GroupCell-5",
+		@"AnimateGradientSwitch",
+		@"FirstColor",
+		@"SecondColor",
+		@"GroupCell-6",
+		@"GroupCell-7",
+		@"GradientDirection",
+		@"GroupCell8",
+		@"MorningImage",
+		@"AfternoonImage",
+		@"SunsetImage",
+		@"MidnightImage"
 
-			@"GroupCell-1",
-			@"Image",
-			@"LightImage",
-			@"SegmentCell",
-			@"BlurValue",
-			@"AlphaValue",
-			@"GroupCell-5",
-			@"AnimateGradientSwitch",
-			@"FirstColor",
-			@"SecondColor",
-			@"GroupCell-6",
-			@"GroupCell-7",
-			@"GradientDirection",
-			@"GroupCell8",
-			@"MorningImage",
-			@"AfternoonImage",
-			@"SunsetImage",
-			@"MidnightImage"
+	];
 
-		];
+	savedSpecifiers = (savedSpecifiers) ?: [NSMutableDictionary new];
 
-		savedSpecifiers = (savedSpecifiers) ?: [NSMutableDictionary new];
+	for(PSSpecifier *specifier in _specifiers)
 
-		for(PSSpecifier *specifier in _specifiers)
+		if([chosenIDs containsObject:[specifier propertyForKey:@"id"]])
 
-			if([chosenIDs containsObject:[specifier propertyForKey:@"id"]])
-
-				[savedSpecifiers setObject:specifier forKey:[specifier propertyForKey:@"id"]];
-
-	}
+			[savedSpecifiers setObject:specifier forKey:[specifier propertyForKey:@"id"]];
 
 	return _specifiers;
 
@@ -77,16 +72,13 @@ static void postNSNotification() {
 - (id)init {
 
 	self = [super init];
+	if(!self) return nil;
 
-	if(self) {
+	[self setupUI];
 
-		[self setupUI];
-
-		CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/imageChanged"), NULL, 0);
-		CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/gradientChanged"), NULL, 0);
-		CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/scheduledImageChanged"), NULL, 0);
-
-	}
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/imageChanged"), NULL, 0);
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/gradientChanged"), NULL, 0);
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/scheduledImageChanged"), NULL, 0);
 
 	return self;
 
@@ -105,13 +97,10 @@ static void postNSNotification() {
 
 	[super viewDidAppear:animated];
 
-	if(!self.navigationItem.titleView) {
+	if(self.navigationItem.titleView) return;
 
-		aprilTitleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 2.0.1" minimumScrollOffsetRequired:-68];
-
-		self.navigationItem.titleView = aprilTitleView;
-
-	}
+	aprilTitleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 2.1" minimumScrollOffsetRequired:-68];
+	self.navigationItem.titleView = aprilTitleView;
 
 }
 
@@ -125,18 +114,17 @@ static void postNSNotification() {
 	headerImageView = [UIImageView new];
 	headerImageView.image = bannerImage;
 	headerImageView.contentMode = UIViewContentModeScaleAspectFill;
+	headerImageView.clipsToBounds = YES;
 	headerImageView.translatesAutoresizingMaskIntoConstraints = NO;
 	[headerView addSubview:headerImageView];
 
-	UIButton *changelogButton =  [UIButton buttonWithType:UIButtonTypeCustom];
-	changelogButton.tintColor = AprilTintColor;
-	[changelogButton setImage : changelogImage forState:UIControlStateNormal];
-	[changelogButton addTarget : self action:@selector(showWtfChangedInThisVersion) forControlEvents:UIControlEventTouchUpInside];
+	UIButton *changelogButton =  [UIButton new];
+	changelogButton.tintColor = kAprilTintColor;
+	[changelogButton setImage:changelogImage forState:UIControlStateNormal];
+	[changelogButton addTarget:self action:@selector(showWtfChangedInThisVersion) forControlEvents:UIControlEventTouchUpInside];
 
 	UIBarButtonItem *changelogButtonItem = [[UIBarButtonItem alloc] initWithCustomView:changelogButton];
 	self.navigationItem.rightBarButtonItem = changelogButtonItem;
-
-	_table.tableHeaderView = headerView;
 
 	[self layoutUI];
 
@@ -145,10 +133,10 @@ static void postNSNotification() {
 
 - (void)layoutUI {
 
-	[headerImageView.topAnchor constraintEqualToAnchor : headerView.topAnchor].active = YES;
-	[headerImageView.bottomAnchor constraintEqualToAnchor : headerView.bottomAnchor].active = YES;
-	[headerImageView.leadingAnchor constraintEqualToAnchor : headerView.leadingAnchor].active = YES;
-	[headerImageView.trailingAnchor constraintEqualToAnchor : headerView.trailingAnchor].active = YES;
+	[headerImageView.topAnchor constraintEqualToAnchor: headerView.topAnchor].active = YES;
+	[headerImageView.bottomAnchor constraintEqualToAnchor: headerView.bottomAnchor].active = YES;
+	[headerImageView.leadingAnchor constraintEqualToAnchor: headerView.leadingAnchor].active = YES;
+	[headerImageView.trailingAnchor constraintEqualToAnchor: headerView.trailingAnchor].active = YES;
 
 }
 
@@ -187,14 +175,6 @@ static void postNSNotification() {
 
 	}
 
-	if(![[self readPreferenceValue:[self specifierForID:@"AlphaSwitch"]] boolValue])
-
-		[self removeSpecifier:savedSpecifiers[@"AlphaValue"] animated:NO];
-
-	else if(![self containsSpecifier:savedSpecifiers[@"AlphaValue"]])
-
-		[self insertSpecifier:savedSpecifiers[@"AlphaValue"] afterSpecifierID:@"AlphaSwitch" animated:NO];
-
 	if(![[self readPreferenceValue:[self specifierForID:@"GradientSwitch"]] boolValue])
 
 		[self removeContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-5"], savedSpecifiers[@"AnimateGradientSwitch"], savedSpecifiers[@"GroupCell-6"], savedSpecifiers[@"FirstColor"], savedSpecifiers[@"SecondColor"], savedSpecifiers[@"GroupCell-7"], savedSpecifiers[@"GradientDirection"]] animated:NO];
@@ -221,8 +201,7 @@ static void postNSNotification() {
 	UIImage *tweakImage = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/Assets/AprilIcon.png"];
 	UIImage *checkmarkImage = [UIImage systemImageNamed:@"checkmark.circle.fill"];
 
-	changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"2.0.1" icon:tweakImage];
-
+	changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"2.1" icon:tweakImage];
 	[changelogController addBulletedListItemWithTitle:@"Code" description:@"Refactoring." image:checkmarkImage];
 
 	_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
@@ -233,13 +212,13 @@ static void postNSNotification() {
 	backdropView.translatesAutoresizingMaskIntoConstraints = NO;
 	[changelogController.viewIfLoaded insertSubview:backdropView atIndex:0];
 
-	[backdropView.topAnchor constraintEqualToAnchor : changelogController.viewIfLoaded.topAnchor].active = YES;
-	[backdropView.bottomAnchor constraintEqualToAnchor : changelogController.viewIfLoaded.bottomAnchor].active = YES;
-	[backdropView.leadingAnchor constraintEqualToAnchor : changelogController.viewIfLoaded.leadingAnchor].active = YES;
-	[backdropView.trailingAnchor constraintEqualToAnchor : changelogController.viewIfLoaded.trailingAnchor].active = YES;
+	[backdropView.topAnchor constraintEqualToAnchor: changelogController.viewIfLoaded.topAnchor].active = YES;
+	[backdropView.bottomAnchor constraintEqualToAnchor: changelogController.viewIfLoaded.bottomAnchor].active = YES;
+	[backdropView.leadingAnchor constraintEqualToAnchor: changelogController.viewIfLoaded.leadingAnchor].active = YES;
+	[backdropView.trailingAnchor constraintEqualToAnchor: changelogController.viewIfLoaded.trailingAnchor].active = YES;
 
 	changelogController.viewIfLoaded.backgroundColor = UIColor.clearColor;
-	changelogController.view.tintColor = AprilTintColor;
+	changelogController.view.tintColor = kAprilTintColor;
 	changelogController.modalInPresentation = NO;
 	changelogController.modalPresentationStyle = UIModalPresentationPageSheet;
 	[self presentViewController:changelogController animated:YES completion:nil];
@@ -257,10 +236,10 @@ static void postNSNotification() {
 
 		NSFileManager *fileM = [NSFileManager defaultManager];
 
-		BOOL success = [fileM removeItemAtPath:@"var/mobile/Library/Preferences/me.luki.aprilprefs.plist" error:nil];
-		BOOL successTwo = [fileM removeItemAtPath:@"var/mobile/Library/Preferences/me.luki.aprilprefs" error:nil];
+		[fileM removeItemAtPath:@"/var/mobile/Library/Preferences/me.luki.aprilprefs.plist" error:nil];
+		[fileM removeItemAtPath:@"/var/mobile/Library/Preferences/me.luki.aprilprefs" error:nil];
 
-		if((success) || (successTwo)) [self crossDissolveBlur];
+		[self crossDissolveBlur];
 
 	}];
 
@@ -289,11 +268,7 @@ static void postNSNotification() {
 
 		backdropView.alpha = 1;
 
-	} completion:^(BOOL finished) {
-
-		[self killSettings];
-
-	}];
+	} completion:^(BOOL finished) { [self killSettings]; }];
 
 }
 
@@ -336,7 +311,7 @@ static void postNSNotification() {
 - (id)readPreferenceValue:(PSSpecifier *)specifier {
 
 	NSMutableDictionary *settings = [NSMutableDictionary dictionary];
-	[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:plistPath]];
+	[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile: kPath]];
 	return (settings[specifier.properties[@"key"]]) ?: specifier.properties[@"default"];
 
 }
@@ -345,15 +320,16 @@ static void postNSNotification() {
 - (void)setPreferenceValue:(id)value specifier:(PSSpecifier *)specifier {
 
 	NSMutableDictionary *settings = [NSMutableDictionary dictionary];
-	[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:plistPath]];
+	[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile: kPath]];
 	[settings setObject:value forKey:specifier.properties[@"key"]];
-	[settings writeToFile:plistPath atomically:YES];
+	[settings writeToFile:kPath atomically:YES];
+
+	[super setPreferenceValue:value specifier:specifier];
 
 	[NSNotificationCenter.defaultCenter postNotificationName:@"applyImage" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"applyAlpha" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"applyGradient" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"applyScheduledImage" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"applyBlur" object:NULL];
 
 	NSString *key = [specifier propertyForKey:@"key"];
 
@@ -395,18 +371,6 @@ static void postNSNotification() {
 
 	}
 
-	if([key isEqualToString:@"alphaEnabled"]) {
-
-		if(![value boolValue])
-
-			[self removeSpecifier:savedSpecifiers[@"AlphaValue"] animated:YES];
-
-		else if (![self containsSpecifier:savedSpecifiers[@"AlphaValue"]])
-
-			[self insertSpecifier:savedSpecifiers[@"AlphaValue"] afterSpecifierID:@"AlphaSwitch" animated:YES];
-
-	}
-
 	if([key isEqualToString:@"setGradientAsBackground"]) {
 
 		if(![value boolValue])
@@ -444,7 +408,6 @@ static void postNSNotification() {
 - (NSArray *)specifiers {
 
 	if(!_specifiers) _specifiers = [self loadSpecifiersFromPlistName:@"AprilContributors" target:self];
-
 	return _specifiers;
 
 }
@@ -459,7 +422,6 @@ static void postNSNotification() {
 - (NSArray *)specifiers {
 
 	if(!_specifiers) _specifiers = [self loadSpecifiersFromPlistName:@"AprilLinks" target:self];
-
 	return _specifiers;
 
 }
@@ -505,14 +467,11 @@ static void postNSNotification() {
 
 @implementation AprilTableCell
 
-
 - (void)setTitle:(NSString *)t {
 
 	[super setTitle:t];
-
-	self.titleLabel.textColor = AprilTintColor;
+	self.titleLabel.textColor = kAprilTintColor;
 
 }
-
 
 @end

@@ -3,38 +3,35 @@
 
 @implementation APPAnimatedTitleView {
 
-	UILabel *_titleLabel;
-	NSLayoutConstraint *_yConstraint;
-	CGFloat _minimumOffsetRequired;
+	UILabel *titleLabel;
+	CGFloat minimumOffsetRequired;
+	NSLayoutConstraint *centerYAnchorConstraint;
 
 }
 
 
-- (instancetype)initWithTitle:(NSString *)title minimumScrollOffsetRequired:(CGFloat)minimumOffset {
+- (id)initWithTitle:(NSString *)title minimumScrollOffsetRequired:(CGFloat)minimumOffset {
 
-	if([super init]) {
+	self = [super init];
+	if(!self) return nil;
 
-		_titleLabel = [UILabel new];
-		_titleLabel.text = title;
-		_titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightHeavy];
-		_titleLabel.textColor = UIColor.labelColor;
-		_titleLabel.textAlignment = NSTextAlignmentCenter;
-		_titleLabel.clipsToBounds = YES;
-		_titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-		[_titleLabel sizeToFit];
+	titleLabel = [UILabel new];
+	titleLabel.font = [UIFont systemFontOfSize:17 weight: UIFontWeightHeavy];
+	titleLabel.text = title;
+	titleLabel.textColor = UIColor.labelColor;
+	titleLabel.textAlignment = NSTextAlignmentCenter;
+	titleLabel.clipsToBounds = YES;
+	titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+	[self addSubview: titleLabel];
 
-		[self addSubview:_titleLabel];
+	[self.widthAnchor constraintEqualToAnchor: titleLabel.widthAnchor].active = YES;
+	[self.heightAnchor constraintEqualToAnchor: titleLabel.heightAnchor].active = YES;
 
-		[self.widthAnchor constraintEqualToAnchor:_titleLabel.widthAnchor].active = YES;
-		[self.heightAnchor constraintEqualToAnchor:_titleLabel.heightAnchor].active = YES;
+	[titleLabel.centerXAnchor constraintEqualToAnchor: self.centerXAnchor].active = YES;
+	centerYAnchorConstraint = [titleLabel.centerYAnchor constraintEqualToAnchor:self.centerYAnchor constant: 100];
+	centerYAnchorConstraint.active = YES;
 
-		[_titleLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
-		_yConstraint = [_titleLabel.centerYAnchor constraintEqualToAnchor:self.centerYAnchor constant:100];
-		_yConstraint.active = YES;
-
-		_minimumOffsetRequired = minimumOffset;
-
-	}
+	minimumOffsetRequired = minimumOffset;
 
 	return self;
 
@@ -43,17 +40,15 @@
 
 - (void)adjustLabelPositionToScrollOffset:(CGFloat)offset {
 
-	CGFloat adjustment = 100 - (offset - _minimumOffsetRequired);
+	CGFloat adjustment = 100 - (offset - minimumOffsetRequired);
 
-	if(offset > _minimumOffsetRequired) {
+	if(offset > minimumOffsetRequired) {
 
-		if(adjustment <= 0) _yConstraint.constant = 0; 
+		if(adjustment <= 0) centerYAnchorConstraint.constant = 0; 
+		else centerYAnchorConstraint.constant = adjustment;
 
-		else _yConstraint.constant = adjustment;
-
-	} else _yConstraint.constant = -100;
+	} else centerYAnchorConstraint.constant = -100;
 
 }
-
 
 @end

@@ -80,6 +80,9 @@ static void postNSNotification() {
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/gradientChanged"), NULL, 0);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/scheduledImageChanged"), NULL, 0);
 
+	[NSNotificationCenter.defaultCenter removeObserver:self];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(presentVC) name:@"presentVC" object:nil];
+
 	return self;
 
 }
@@ -203,6 +206,7 @@ static void postNSNotification() {
 
 	changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"2.1" icon:tweakImage];
 	[changelogController addBulletedListItemWithTitle:@"Code" description:@"Refactoring." image:checkmarkImage];
+	[changelogController addBulletedListItemWithTitle:@"Tweak" description:@"Added a Gaussian blur option." image:checkmarkImage];
 
 	_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
 

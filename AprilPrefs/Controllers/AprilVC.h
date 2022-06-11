@@ -2,7 +2,7 @@
 #import <Preferences/PSTableCell.h>
 #import <Preferences/PSListController.h>
 #import <AudioToolbox/AudioServices.h>
-#import "APPAnimatedTitleView.h"
+#import "../Views/APPAnimatedTitleView.h"
 #import "Headers/Constants.h"
 #import <spawn.h>
 

@@ -15,6 +15,10 @@ static void postNSNotification() {
 }
 
 
+@interface AprilVC () <AprilGaussianBlurCellDelegate>
+@end
+
+
 @implementation AprilVC {
 
 	APPAnimatedTitleView *aprilTitleView;
@@ -36,19 +40,18 @@ static void postNSNotification() {
 	NSArray *chosenIDs = @[
 
 		@"GroupCell-1",
-		@"Image",
+		@"DarkImage",
 		@"LightImage",
-		@"SegmentCell",
+		@"BlurSegmentCell",
 		@"BlurValue",
-		@"AlphaValue",
-		@"GroupCell-5",
+		@"GroupCell-2",
 		@"AnimateGradientSwitch",
 		@"FirstColor",
 		@"SecondColor",
-		@"GroupCell-6",
-		@"GroupCell-7",
+		@"GroupCell-3",
+		@"GroupCell-4",
 		@"GradientDirection",
-		@"GroupCell8",
+		@"GroupCell-5",
 		@"MorningImage",
 		@"AfternoonImage",
 		@"SunsetImage",
@@ -56,7 +59,7 @@ static void postNSNotification() {
 
 	];
 
-	savedSpecifiers = (savedSpecifiers) ?: [NSMutableDictionary new];
+	savedSpecifiers = savedSpecifiers ?: [NSMutableDictionary new];
 
 	for(PSSpecifier *specifier in _specifiers)
 
@@ -151,7 +154,7 @@ static void postNSNotification() {
 	if(![[self readPreferenceValue:[self specifierForID:@"YesSwitch"]] boolValue]) {
 
 		[self removeSpecifier:savedSpecifiers[@"GroupCell-1"] animated:NO];
-		[self removeSpecifier:savedSpecifiers[@"Image"] animated:NO];
+		[self removeSpecifier:savedSpecifiers[@"DarkImage"] animated:NO];
 		[self removeSpecifier:savedSpecifiers[@"LightImage"] animated:NO];
 
 	}
@@ -159,40 +162,40 @@ static void postNSNotification() {
 	else if(![self containsSpecifier:savedSpecifiers[@"GroupCell-1"]]) {
 
 		[self insertSpecifier:savedSpecifiers[@"GroupCell-1"] afterSpecifierID:@"YesSwitch" animated:NO];
-		[self insertSpecifier:savedSpecifiers[@"Image"] afterSpecifierID:@"GroupCell-1" animated:NO];
-		[self insertSpecifier:savedSpecifiers[@"LightImage"] afterSpecifierID:@"Image" animated:NO];
+		[self insertSpecifier:savedSpecifiers[@"DarkImage"] afterSpecifierID:@"GroupCell-1" animated:NO];
+		[self insertSpecifier:savedSpecifiers[@"LightImage"] afterSpecifierID:@"DarkImage" animated:NO];
 
 	}
 
 	if(![[self readPreferenceValue:[self specifierForID:@"BlurSwitch"]] boolValue]) {
 
-		[self removeSpecifier:savedSpecifiers[@"SegmentCell"] animated:NO];
+		[self removeSpecifier:savedSpecifiers[@"BlurSegmentCell"] animated:NO];
 		[self removeSpecifier:savedSpecifiers[@"BlurValue"] animated:NO];
 
 	}
 
-	else if(![self containsSpecifier:savedSpecifiers[@"SegmentCell"]]) {
+	else if(![self containsSpecifier:savedSpecifiers[@"BlurSegmentCell"]]) {
 
-		[self insertSpecifier:savedSpecifiers[@"SegmentCell"] afterSpecifierID:@"BlurSwitch" animated:NO];
-		[self insertSpecifier:savedSpecifiers[@"BlurValue"] afterSpecifierID:@"SegmentCell" animated:NO];
+		[self insertSpecifier:savedSpecifiers[@"BlurSegmentCell"] afterSpecifierID:@"BlurSwitch" animated:NO];
+		[self insertSpecifier:savedSpecifiers[@"BlurValue"] afterSpecifierID:@"BlurSegmentCell" animated:NO];
 
 	}
 
 	if(![[self readPreferenceValue:[self specifierForID:@"GradientSwitch"]] boolValue])
 
-		[self removeContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-5"], savedSpecifiers[@"AnimateGradientSwitch"], savedSpecifiers[@"GroupCell-6"], savedSpecifiers[@"FirstColor"], savedSpecifiers[@"SecondColor"], savedSpecifiers[@"GroupCell-7"], savedSpecifiers[@"GradientDirection"]] animated:NO];
+		[self removeContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-2"], savedSpecifiers[@"AnimateGradientSwitch"], savedSpecifiers[@"GroupCell-3"], savedSpecifiers[@"FirstColor"], savedSpecifiers[@"SecondColor"], savedSpecifiers[@"GroupCell-4"], savedSpecifiers[@"GradientDirection"]] animated:NO];
 
-	else if(![self containsSpecifier:savedSpecifiers[@"GroupCell-5"]])
+	else if(![self containsSpecifier:savedSpecifiers[@"GroupCell-2"]])
 
-		[self insertContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-5"], savedSpecifiers[@"AnimateGradientSwitch"], savedSpecifiers[@"GroupCell-6"], savedSpecifiers[@"FirstColor"], savedSpecifiers[@"SecondColor"], savedSpecifiers[@"GroupCell-7"], savedSpecifiers[@"GradientDirection"]] afterSpecifierID:@"GradientSwitch" animated:NO];
+		[self insertContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-2"], savedSpecifiers[@"AnimateGradientSwitch"], savedSpecifiers[@"GroupCell-3"], savedSpecifiers[@"FirstColor"], savedSpecifiers[@"SecondColor"], savedSpecifiers[@"GroupCell-4"], savedSpecifiers[@"GradientDirection"]] afterSpecifierID:@"GradientSwitch" animated:NO];
 
 	if(![[self readPreferenceValue:[self specifierForID:@"ScheduledImagesSwitch"]] boolValue])
 
-		[self removeContiguousSpecifiers:@[savedSpecifiers[@"GroupCell8"], savedSpecifiers[@"MorningImage"], savedSpecifiers[@"AfternoonImage"], savedSpecifiers[@"SunsetImage"], savedSpecifiers[@"MidnightImage"]] animated:NO];
+		[self removeContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-5"], savedSpecifiers[@"MorningImage"], savedSpecifiers[@"AfternoonImage"], savedSpecifiers[@"SunsetImage"], savedSpecifiers[@"MidnightImage"]] animated:NO];
 
-	else if(![self containsSpecifier:savedSpecifiers[@"GroupCell8"]])
+	else if(![self containsSpecifier:savedSpecifiers[@"GroupCell-5"]])
 
-		[self insertContiguousSpecifiers:@[savedSpecifiers[@"GroupCell8"], savedSpecifiers[@"MorningImage"], savedSpecifiers[@"AfternoonImage"], savedSpecifiers[@"SunsetImage"], savedSpecifiers[@"MidnightImage"]] afterSpecifierID:@"ScheduledImagesSwitch" animated:NO];
+		[self insertContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-5"], savedSpecifiers[@"MorningImage"], savedSpecifiers[@"AfternoonImage"], savedSpecifiers[@"SunsetImage"], savedSpecifiers[@"MidnightImage"]] afterSpecifierID:@"ScheduledImagesSwitch" animated:NO];
 
 }
 
@@ -307,7 +310,10 @@ static void postNSNotification() {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	tableView.tableHeaderView = headerView;
-	return [super tableView:tableView cellForRowAtIndexPath:indexPath];
+
+	AprilGaussianBlurCell *cell = (AprilGaussianBlurCell *)[super tableView:tableView cellForRowAtIndexPath: indexPath];
+	if([cell isKindOfClass: AprilGaussianBlurCell.class]) cell.delegate = self;
+	return cell;
 
 }
 
@@ -342,16 +348,16 @@ static void postNSNotification() {
 		if(![value boolValue]) {
 
 			[self removeSpecifier:savedSpecifiers[@"GroupCell-1"] animated:YES];
-			[self removeSpecifier:savedSpecifiers[@"Image"] animated:YES];
-			[self removeSpecifier:savedSpecifiers[@"LightImage"] animated:NO];
+			[self removeSpecifier:savedSpecifiers[@"DarkImage"] animated:YES];
+			[self removeSpecifier:savedSpecifiers[@"LightImage"] animated:YES];
 
 		}
 
-		else if(![self containsSpecifier:savedSpecifiers[@"Image"]]) {
+		else if(![self containsSpecifier:savedSpecifiers[@"DarkImage"]]) {
 
 			[self insertSpecifier:savedSpecifiers[@"GroupCell-1"] afterSpecifierID:@"YesSwitch" animated:YES];
-			[self insertSpecifier:savedSpecifiers[@"Image"] afterSpecifierID:@"GroupCell-1" animated:YES];
-			[self insertSpecifier:savedSpecifiers[@"LightImage"] afterSpecifierID:@"Image" animated:NO];
+			[self insertSpecifier:savedSpecifiers[@"DarkImage"] afterSpecifierID:@"GroupCell-1" animated:YES];
+			[self insertSpecifier:savedSpecifiers[@"LightImage"] afterSpecifierID:@"DarkImage" animated:YES];
 
 		}
 
@@ -361,15 +367,15 @@ static void postNSNotification() {
 
 		if(![value boolValue]) {
 
-			[self removeSpecifier:savedSpecifiers[@"SegmentCell"] animated:YES];
+			[self removeSpecifier:savedSpecifiers[@"BlurSegmentCell"] animated:YES];
 			[self removeSpecifier:savedSpecifiers[@"BlurValue"] animated:YES];
 
 		}
 
 		else if(![self containsSpecifier:savedSpecifiers[@"BlurValue"]]) {
 
-			[self insertSpecifier:savedSpecifiers[@"SegmentCell"] afterSpecifierID:@"BlurSwitch" animated:YES];
-			[self insertSpecifier:savedSpecifiers[@"BlurValue"] afterSpecifierID:@"SegmentCell" animated:YES];
+			[self insertSpecifier:savedSpecifiers[@"BlurSegmentCell"] afterSpecifierID:@"BlurSwitch" animated:YES];
+			[self insertSpecifier:savedSpecifiers[@"BlurValue"] afterSpecifierID:@"BlurSegmentCell" animated:YES];
 
 		}
 
@@ -379,11 +385,11 @@ static void postNSNotification() {
 
 		if(![value boolValue])
 
-			[self removeContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-5"], savedSpecifiers[@"AnimateGradientSwitch"], savedSpecifiers[@"GroupCell-6"], savedSpecifiers[@"FirstColor"], savedSpecifiers[@"SecondColor"], savedSpecifiers[@"GroupCell-7"], savedSpecifiers[@"GradientDirection"]] animated:YES];
+			[self removeContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-2"], savedSpecifiers[@"AnimateGradientSwitch"], savedSpecifiers[@"GroupCell-3"], savedSpecifiers[@"FirstColor"], savedSpecifiers[@"SecondColor"], savedSpecifiers[@"GroupCell-4"], savedSpecifiers[@"GradientDirection"]] animated:YES];
 
-		else if (![self containsSpecifier:savedSpecifiers[@"GroupCell-5"]])
+		else if (![self containsSpecifier:savedSpecifiers[@"GroupCell-2"]])
 
-			[self insertContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-5"], savedSpecifiers[@"AnimateGradientSwitch"], savedSpecifiers[@"GroupCell-6"], savedSpecifiers[@"FirstColor"], savedSpecifiers[@"SecondColor"], savedSpecifiers[@"GroupCell-7"], savedSpecifiers[@"GradientDirection"]] afterSpecifierID:@"GradientSwitch" animated:YES];
+			[self insertContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-2"], savedSpecifiers[@"AnimateGradientSwitch"], savedSpecifiers[@"GroupCell-3"], savedSpecifiers[@"FirstColor"], savedSpecifiers[@"SecondColor"], savedSpecifiers[@"GroupCell-4"], savedSpecifiers[@"GradientDirection"]] afterSpecifierID:@"GradientSwitch" animated:YES];
 
 	}
 
@@ -391,23 +397,50 @@ static void postNSNotification() {
 
 		if(![[self readPreferenceValue:[self specifierForID:@"ScheduledImagesSwitch"]] boolValue])
 
-			[self removeContiguousSpecifiers:@[savedSpecifiers[@"GroupCell8"], savedSpecifiers[@"MorningImage"], savedSpecifiers[@"AfternoonImage"], savedSpecifiers[@"SunsetImage"], savedSpecifiers[@"MidnightImage"]] animated:YES];
+			[self removeContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-5"], savedSpecifiers[@"MorningImage"], savedSpecifiers[@"AfternoonImage"], savedSpecifiers[@"SunsetImage"], savedSpecifiers[@"MidnightImage"]] animated:YES];
 
 
-		else if(![self containsSpecifier:savedSpecifiers[@"GroupCell8"]])
+		else if(![self containsSpecifier:savedSpecifiers[@"GroupCell-5"]])
 
-			[self insertContiguousSpecifiers:@[savedSpecifiers[@"GroupCell8"], savedSpecifiers[@"MorningImage"], savedSpecifiers[@"AfternoonImage"], savedSpecifiers[@"SunsetImage"], savedSpecifiers[@"MidnightImage"]] afterSpecifierID:@"ScheduledImagesSwitch" animated:YES];    
+			[self insertContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-5"], savedSpecifiers[@"MorningImage"], savedSpecifiers[@"AfternoonImage"], savedSpecifiers[@"SunsetImage"], savedSpecifiers[@"MidnightImage"]] afterSpecifierID:@"ScheduledImagesSwitch" animated:YES];    
 
 	}
 
 }
 
+#pragma mark AprilGaussianBlurCellDelegate
+
+
+- (void)aprilGaussianBlurCellDidTapGaussianBlurButton {
+
+	[[AprilImageManager sharedInstance] blurImageWithImage];
+	[self presentViewController:[AprilImageManager sharedInstance]->firstAlertVC animated:YES completion:nil];
+
+}
+
+
+- (void)aprilGaussianBlurCellDidTapGaussianBlurInfoButton {
+
+	AudioServicesPlaySystemSound(1521);
+
+	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"April" message:@"The gaussian blur is an actual blur applied to the image, rather than an overlay view, like the epic one. This means you can save any image you want with the blur applied, and with any intensity you want. Since generating the blur takes quite some resources, including it directly as an option wouldn't be the best performance wise without sacrificing on the fly preferences. However, you can save any image you want and then come back here and apply it. The image that'll be saved is the one you currently have selected depending on dark/light mode." preferredStyle: UIAlertControllerStyleAlert];
+	UIAlertAction *dismissAction = [UIAlertAction actionWithTitle:@"Got it" style:UIAlertActionStyleDefault handler: nil];
+	[alertController addAction: dismissAction];
+	[self presentViewController:alertController animated:YES completion: nil];
+
+}
+
+
+- (void)presentVC {
+
+	[self presentViewController:[AprilImageManager sharedInstance]->secondAlertVC animated:YES completion:nil];
+
+}
 
 @end
 
 
 @implementation AprilContributorsVC
-
 
 - (NSArray *)specifiers {
 
@@ -416,12 +449,10 @@ static void postNSNotification() {
 
 }
 
-
 @end
 
 
 @implementation AprilLinksVC
-
 
 - (NSArray *)specifiers {
 
@@ -464,7 +495,6 @@ static void postNSNotification() {
 	[UIApplication.sharedApplication openURL:[NSURL URLWithString: @"https://repo.twickd.com/get/com.twickd.luki120.meredith"] options:@{} completionHandler:nil];
 
 }
-
 
 @end
 

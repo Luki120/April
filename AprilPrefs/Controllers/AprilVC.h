@@ -2,6 +2,7 @@
 #import <Preferences/PSTableCell.h>
 #import <Preferences/PSListController.h>
 #import <AudioToolbox/AudioServices.h>
+#import "../Cells/AprilGaussianBlurCell.h"
 #import "../Views/APPAnimatedTitleView.h"
 #import "Headers/Constants.h"
 #import <spawn.h>

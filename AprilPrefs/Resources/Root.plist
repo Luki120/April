@@ -56,7 +56,7 @@
 				<key>PostNotification</key>
 				<string>me.luki.aprilprefs/imageChanged</string>
 				<key>id</key>
-				<string>Image</string>
+				<string>DarkImage</string>
 				<key>key</key>
 				<string>bImage</string>
 				<key>usesPhotos</key>
@@ -91,8 +91,6 @@
 			<dict>
 				<key>cell</key>
 				<string>PSGroupCell</string>
-				<key>id</key>
-				<string>GroupCell-2</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -136,7 +134,7 @@
 					<string>Thin Material</string>
 				</array>
 				<key>id</key>
-				<string>SegmentCell</string>
+				<string>BlurSegmentCell</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -171,8 +169,6 @@
 				<string>PSGroupCell</string>
 				<key>label</key>
 				<string>Table cell alpha</string>
-				<key>id</key>
-				<string>AlphaSwitch</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -195,8 +191,6 @@
 			<dict>
 				<key>cell</key>
 				<string>PSGroupCell</string>
-				<key>id</key>
-				<string>GroupCell-4</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -218,7 +212,7 @@
 				<key>footerText</key>
 				<string>Please notice: the animation will return to it's starting point when switching pages. This is NOT a bug but the way UITableViews work and the gradient is placed. If I found a non hacky solution I'll add it.</string>
 				<key>id</key>
-				<string>GroupCell-5</string>
+				<string>GroupCell-2</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -238,7 +232,7 @@
 				<key>cell</key>
 				<string>PSGroupCell</string>
 				<key>id</key>
-				<string>GroupCell-6</string>
+				<string>GroupCell-3</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -284,7 +278,7 @@
 				<key>cell</key>
 				<string>PSGroupCell</string>
 				<key>id</key>
-				<string>GroupCell-7</string>
+				<string>GroupCell-4</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -346,7 +340,7 @@
 				<key>cell</key>
 				<string>PSGroupCell</string>
 				<key>id</key>
-				<string>GroupCell8</string>
+				<string>GroupCell-5</string>
 			</dict>
 			<dict>
 				<key>cell</key>

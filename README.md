@@ -5,7 +5,7 @@
 ## Features
 
 * Custom Background Image.
-* Custom Blurs: Light, Dark, Epic (Gaussian), Adaptive & Thin Material.
+* Custom Blurs: Light, Dark, Epic, Adaptive, Thin Material & Gaussian.
 * Custom Table Cell Alpha.
 
 ## Scheduled images

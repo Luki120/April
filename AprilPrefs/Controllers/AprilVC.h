@@ -1,10 +1,9 @@
-#import <Preferences/PSSpecifier.h>
-#import <Preferences/PSTableCell.h>
-#import <Preferences/PSListController.h>
-#import <AudioToolbox/AudioServices.h>
+@import AudioToolbox.AudioServices;
+@import Preferences.PSSpecifier;
+@import Preferences.PSListController;
 #import "../Cells/AprilGaussianBlurCell.h"
 #import "../Views/APPAnimatedTitleView.h"
-#import "Headers/Constants.h"
+#import "Headers/Common.h"
 #import <spawn.h>
 
 

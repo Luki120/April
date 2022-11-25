@@ -1,6 +1,3 @@
-#import "Constants.h"
-
-
 static BOOL yes;
 static BOOL blur;
 

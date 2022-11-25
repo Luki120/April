@@ -1,6 +1,5 @@
-#import "Headers/Constants.h"
 #import "Managers/AprilImageManager.h"
-#import <Preferences/PSTableCell.h>
+@import Preferences.PSTableCell;
 
 
 @protocol AprilGaussianBlurCellDelegate <NSObject>

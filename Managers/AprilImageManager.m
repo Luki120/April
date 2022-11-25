@@ -1,5 +1,6 @@
 #import "AprilImageManager.h"
 
+#define saveImageToGallery UIImageWriteToSavedPhotosAlbum
 
 @implementation AprilImageManager
 
@@ -32,7 +33,7 @@
 
 	UIImage *candidateImage = kUserInterfaceStyle ? darkImage : lightImage;
 
-	CIContext *context = [CIContext contextWithOptions: nil];
+	CIContext *context = [CIContext new];
 	CIImage *inputImage = [[CIImage alloc] initWithImage: candidateImage];
 
 	CIFilter *clampFilter = [CIFilter filterWithName:@"CIAffineClamp"];
@@ -47,11 +48,11 @@
 
 		[blurFilter setValue:[NSNumber numberWithFloat:firstAlertVC.textFields.firstObject.text.doubleValue] forKey:@"inputRadius"];
 
-		CIImage *result = [blurFilter valueForKey: kCIOutputImageKey];
-		CGImageRef cgImage = [context createCGImage:result fromRect: inputImage.extent];
+		CIImage *outputImage = [blurFilter valueForKey: kCIOutputImageKey];
+		CGImageRef cgImage = [context createCGImage:outputImage fromRect: inputImage.extent];
 		UIImage *blurredImage = [[UIImage alloc] initWithCGImage:cgImage scale:candidateImage.scale orientation: UIImageOrientationUp];
 
-		[self saveImageToGallery: blurredImage];
+		saveImageToGallery(blurredImage, nil, nil, nil);
 		CGImageRelease(cgImage);
 
 		[self proudSuccessAlertController];
@@ -69,9 +70,6 @@
 	[firstAlertVC addAction: dismissAction];
 
 }
-
-
-- (void)saveImageToGallery:(UIImage *)image { kSaveToGallery(image, nil, nil, nil); }
 
 
 - (void)proudSuccessAlertController {

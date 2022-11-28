@@ -1,4 +1,5 @@
 @import UIKit;
+#import "Headers/Common.h"
 #import "Headers/Prefs.h"
 #import <GcUniversal/GcColorPickerUtils.h>
 #import <GcUniversal/GcImagePickerUtils.h>
@@ -58,7 +59,7 @@
 	lightImage = [GcImagePickerUtils imageFromDefaults:@"me.luki.aprilprefs" withKey:@"bLightImage"];
 
 	UIViewController *ancestor = [self _viewControllerForAncestor];
-	if([ancestor isKindOfClass: %c(LCTTMessagesController)]) return;
+	if([ancestor isKindOfClass: %c(LCTTMessagesVC)]) return;
 
 	self.backgroundView = nil;
 
@@ -90,7 +91,7 @@
 	UIImage *midnightImage;
 
 	UIViewController *ancestor = [self _viewControllerForAncestor];
-	if([ancestor isKindOfClass: %c(LCTTMessagesController)]) return;
+	if([ancestor isKindOfClass: %c(LCTTMessagesVC)]) return;
 
 	if(!scheduledImages) return;
 	if(self.aprilScheduledImageView) [self.aprilScheduledImageView removeFromSuperview];

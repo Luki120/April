@@ -1,31 +1,15 @@
 # April
 
-![download](https://i.imgur.com/lN0gaZ2.png)
+<img src="https://i.imgur.com/lN0gaZ2.png" width="300">
 
 ## Features
 
-* Custom Background Image.
-* Custom Blurs: Light, Dark, Epic, Adaptive, Thin Material & Gaussian.
-* Custom Table Cell Alpha.
-
-## Scheduled images
-
-* Morning Image (8AM)
-* Afternoon Image (12PM)
-* Sunset Image (6PM)
-* Midnight Image (10PM)
-
-## Gradients with directions
-
-* Botttom To Top.
-* Top To Bottom.
-* Left To Right.
-* Right To Left.
-* Upper Left Lower Right.
-* Lower Left Upper Right.
-* Upper Right Lower Left.
-* Lower Right Upper Left.
-
+* Custom dark mode image.
+* Custom light mode image.
+* Custom scheduled images: morning (8AM), afternoon (12PM), sunset (6PM) & midnight image (10PM).
+* Custom blurs: light, dark, epic, adaptive, thin material & gaussian.
+* Custom table cell alpha.
+* Gradients with custom directions & optional animation.
 
 ## Socials
 

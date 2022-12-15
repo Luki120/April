@@ -1,8 +1,7 @@
-@import UIKit;
-#import "Headers/Common.h"
-#import "Headers/Prefs.h"
 #import <GcUniversal/GcColorPickerUtils.h>
 #import <GcUniversal/GcImagePickerUtils.h>
+#import "Headers/Common.h"
+#import "Headers/Prefs.h"
 
 
 // imagine having to subclass a UIView to properly handle
@@ -37,8 +36,14 @@
 - (void)setScheduledImages;
 - (void)setGradientStartPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint;
 - (void)setScheduledImageWithImage:(UIImage *)image imageKey:(NSString *)key;
+- (UIImageView *)createAprilImageView;
 - (UIViewController *)_viewControllerForAncestor;
 @end
+
+
+static UIImage *darkImage;
+static UIImage *lightImage;
+static NSTimer *imagesTimer;
 
 
 %hook UITableView
@@ -63,16 +68,11 @@
 
 	self.backgroundView = nil;
 
-	if(!yes) return;
+	if(!yes) { [self setScheduledImages]; return; }
 	if(self.aprilImageView) [self.aprilImageView removeFromSuperview];
 
-	self.aprilImageView = [UIImageView new];
-	self.aprilImageView.frame = self.backgroundView.bounds;
+	self.aprilImageView = [self createAprilImageView];
 	self.aprilImageView.image = kUserInterfaceStyle ? darkImage : lightImage;
-	self.aprilImageView.contentMode = UIViewContentModeScaleAspectFill;
-	self.aprilImageView.clipsToBounds = YES;
-	self.aprilImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.backgroundView = self.aprilImageView;
 
 	[self setBlur];
 
@@ -83,26 +83,15 @@
 
 - (void)setScheduledImages {
 
-	loadWithoutAFuckingRespring();
-
 	UIImage *morningImage;
 	UIImage *afternoonImage;
 	UIImage *sunsetImage;
 	UIImage *midnightImage;
 
-	UIViewController *ancestor = [self _viewControllerForAncestor];
-	if([ancestor isKindOfClass: %c(LCTTMessagesVC)]) return;
-
 	if(!scheduledImages) return;
 	if(self.aprilScheduledImageView) [self.aprilScheduledImageView removeFromSuperview];
 
-	self.aprilScheduledImageView = [UIImageView new];
-	self.aprilScheduledImageView.frame = self.backgroundView.bounds;
-	self.aprilScheduledImageView.contentMode = UIViewContentModeScaleAspectFill;
-	self.aprilScheduledImageView.clipsToBounds = YES;
-	self.aprilScheduledImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
-	self.backgroundView = self.aprilScheduledImageView;
+	self.aprilScheduledImageView = [self createAprilImageView];
 
 	NSInteger hours = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:[NSCalendar.currentCalendar dateByAddingUnit:NSCalendarUnitSecond value:10 toDate:NSDate.date options:0]];
 
@@ -175,46 +164,21 @@
 	NSArray *gradientColors = [NSArray arrayWithObjects:(id)firstColor.CGColor, (id)secondColor.CGColor, nil];
 	NSArray *gradientLocations = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.00], [NSNumber numberWithFloat:0.50], nil];
 
-	self.neatGradientView = [[AprilGradientView alloc] initWithFrame:self.backgroundView.bounds];
+	self.neatGradientView = [[AprilGradientView alloc] initWithFrame: self.backgroundView.bounds];
 	self.neatGradientView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.neatGradientView.layer.colors = gradientColors;
 	self.neatGradientView.layer.locations = gradientLocations;
 	self.backgroundView = self.neatGradientView;
 
 	switch(gradientDirection) {
-
-		case 0: // Bottom to Top
-
-			[self setGradientStartPoint:CGPointMake(0.5, 1) endPoint:CGPointMake(0.5, 0)]; break;
-
-		case 1: // Top to Bottom
-
-			[self setGradientStartPoint:CGPointMake(0.5, 0) endPoint:CGPointMake(0.5, 1)]; break;
-
-		case 2: // Left to Right
-
-			[self setGradientStartPoint:CGPointMake(0, 0.5) endPoint:CGPointMake(1, 0.5)]; break;
-
-		case 3: // Right to Left
-
-			[self setGradientStartPoint:CGPointMake(1, 0.5) endPoint:CGPointMake(0, 0.5)]; break;
-
-		case 4: // Upper Left lower right
-
-			[self setGradientStartPoint:CGPointMake(0, 0) endPoint:CGPointMake(1, 1)]; break;
-
-		case 5: // Lower left upper right
-
-			[self setGradientStartPoint:CGPointMake(0, 1) endPoint:CGPointMake(1, 0)]; break;
-
-		case 6: // Upper right lower left
-
-			[self setGradientStartPoint:CGPointMake(1, 0) endPoint:CGPointMake(0, 1)]; break;
-
-		case 7: // Lower right upper left
-
-			[self setGradientStartPoint:CGPointMake(1, 1) endPoint:CGPointMake(0, 0)]; break;
-
+		case 0: [self setGradientStartPoint:CGPointMake(0.5, 1) endPoint:CGPointMake(0.5, 0)]; break; // Bottom to top
+		case 1: [self setGradientStartPoint:CGPointMake(0.5, 0) endPoint:CGPointMake(0.5, 1)]; break; // Top to bottom
+		case 2: [self setGradientStartPoint:CGPointMake(0, 0.5) endPoint:CGPointMake(1, 0.5)]; break; // Left to right
+		case 3: [self setGradientStartPoint:CGPointMake(1, 0.5) endPoint:CGPointMake(0, 0.5)]; break; // Right to left
+		case 4: [self setGradientStartPoint:CGPointMake(0, 0) endPoint:CGPointMake(1, 1)]; break; // Upper left lower right
+		case 5: [self setGradientStartPoint:CGPointMake(0, 1) endPoint:CGPointMake(1, 0)]; break; // Lower left upper right
+		case 6: [self setGradientStartPoint:CGPointMake(1, 0) endPoint:CGPointMake(0, 1)]; break; // Upper right lower left
+		case 7: [self setGradientStartPoint:CGPointMake(1, 1) endPoint:CGPointMake(0, 0)]; break; // Lower right upper left
 	}
 
 	if(!setGradientAnimation) return;
@@ -236,19 +200,16 @@
 	%orig;
 	self.aprilImageView.image = kUserInterfaceStyle ? darkImage : lightImage;
 
-
 }
 
 
 - (void)didMoveToSuperview { // Add notification observers
 
 	%orig;
-	tableView = self; // get an instance of UITableView
 
 	[NSNotificationCenter.defaultCenter removeObserver:self];
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setImage) name:@"applyImage" object:nil];
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setGradient) name:@"applyGradient" object:nil];
-	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setScheduledImages) name:@"applyScheduledImage" object:nil];
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setScheduledImages) name:@"applyTimer" object:nil];
 
 }
@@ -266,6 +227,20 @@
 
 
 // Reusable funcs
+
+%new
+
+- (UIImageView *)createAprilImageView {
+
+	UIImageView *imageView = [UIImageView new];
+	imageView.contentMode = UIViewContentModeScaleAspectFill;
+	imageView.clipsToBounds = YES;
+	imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	self.backgroundView = imageView;
+	return imageView;
+
+}
+
 
 %new
 
@@ -332,8 +307,8 @@
 
 	%orig;
 
-	UIColor *darkModeColor = [UIColor colorWithRed: 0.11 green: 0.11 blue: 0.12 alpha: cellAlpha];
-	UIColor *lightModeColor = [UIColor colorWithRed: 1.00 green: 1.00 blue: 1.00 alpha: cellAlpha];
+	UIColor *darkModeColor = [UIColor colorWithRed:0.11 green:0.11 blue:0.12 alpha: cellAlpha];
+	UIColor *lightModeColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha: cellAlpha];
 
 	self.backgroundColor = kUserInterfaceStyle ? darkModeColor : lightModeColor;
 
@@ -364,10 +339,7 @@ static void scheduleTimer() {
 
 	imagesTimer = [NSTimer timerWithTimeInterval:seconds repeats:NO block:^(NSTimer *time) {
 
-		[NSNotificationCenter.defaultCenter postNotificationName:@"timerApplied" object:nil];
-
-		[tableView setBlur];	
-
+		[NSNotificationCenter.defaultCenter postNotificationName:@"applyTimer" object:nil];
 		scheduleTimer();
 
 	}];

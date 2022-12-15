@@ -352,7 +352,7 @@
 				<key>defaults</key>
 				<string>me.luki.aprilprefs</string>
 				<key>PostNotification</key>
-				<string>me.luki.aprilprefs/scheduledImageChanged</string>
+				<string>me.luki.aprilprefs/imageChanged</string>
 				<key>id</key>
 				<string>MorningImage</string>
 				<key>key</key>
@@ -374,7 +374,7 @@
 				<key>defaults</key>
 				<string>me.luki.aprilprefs</string>
 				<key>PostNotification</key>
-				<string>me.luki.aprilprefs/scheduledImageChanged</string>
+				<string>me.luki.aprilprefs/imageChanged</string>
 				<key>id</key>
 				<string>AfternoonImage</string>
 				<key>key</key>
@@ -396,7 +396,7 @@
 				<key>defaults</key>
 				<string>me.luki.aprilprefs</string>
 				<key>PostNotification</key>
-				<string>me.luki.aprilprefs/scheduledImageChanged</string>
+				<string>me.luki.aprilprefs/imageChanged</string>
 				<key>id</key>
 				<string>SunsetImage</string>
 				<key>key</key>
@@ -418,7 +418,7 @@
 				<key>defaults</key>
 				<string>me.luki.aprilprefs</string>
 				<key>PostNotification</key>
-				<string>me.luki.aprilprefs/scheduledImageChanged</string>
+				<string>me.luki.aprilprefs/imageChanged</string>
 				<key>id</key>
 				<string>MidnightImage</string>
 				<key>key</key>

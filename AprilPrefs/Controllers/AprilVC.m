@@ -10,7 +10,6 @@ static void postNSNotification() {
 
 	[NSNotificationCenter.defaultCenter postNotificationName:@"applyImage" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"applyGradient" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"applyScheduledImage" object:NULL];
 
 }
 
@@ -81,7 +80,6 @@ static void postNSNotification() {
 
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/imageChanged"), NULL, 0);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/gradientChanged"), NULL, 0);
-	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/scheduledImageChanged"), NULL, 0);
 
 	[NSNotificationCenter.defaultCenter removeObserver:self];
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(presentVC) name:@"presentVC" object:nil];
@@ -339,7 +337,6 @@ static void postNSNotification() {
 	[NSNotificationCenter.defaultCenter postNotificationName:@"applyImage" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"applyAlpha" object:NULL];
 	[NSNotificationCenter.defaultCenter postNotificationName:@"applyGradient" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"applyScheduledImage" object:NULL];
 
 	NSString *key = [specifier propertyForKey:@"key"];
 

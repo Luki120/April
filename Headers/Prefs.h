@@ -13,13 +13,6 @@ static NSInteger gradientDirection;
 
 static BOOL scheduledImages;
 
-static UIImage *darkImage;
-static UIImage *lightImage;
-
-static NSTimer *imagesTimer;
-
-static UITableView *tableView = nil;
-
 static void loadWithoutAFuckingRespring() {
 
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: kPath];

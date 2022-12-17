@@ -9,7 +9,7 @@
 
 }
 + (AprilImageManager *)sharedInstance;
-- (void)blurImageWithImage;
+- (void)blurImage;
 @end
 
 

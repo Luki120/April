@@ -3,7 +3,8 @@
 @import Preferences.PSListController;
 #import "../Cells/AprilGaussianBlurCell.h"
 #import "../Views/APPAnimatedTitleView.h"
-#import "Headers/Common.h"
+#import "../../Managers/AprilImageManager.h"
+#import <notify.h>
 #import <spawn.h>
 
 
@@ -26,7 +27,7 @@
 
 
 @interface PSTableCell ()
-- (void)setTitle:(NSString *)t;
+- (void)setTitle:(NSString *)title;
 @end
 
 

@@ -44,6 +44,7 @@
 static UIImage *darkImage;
 static UIImage *lightImage;
 static NSTimer *imagesTimer;
+static NSNotificationName const AprilApplyTimerNotification = @"AprilApplyTimerNotification";
 
 
 %hook UITableView
@@ -93,12 +94,12 @@ static NSTimer *imagesTimer;
 
 	self.aprilScheduledImageView = [self createAprilImageView];
 
-	NSInteger hours = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:[NSCalendar.currentCalendar dateByAddingUnit:NSCalendarUnitSecond value:10 toDate:NSDate.date options:0]];
+	NSInteger hour = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:[NSCalendar.currentCalendar dateByAddingUnit:NSCalendarUnitSecond value:10 toDate:NSDate.date options:0]];
 
-	if(hours >= 22) [self setScheduledImageWithImage:midnightImage imageKey: @"midnightImage"]; // 10 pm
-	else if(hours >= 18) [self setScheduledImageWithImage:sunsetImage imageKey: @"sunsetImage"]; // 6 pm
-	else if(hours >= 12) [self setScheduledImageWithImage:afternoonImage imageKey: @"afternoonImage"]; // 12 pm
-	else if(hours >= 8) [self setScheduledImageWithImage:morningImage imageKey: @"morningImage"]; // 8 am
+	if(hour >= 22) [self setScheduledImageWithImage:midnightImage imageKey: @"midnightImage"]; // 10 pm
+	else if(hour >= 18) [self setScheduledImageWithImage:sunsetImage imageKey: @"sunsetImage"]; // 6 pm
+	else if(hour >= 12) [self setScheduledImageWithImage:afternoonImage imageKey: @"afternoonImage"]; // 12 pm
+	else if(hour >= 8) [self setScheduledImageWithImage:morningImage imageKey: @"morningImage"]; // 8 am
 	else [self setScheduledImageWithImage:midnightImage imageKey: @"midnightImage"]; // time before 8 am, so loop back to midnight wallpaper
 
 	[self setBlur];
@@ -123,9 +124,6 @@ static NSTimer *imagesTimer;
 		_UIBackdropView *blurView = [[_UIBackdropView alloc] initWithFrame:CGRectZero autosizesToFitSuperview:YES settings:settings];
 		blurView.tag = 1337;
 		blurView.alpha = intensity;
-		blurView._blurRadius = 80.0;
-		blurView._blurQuality = @"high";
-		blurView.blurRadiusSetOnce = NO;
 		[self.backgroundView insertSubview:blurView atIndex:0];
 
 	} else {
@@ -207,10 +205,9 @@ static NSTimer *imagesTimer;
 
 	%orig;
 
-	[NSNotificationCenter.defaultCenter removeObserver:self];
-	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setImage) name:@"applyImage" object:nil];
-	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setGradient) name:@"applyGradient" object:nil];
-	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setScheduledImages) name:@"applyTimer" object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setImage) name:AprilApplyImageNotification object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setGradient) name:AprilApplyGradientNotification object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(setScheduledImages) name:AprilApplyTimerNotification object:nil];
 
 }
 
@@ -286,8 +283,7 @@ static NSTimer *imagesTimer;
 	%orig;
 	[self applyAlpha];
 
-	[NSNotificationCenter.defaultCenter removeObserver:self];
-	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applyAlpha) name:@"applyAlpha" object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applyAlpha) name:AprilApplyAlphaNotification object:nil];
 
 }
 
@@ -339,7 +335,7 @@ static void scheduleTimer() {
 
 	imagesTimer = [NSTimer timerWithTimeInterval:seconds repeats:NO block:^(NSTimer *time) {
 
-		[NSNotificationCenter.defaultCenter postNotificationName:@"applyTimer" object:nil];
+		[NSNotificationCenter.defaultCenter postNotificationName:AprilApplyTimerNotification object:nil];
 		scheduleTimer();
 
 	}];

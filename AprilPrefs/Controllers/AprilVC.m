@@ -5,31 +5,28 @@
 
 #import "AprilVC.h"
 
+// ! Constants
 
-static void postNSNotification() {
+static NSString *const kImagesPath = @"/var/mobile/Library/Preferences/me.luki.aprilprefs";
 
-	[NSNotificationCenter.defaultCenter postNotificationName:@"applyImage" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"applyGradient" object:NULL];
-
-}
-
+static const char *april_image_changed = "me.luki.aprilprefs/imageChanged";
+static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged";
 
 @interface AprilVC () <AprilGaussianBlurCellDelegate>
 @end
 
-
 @implementation AprilVC {
 
-	APPAnimatedTitleView *aprilTitleView;
 	UIView *headerView;
 	UIImageView *headerImageView;
+	APPAnimatedTitleView *aprilTitleView;
 	NSMutableDictionary *savedSpecifiers;
 	OBWelcomeController *changelogController;
 
 }
 
 
-#pragma mark Lifecycle
+// ! Lifecycle
 
 - (NSArray *)specifiers {
 
@@ -37,7 +34,6 @@ static void postNSNotification() {
 	_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
 
 	NSArray *chosenIDs = @[
-
 		@"GroupCell-1",
 		@"DarkImage",
 		@"LightImage",
@@ -55,7 +51,6 @@ static void postNSNotification() {
 		@"AfternoonImage",
 		@"SunsetImage",
 		@"MidnightImage"
-
 	];
 
 	savedSpecifiers = savedSpecifiers ?: [NSMutableDictionary new];
@@ -77,34 +72,9 @@ static void postNSNotification() {
 	if(!self) return nil;
 
 	[self setupUI];
-
-	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/imageChanged"), NULL, 0);
-	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)postNSNotification, CFSTR("me.luki.aprilprefs/gradientChanged"), NULL, 0);
-
-	[NSNotificationCenter.defaultCenter removeObserver:self];
-	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(presentVC) name:@"presentVC" object:nil];
+	[self setupObservers];
 
 	return self;
-
-}
-
-
-- (void)viewDidLoad {
-
-	[super viewDidLoad];
-	[self reloadSpecifiers];
-
-}
-
-
-- (void)viewDidAppear:(BOOL)animated {
-
-	[super viewDidAppear:animated];
-
-	if(self.navigationItem.titleView) return;
-
-	aprilTitleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 2.1" minimumScrollOffsetRequired:-68];
-	self.navigationItem.titleView = aprilTitleView;
 
 }
 
@@ -141,6 +111,50 @@ static void postNSNotification() {
 	[headerImageView.bottomAnchor constraintEqualToAnchor: headerView.bottomAnchor].active = YES;
 	[headerImageView.leadingAnchor constraintEqualToAnchor: headerView.leadingAnchor].active = YES;
 	[headerImageView.trailingAnchor constraintEqualToAnchor: headerView.trailingAnchor].active = YES;
+
+}
+
+
+- (void)setupObservers {
+
+	// credits for this dark juju stuff to replace the long ass CoreFoundation syntax ⇝ https://github.com/leptos-null
+	int register_token = 0;
+	notify_register_dispatch(april_image_changed, &register_token, dispatch_get_main_queue(), ^(int token) {
+		[NSNotificationCenter.defaultCenter postNotificationName:AprilApplyImageNotification object:NULL];
+	});
+	notify_register_dispatch(april_gradient_changed, &register_token, dispatch_get_main_queue(), ^(int token) {
+		[NSNotificationCenter.defaultCenter postNotificationName:AprilApplyGradientNotification object:NULL];
+	});
+
+	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(presentVC) name:AprilPresentVCNotification object:nil];
+
+}
+
+
+- (void)viewDidLoad {
+
+	[super viewDidLoad];
+	[self reloadSpecifiers];
+
+}
+
+
+- (void)viewDidAppear:(BOOL)animated {
+
+	[super viewDidAppear: animated];
+
+	if(self.navigationItem.titleView) return;
+
+	aprilTitleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 2.2" minimumScrollOffsetRequired: -68];
+	self.navigationItem.titleView = aprilTitleView;
+
+}
+
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+
+	if([self.navigationItem.titleView respondsToSelector:@selector(adjustLabelPositionToScrollOffset:)])
+		[(APPAnimatedTitleView *)self.navigationItem.titleView adjustLabelPositionToScrollOffset:scrollView.contentOffset.y];
 
 }
 
@@ -197,6 +211,7 @@ static void postNSNotification() {
 
 }
 
+// ! Selectors
 
 - (void)showWtfChangedInThisVersion {
 
@@ -205,27 +220,21 @@ static void postNSNotification() {
 	UIImage *tweakImage = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/Assets/AprilIcon.png"];
 	UIImage *checkmarkImage = [UIImage systemImageNamed:@"checkmark.circle.fill"];
 
-	changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"2.1" icon:tweakImage];
-	[changelogController addBulletedListItemWithTitle:@"Code" description:@"Refactoring." image:checkmarkImage];
-	[changelogController addBulletedListItemWithTitle:@"Tweak" description:@"Added a Gaussian blur option." image:checkmarkImage];
+	if(changelogController) { [self presentViewController:changelogController animated:YES completion:nil]; return; }
+	changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"2.2" icon:tweakImage];
+	[changelogController addBulletedListItemWithTitle:@"Code" description:@"Even more refactoring ⇝ everything works the same, but better." image:checkmarkImage];
 
 	_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
 
-	_UIBackdropView *backdropView = [[_UIBackdropView alloc] initWithSettings:settings];
+	_UIBackdropView *backdropView = [[_UIBackdropView alloc] initWithFrame:CGRectZero autosizesToFitSuperview:YES settings:settings];
 	backdropView.clipsToBounds = YES;
-	backdropView.layer.masksToBounds = YES;
-	backdropView.translatesAutoresizingMaskIntoConstraints = NO;
 	[changelogController.viewIfLoaded insertSubview:backdropView atIndex:0];
-
-	[backdropView.topAnchor constraintEqualToAnchor: changelogController.viewIfLoaded.topAnchor].active = YES;
-	[backdropView.bottomAnchor constraintEqualToAnchor: changelogController.viewIfLoaded.bottomAnchor].active = YES;
-	[backdropView.leadingAnchor constraintEqualToAnchor: changelogController.viewIfLoaded.leadingAnchor].active = YES;
-	[backdropView.trailingAnchor constraintEqualToAnchor: changelogController.viewIfLoaded.trailingAnchor].active = YES;
 
 	changelogController.viewIfLoaded.backgroundColor = UIColor.clearColor;
 	changelogController.view.tintColor = kAprilTintColor;
 	changelogController.modalInPresentation = NO;
 	changelogController.modalPresentationStyle = UIModalPresentationPageSheet;
+
 	[self presentViewController:changelogController animated:YES completion:nil];
 
 }
@@ -236,22 +245,18 @@ static void postNSNotification() {
 	AudioServicesPlaySystemSound(1521);
 
 	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"April" message:@"Do you want to start fresh?" preferredStyle:UIAlertControllerStyleAlert];
-
 	UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"Shoot" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
 
-		NSFileManager *fileM = [NSFileManager defaultManager];
-
-		[fileM removeItemAtPath:@"/var/mobile/Library/Preferences/me.luki.aprilprefs.plist" error:nil];
-		[fileM removeItemAtPath:@"/var/mobile/Library/Preferences/me.luki.aprilprefs" error:nil];
+		[[NSFileManager defaultManager] removeItemAtPath:kPath error:nil];
+		[[NSFileManager defaultManager] removeItemAtPath:kImagesPath error:nil];
 
 		[self crossDissolveBlur];
 
 	}];
-
 	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Meh" style:UIAlertActionStyleCancel handler:nil];
 
-	[alertController addAction:confirmAction];
-	[alertController addAction:cancelAction];
+	[alertController addAction: confirmAction];
+	[alertController addAction: cancelAction];
 
 	[self presentViewController:alertController animated:YES completion:nil];
 
@@ -262,12 +267,10 @@ static void postNSNotification() {
 
 	_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
 
-	_UIBackdropView *backdropView = [[_UIBackdropView alloc] initWithSettings:settings];
+	_UIBackdropView *backdropView = [[_UIBackdropView alloc] initWithFrame:CGRectZero autosizesToFitSuperview:YES settings:settings];
 	backdropView.alpha = 0;
-	backdropView.frame = self.view.bounds;
 	backdropView.clipsToBounds = YES;
-	backdropView.layer.masksToBounds = YES;
-	[self.view addSubview:backdropView];
+	[self.view addSubview: backdropView];
 
 	[UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
 
@@ -293,17 +296,7 @@ static void postNSNotification() {
 
 }
 
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-
-	if([self.navigationItem.titleView respondsToSelector:@selector(adjustLabelPositionToScrollOffset:)])
-
-		[(APPAnimatedTitleView *)self.navigationItem.titleView adjustLabelPositionToScrollOffset:scrollView.contentOffset.y];
-
-}
-
-
-#pragma mark Table View Data Source
+// ! UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
@@ -315,12 +308,13 @@ static void postNSNotification() {
 
 }
 
+// ! Preferences
 
 - (id)readPreferenceValue:(PSSpecifier *)specifier {
 
 	NSMutableDictionary *settings = [NSMutableDictionary dictionary];
 	[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile: kPath]];
-	return (settings[specifier.properties[@"key"]]) ?: specifier.properties[@"default"];
+	return settings[specifier.properties[@"key"]] ?: specifier.properties[@"default"];
 
 }
 
@@ -334,9 +328,9 @@ static void postNSNotification() {
 
 	[super setPreferenceValue:value specifier:specifier];
 
-	[NSNotificationCenter.defaultCenter postNotificationName:@"applyImage" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"applyAlpha" object:NULL];
-	[NSNotificationCenter.defaultCenter postNotificationName:@"applyGradient" object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:AprilApplyImageNotification object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:AprilApplyAlphaNotification object:NULL];
+	[NSNotificationCenter.defaultCenter postNotificationName:AprilApplyGradientNotification object:NULL];
 
 	NSString *key = [specifier propertyForKey:@"key"];
 
@@ -396,7 +390,6 @@ static void postNSNotification() {
 
 			[self removeContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-5"], savedSpecifiers[@"MorningImage"], savedSpecifiers[@"AfternoonImage"], savedSpecifiers[@"SunsetImage"], savedSpecifiers[@"MidnightImage"]] animated:YES];
 
-
 		else if(![self containsSpecifier:savedSpecifiers[@"GroupCell-5"]])
 
 			[self insertContiguousSpecifiers:@[savedSpecifiers[@"GroupCell-5"], savedSpecifiers[@"MorningImage"], savedSpecifiers[@"AfternoonImage"], savedSpecifiers[@"SunsetImage"], savedSpecifiers[@"MidnightImage"]] afterSpecifierID:@"ScheduledImagesSwitch" animated:YES];    
@@ -405,12 +398,11 @@ static void postNSNotification() {
 
 }
 
-#pragma mark AprilGaussianBlurCellDelegate
-
+// ! AprilGaussianBlurCellDelegate
 
 - (void)aprilGaussianBlurCellDidTapGaussianBlurButton {
 
-	[[AprilImageManager sharedInstance] blurImageWithImage];
+	[[AprilImageManager sharedInstance] blurImage];
 	[self presentViewController:[AprilImageManager sharedInstance]->firstAlertVC animated:YES completion:nil];
 
 }
@@ -459,48 +451,22 @@ static void postNSNotification() {
 }
 
 
-- (void)launchDiscord {
+- (void)launchDiscord { [self launchURL: [NSURL URLWithString: @"https://discord.gg/jbE3avwSHs"]]; }
+- (void)launchGitHub { [self launchURL: [NSURL URLWithString: @"https://github.com/Luki120/April"]]; }
+- (void)launchPayPal { [self launchURL: [NSURL URLWithString: @"https://paypal.me/Luki120"]]; }
+- (void)launchAmelija { [self launchURL: [NSURL URLWithString:@"https://repo.twickd.com/get/me.luki.amelija"]]; }
+- (void)launchMeredith { [self launchURL: [NSURL URLWithString: @"https://repo.twickd.com/get/com.twickd.luki120.meredith"]]; }
 
-	[UIApplication.sharedApplication openURL:[NSURL URLWithString: @"https://discord.gg/jbE3avwSHs"] options:@{} completionHandler:nil];
-
-}
-
-
-- (void)launchPayPal {
-
-	[UIApplication.sharedApplication openURL:[NSURL URLWithString: @"https://paypal.me/Luki120"] options:@{} completionHandler:nil];
-
-}
-
-
-- (void)launchGitHub {
-
-	[UIApplication.sharedApplication openURL:[NSURL URLWithString: @"https://github.com/Luki120/April"] options:@{} completionHandler:nil];
-
-}
-
-
-- (void)launchAmelija {
-
-	[UIApplication.sharedApplication openURL:[NSURL URLWithString: @"https://repo.twickd.com/get/me.luki.amelija"] options:@{} completionHandler:nil];
-
-}
-
-
-- (void)launchMeredith {
-
-	[UIApplication.sharedApplication openURL:[NSURL URLWithString: @"https://repo.twickd.com/get/com.twickd.luki120.meredith"] options:@{} completionHandler:nil];
-
-}
+- (void)launchURL:(NSURL *)url { [UIApplication.sharedApplication openURL:url options:@{} completionHandler:nil]; }
 
 @end
 
 
 @implementation AprilTableCell
 
-- (void)setTitle:(NSString *)t {
+- (void)setTitle:(NSString *)title {
 
-	[super setTitle:t];
+	[super setTitle: title];
 	self.titleLabel.textColor = kAprilTintColor;
 
 }

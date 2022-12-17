@@ -38,12 +38,12 @@
 	[gaussianBlurInfoButton addTarget:self action:@selector(didTapInfoButton) forControlEvents: UIControlEventTouchUpInside];
 	[self.contentView addSubview: gaussianBlurInfoButton];
 
-	[self activateConstraints];
+	[self layoutUI];
 
 }
 
 
-- (void)activateConstraints {
+- (void)layoutUI {
 
 	[gaussianBlurButton.centerYAnchor constraintEqualToAnchor: self.contentView.centerYAnchor].active = YES;
 	[gaussianBlurButton.leadingAnchor constraintEqualToAnchor: self.contentView.leadingAnchor constant: 15].active = YES;

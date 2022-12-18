@@ -73,6 +73,7 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 
 	[self setupUI];
 	[self setupObservers];
+	[self setupSubclasses];
 
 	return self;
 
@@ -84,20 +85,23 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 	UIImage *bannerImage = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/Assets/AprilBanner.png"];
 	UIImage *changelogImage = [UIImage systemImageNamed:@"atom"];
 
-	headerView = [[UIView alloc] initWithFrame:CGRectMake(0,0,200,200)];
-	headerImageView = [UIImageView new];
-	headerImageView.image = bannerImage;
-	headerImageView.contentMode = UIViewContentModeScaleAspectFill;
-	headerImageView.clipsToBounds = YES;
-	headerImageView.translatesAutoresizingMaskIntoConstraints = NO;
-	[headerView addSubview:headerImageView];
+	if(!headerView) headerView = [[UIView alloc] initWithFrame:CGRectMake(0,0,200,200)];
 
-	UIButton *changelogButton =  [UIButton new];
+	if(!headerImageView) {
+		headerImageView = [UIImageView new];
+		headerImageView.image = bannerImage;
+		headerImageView.contentMode = UIViewContentModeScaleAspectFill;
+		headerImageView.clipsToBounds = YES;
+		headerImageView.translatesAutoresizingMaskIntoConstraints = NO;
+		[headerView addSubview: headerImageView];
+	}
+
+	UIButton *changelogButton = [UIButton new];
 	changelogButton.tintColor = kAprilTintColor;
 	[changelogButton setImage:changelogImage forState:UIControlStateNormal];
 	[changelogButton addTarget:self action:@selector(showWtfChangedInThisVersion) forControlEvents:UIControlEventTouchUpInside];
 
-	UIBarButtonItem *changelogButtonItem = [[UIBarButtonItem alloc] initWithCustomView:changelogButton];
+	UIBarButtonItem *changelogButtonItem = [[UIBarButtonItem alloc] initWithCustomView: changelogButton];
 	self.navigationItem.rightBarButtonItem = changelogButtonItem;
 
 	[self layoutUI];
@@ -127,6 +131,17 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 	});
 
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(presentVC) name:AprilPresentVCNotification object:nil];
+
+}
+
+
+- (void)setupSubclasses {
+
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		allocateClassWithName("AprilSliderCell", [PSSliderTableCell class], @selector(initWithStyle:reuseIdentifier:specifier:), (IMP) april_initWithStyle);
+		allocateClassWithName("AprilTableCell", [PSTableCell class], @selector(setTitle:), (IMP) april_setTitle);
+	});
 
 }
 
@@ -426,6 +441,48 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 
 }
 
+// ! Dark magic
+
+static id april_initWithStyle(PSSliderTableCell *self, SEL _cmd, UITableViewCellStyle style, NSString *reuseIdentifier, PSSpecifier *specifier) {
+
+	struct objc_super superInitWithStyle = {
+		self,
+		[self superclass]
+	};
+
+	id (*superCall)(struct objc_super *, SEL, UITableViewCellStyle, NSString *, PSSpecifier *) = (void *)objc_msgSendSuper;
+	self = superCall(&superInitWithStyle, _cmd, style, reuseIdentifier, specifier);
+
+	((UISlider *)[self control]).minimumTrackTintColor = kAprilTintColor;
+	return self;
+
+}
+
+static void april_setTitle(PSTableCell *self, SEL _cmd, NSString *title) {
+
+	struct objc_super superSetTitle = {
+		self,
+		[self superclass]
+	};
+
+	id (*superCall)(struct objc_super *, SEL, NSString *) = (void *)objc_msgSendSuper;
+	superCall(&superSetTitle, _cmd, title);
+
+	self.titleLabel.textColor = kAprilTintColor;
+
+}
+
+static void allocateClassWithName(const char *className, Class superclass, SEL selector, IMP customIMP) {
+
+	Class newClass = objc_allocateClassPair(superclass, className, 0);
+	Method method = class_getInstanceMethod([PSTableCell class], selector);
+	const char *types = method_getTypeEncoding(method);
+	class_addMethod(newClass, selector, customIMP, types);
+
+	objc_registerClassPair(newClass);
+
+}
+
 @end
 
 
@@ -458,17 +515,5 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 - (void)launchMeredith { [self launchURL: [NSURL URLWithString: @"https://repo.twickd.com/get/com.twickd.luki120.meredith"]]; }
 
 - (void)launchURL:(NSURL *)url { [UIApplication.sharedApplication openURL:url options:@{} completionHandler:nil]; }
-
-@end
-
-
-@implementation AprilTableCell
-
-- (void)setTitle:(NSString *)title {
-
-	[super setTitle: title];
-	self.titleLabel.textColor = kAprilTintColor;
-
-}
 
 @end

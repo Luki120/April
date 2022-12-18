@@ -139,6 +139,8 @@
 			<dict>
 				<key>cell</key>
 				<string>PSSliderCell</string>
+				<key>cellClass</key>
+				<string>AprilSliderCell</string>
 				<key>default</key>
 				<real>1</real>
 				<key>defaults</key>
@@ -173,6 +175,8 @@
 			<dict>
 				<key>cell</key>
 				<string>PSSliderCell</string>
+				<key>cellClass</key>
+				<string>AprilSliderCell</string>
 				<key>default</key>
 				<real>1</real>
 				<key>defaults</key>

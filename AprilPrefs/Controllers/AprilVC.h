@@ -1,6 +1,9 @@
 @import AudioToolbox.AudioServices;
+@import ObjectiveC.message;
+@import ObjectiveC.runtime;
 @import Preferences.PSSpecifier;
 @import Preferences.PSListController;
+@import Preferences.PSSliderTableCell;
 #import "../Cells/AprilGaussianBlurCell.h"
 #import "../Views/APPAnimatedTitleView.h"
 #import "../../Managers/AprilImageManager.h"
@@ -23,15 +26,6 @@
 
 
 @interface AprilContributorsVC : PSListController
-@end
-
-
-@interface PSTableCell ()
-- (void)setTitle:(NSString *)title;
-@end
-
-
-@interface AprilTableCell : PSTableCell
 @end
 
 

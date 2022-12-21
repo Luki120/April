@@ -1,12 +1,11 @@
-#import <GcUniversal/GcColorPickerUtils.h>
-#import <GcUniversal/GcImagePickerUtils.h>
-#import "Headers/Common.h"
-#import "Headers/Prefs.h"
-@import ObjectiveC.runtime;
+#import "Headers/April.h"
 
 
 static Class AprilGradientView;
 static UIView *aprilGradientView;
+static UIImage *darkImage;
+static UIImage *lightImage;
+static NSNotificationName const AprilApplyTimerNotification = @"AprilApplyTimerNotification";
 
 static Class april_layerClass(UIView *self, SEL _cmd) { return [CAGradientLayer class]; }
 
@@ -23,31 +22,6 @@ static void allocateClass() {
 	});
 
 }
-
-
-@interface PSTableCell : UITableViewCell
-- (void)applyAlpha;
-@end
-
-
-@interface UITableView (April)
-@property (nonatomic, strong) UIImageView *aprilImageView;
-@property (nonatomic, strong) UIImageView *aprilScheduledImageView;
-- (void)setImage;
-- (void)setBlur;
-- (void)setGradient;
-- (void)setScheduledImages;
-- (void)setGradientStartPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint;
-- (void)setScheduledImageWithImage:(UIImage *)image imageKey:(NSString *)key;
-- (UIImageView *)createAprilImageView;
-- (UIViewController *)_viewControllerForAncestor;
-@end
-
-
-static UIImage *darkImage;
-static UIImage *lightImage;
-static NSTimer *imagesTimer;
-static NSNotificationName const AprilApplyTimerNotification = @"AprilApplyTimerNotification";
 
 
 %hook UITableView
@@ -161,7 +135,6 @@ static NSNotificationName const AprilApplyTimerNotification = @"AprilApplyTimerN
 	UIColor *secondColor = [GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"f297fb"];
 	NSArray *gradientColors = @[(id)firstColor.CGColor, (id)secondColor.CGColor];
 
-	aprilGradientView = (UIView *)AprilGradientView;
 	aprilGradientView = [[AprilGradientView alloc] initWithFrame: self.backgroundView.bounds];
 	aprilGradientView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[[aprilGradientView valueForKey: @"layer"] setColors: gradientColors];
@@ -187,6 +160,7 @@ static NSNotificationName const AprilApplyTimerNotification = @"AprilApplyTimerN
 	animation.repeatCount = HUGE_VALF; // Loop the animation forever
 	animation.autoreverses = YES;
 	animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
+	[[aprilGradientView valueForKey: @"layer"] removeAnimationForKey:@"gradientAnimation"];
 	[[aprilGradientView valueForKey: @"layer"] addAnimation:animation forKey:@"gradientAnimation"];
 
 }
@@ -332,14 +306,12 @@ static void scheduleTimer() {
 
 	if(seconds < 0) seconds = [NSCalendar.currentCalendar dateByAddingUnit:NSCalendarUnitDay value:1 toDate:[NSCalendar.currentCalendar dateBySettingUnit:NSCalendarUnitHour value:targetHour ofDate:[NSCalendar.currentCalendar dateFromComponents:[NSCalendar.currentCalendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:NSDate.date]] options:0] options:0].timeIntervalSinceNow;
 
-	imagesTimer = [NSTimer timerWithTimeInterval:seconds repeats:NO block:^(NSTimer *timer) {
+	[NSTimer timerWithTimeInterval:seconds repeats:NO block:^(NSTimer *timer) {
 
 		[NSNotificationCenter.defaultCenter postNotificationName:AprilApplyTimerNotification object:nil];
 		scheduleTimer();
 
 	}];
-
-	[NSRunLoop.currentRunLoop addTimer:imagesTimer forMode: NSDefaultRunLoopMode];
 
 }
 

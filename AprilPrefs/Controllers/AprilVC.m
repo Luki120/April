@@ -7,7 +7,7 @@
 
 // ! Constants
 
-static NSString *const kImagesPath = @"/var/mobile/Library/Preferences/me.luki.aprilprefs";
+static NSString *const kImagesPath = @"/var/mobile/Library/Preferences/me.luki.aprilprefs/";
 
 static const char *april_image_changed = "me.luki.aprilprefs/imageChanged";
 static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged";
@@ -476,8 +476,8 @@ static void allocateClassWithName(const char *className, Class superclass, SEL s
 
 	Class newClass = objc_allocateClassPair(superclass, className, 0);
 	Method method = class_getInstanceMethod([PSTableCell class], selector);
-	const char *types = method_getTypeEncoding(method);
-	class_addMethod(newClass, selector, customIMP, types);
+	const char *typeEncoding = method_getTypeEncoding(method);
+	class_addMethod(newClass, selector, customIMP, typeEncoding);
 
 	objc_registerClassPair(newClass);
 

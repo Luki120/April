@@ -3,8 +3,8 @@ static BOOL blur;
 
 static NSInteger blurType;
 
-static float intensity = 1.0f;
-static float cellAlpha = 1.0f;
+static float intensity;
+static float cellAlpha;
 
 static BOOL setGradientAsBackground;
 static BOOL setGradientAnimation;
@@ -22,7 +22,7 @@ static void loadWithoutAFuckingRespring() {
 
 	blur = prefs[@"blur"] ? [prefs[@"blur"] boolValue] : NO;
 	blurType = prefs[@"blurType"] ? [prefs[@"blurType"] integerValue] : 0;
-	intensity = prefs[@"intensity"] ? [prefs[@"intensity"] floatValue] : 1.0f;
+	intensity = prefs[@"intensity"] ? [prefs[@"intensity"] floatValue] : 0.85f;
 
 	cellAlpha = prefs[@"cellAlpha"] ? [prefs[@"cellAlpha"] floatValue] : 1.0f;
 

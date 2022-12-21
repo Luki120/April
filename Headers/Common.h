@@ -14,6 +14,5 @@ static NSNotificationName const AprilPresentVCNotification = @"AprilPresentVCNot
 
 
 @interface _UIBackdropView : UIView
-@property (assign, nonatomic) BOOL blurRadiusSetOnce;
 - (id)initWithFrame:(CGRect)arg1 autosizesToFitSuperview:(BOOL)arg2 settings:(id)arg3;
 @end

@@ -2,23 +2,27 @@
 #import <GcUniversal/GcImagePickerUtils.h>
 #import "Headers/Common.h"
 #import "Headers/Prefs.h"
+@import ObjectiveC.runtime;
 
 
-// imagine having to subclass a UIView to properly handle
-// a layer's frame without breaking on rotation smfh
+static Class AprilGradientView;
+static UIView *aprilGradientView;
 
-@interface AprilGradientView : UIView
-@property (nonatomic, strong, readonly) CAGradientLayer *layer;
-@end
+static Class april_layerClass(UIView *self, SEL _cmd) { return [CAGradientLayer class]; }
 
+static void allocateClass() {
 
-@implementation AprilGradientView
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		AprilGradientView = objc_allocateClassPair([UIView class], "AprilGradientView", 0);
+		Method method = class_getClassMethod([UIView class], @selector(layerClass));
+		const char *typeEncoding = method_getTypeEncoding(method);
 
-@dynamic layer;
+		objc_registerClassPair(AprilGradientView);
+		class_addMethod(objc_getMetaClass("AprilGradientView"), @selector(layerClass), (IMP) april_layerClass, typeEncoding);
+	});
 
-+ (Class)layerClass { return [CAGradientLayer class]; }
-
-@end
+}
 
 
 @interface PSTableCell : UITableViewCell
@@ -29,7 +33,6 @@
 @interface UITableView (April)
 @property (nonatomic, strong) UIImageView *aprilImageView;
 @property (nonatomic, strong) UIImageView *aprilScheduledImageView;
-@property (nonatomic, strong) AprilGradientView *neatGradientView;
 - (void)setImage;
 - (void)setBlur;
 - (void)setGradient;
@@ -49,11 +52,8 @@ static NSNotificationName const AprilApplyTimerNotification = @"AprilApplyTimerN
 
 %hook UITableView
 
-
 %property (nonatomic, strong) UIImageView *aprilImageView;
 %property (nonatomic, strong) UIImageView *aprilScheduledImageView;
-%property (nonatomic, strong) AprilGradientView *neatGradientView;
-
 
 %new
 
@@ -157,16 +157,15 @@ static NSNotificationName const AprilApplyTimerNotification = @"AprilApplyTimerN
 
 	if(!setGradientAsBackground) return;
 
-	UIColor *firstColor = [GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"ffffff"];
-	UIColor *secondColor = [GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"ffffff"];
-	NSArray *gradientColors = [NSArray arrayWithObjects:(id)firstColor.CGColor, (id)secondColor.CGColor, nil];
-	NSArray *gradientLocations = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.00], [NSNumber numberWithFloat:0.50], nil];
+	UIColor *firstColor = [GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientFirstColor" fallback:@"f9957f"];
+	UIColor *secondColor = [GcColorPickerUtils colorFromDefaults:@"me.luki.aprilprefs" withKey:@"gradientSecondColor" fallback:@"f297fb"];
+	NSArray *gradientColors = @[(id)firstColor.CGColor, (id)secondColor.CGColor];
 
-	self.neatGradientView = [[AprilGradientView alloc] initWithFrame: self.backgroundView.bounds];
-	self.neatGradientView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.neatGradientView.layer.colors = gradientColors;
-	self.neatGradientView.layer.locations = gradientLocations;
-	self.backgroundView = self.neatGradientView;
+	aprilGradientView = (UIView *)AprilGradientView;
+	aprilGradientView = [[AprilGradientView alloc] initWithFrame: self.backgroundView.bounds];
+	aprilGradientView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	[[aprilGradientView valueForKey: @"layer"] setColors: gradientColors];
+	self.backgroundView = aprilGradientView;
 
 	switch(gradientDirection) {
 		case 0: [self setGradientStartPoint:CGPointMake(0.5, 1) endPoint:CGPointMake(0.5, 0)]; break; // Bottom to top
@@ -182,13 +181,13 @@ static NSNotificationName const AprilApplyTimerNotification = @"AprilApplyTimerN
 	if(!setGradientAnimation) return;
 
 	CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath: @"colors"];
-	animation.fromValue = [NSArray arrayWithObjects:(id)firstColor.CGColor, (id)secondColor.CGColor, nil];
-	animation.toValue = [NSArray arrayWithObjects:(id)secondColor.CGColor, (id)firstColor.CGColor, nil];
+	animation.fromValue = @[(id)firstColor.CGColor, (id)secondColor.CGColor];
+	animation.toValue = @[(id)secondColor.CGColor, (id)firstColor.CGColor];
 	animation.duration = 4.5;
 	animation.repeatCount = HUGE_VALF; // Loop the animation forever
 	animation.autoreverses = YES;
 	animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
-	[self.neatGradientView.layer addAnimation:animation forKey:@"gradientAnimation"];
+	[[aprilGradientView valueForKey: @"layer"] addAnimation:animation forKey:@"gradientAnimation"];
 
 }
 
@@ -253,8 +252,8 @@ static NSNotificationName const AprilApplyTimerNotification = @"AprilApplyTimerN
 
 - (void)setGradientStartPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint {
 
-	self.neatGradientView.layer.startPoint = startPoint;
-	self.neatGradientView.layer.endPoint = endPoint;
+	[[aprilGradientView valueForKey: @"layer"] setStartPoint: startPoint];
+	[[aprilGradientView valueForKey: @"layer"] setEndPoint: endPoint];
 
 }
 
@@ -333,7 +332,7 @@ static void scheduleTimer() {
 
 	if(seconds < 0) seconds = [NSCalendar.currentCalendar dateByAddingUnit:NSCalendarUnitDay value:1 toDate:[NSCalendar.currentCalendar dateBySettingUnit:NSCalendarUnitHour value:targetHour ofDate:[NSCalendar.currentCalendar dateFromComponents:[NSCalendar.currentCalendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:NSDate.date]] options:0] options:0].timeIntervalSinceNow;
 
-	imagesTimer = [NSTimer timerWithTimeInterval:seconds repeats:NO block:^(NSTimer *time) {
+	imagesTimer = [NSTimer timerWithTimeInterval:seconds repeats:NO block:^(NSTimer *timer) {
 
 		[NSNotificationCenter.defaultCenter postNotificationName:AprilApplyTimerNotification object:nil];
 		scheduleTimer();
@@ -348,6 +347,7 @@ static void scheduleTimer() {
 %ctor {
 
 	loadWithoutAFuckingRespring();
+	allocateClass();
 	scheduleTimer();
 
 }

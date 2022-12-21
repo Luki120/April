@@ -254,7 +254,7 @@
 				<key>supportsAlpha</key>
 				<true/>
 				<key>fallback</key>
-				<string>ffffff</string>
+				<string>f9957f</string>
 				<key>id</key>
 				<string>FirstColor</string>
 			</dict>
@@ -274,7 +274,7 @@
 				<key>supportsAlpha</key>
 				<true/>
 				<key>fallback</key>
-				<string>ffffff</string>
+				<string>f297fb</string>
 				<key>id</key>
 				<string>SecondColor</string>
 			</dict>

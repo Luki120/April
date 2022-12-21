@@ -1,5 +1,4 @@
-export ARCHS = arm64 arm64e
-export TARGET := iphone:clang:latest:latest
+export TARGET := iphone:clang:14.5:latest
 INSTALL_TARGET_PROCESSES = Preferences
 
 TWEAK_NAME = April

@@ -6,7 +6,7 @@
 
 * Custom dark mode image.
 * Custom light mode image.
-* Custom scheduled images: morning (8AM), afternoon (12PM), sunset (6PM) & midnight image (10PM).
+* Custom scheduled images: morning (8AM), afternoon (12PM), sunset (6PM) & midnight (10PM).
 * Custom blurs: light, dark, epic, adaptive, thin material & gaussian.
 * Custom table cell alpha.
 * Gradients with custom directions & optional animation.

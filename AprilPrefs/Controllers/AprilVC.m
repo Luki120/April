@@ -262,8 +262,8 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"April" message:@"Do you want to start fresh?" preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"Shoot" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
 
-		[[NSFileManager defaultManager] removeItemAtPath:kPath error:nil];
 		[[NSFileManager defaultManager] removeItemAtPath:kImagesPath error:nil];
+		[[NSUserDefaults standardUserDefaults] removePersistentDomainForName: @"me.luki.aprilprefs"];
 
 		[self crossDissolveBlur];
 

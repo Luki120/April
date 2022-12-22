@@ -130,8 +130,6 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 		[NSNotificationCenter.defaultCenter postNotificationName:AprilApplyGradientNotification object:NULL];
 	});
 
-	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(presentVC) name:AprilPresentVCNotification object:nil];
-
 }
 
 
@@ -415,14 +413,7 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 
 // ! AprilGaussianBlurCellDelegate
 
-- (void)aprilGaussianBlurCellDidTapGaussianBlurButton {
-
-	[[AprilImageManager sharedInstance] blurImage];
-	[self presentViewController:[AprilImageManager sharedInstance]->firstAlertVC animated:YES completion:nil];
-
-}
-
-
+- (void)aprilGaussianBlurCellDidTapGaussianBlurButton { [[AprilImageManager sharedInstance] blurImage]; }
 - (void)aprilGaussianBlurCellDidTapGaussianBlurInfoButton {
 
 	AudioServicesPlaySystemSound(1521);
@@ -431,13 +422,6 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 	UIAlertAction *dismissAction = [UIAlertAction actionWithTitle:@"Got it" style:UIAlertActionStyleDefault handler: nil];
 	[alertController addAction: dismissAction];
 	[self presentViewController:alertController animated:YES completion: nil];
-
-}
-
-
-- (void)presentVC {
-
-	[self presentViewController:[AprilImageManager sharedInstance]->secondAlertVC animated:YES completion:nil];
 
 }
 

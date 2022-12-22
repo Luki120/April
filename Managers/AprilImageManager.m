@@ -1,7 +1,11 @@
 #import "AprilImageManager.h"
 
 
-@implementation AprilImageManager
+@implementation AprilImageManager {
+
+	UIViewController *rootViewController;
+
+}
 
 + (AprilImageManager *)sharedInstance {
 
@@ -19,6 +23,8 @@
 
 	self = [super init];
 	if(!self) return nil;
+
+	rootViewController = [self getRootViewController];
 
 	return self;
 
@@ -44,10 +50,10 @@
 	CIFilter *blurFilter = [CIFilter filterWithName:@"CIGaussianBlur"];
 	[blurFilter setValue:clampFilter.outputImage forKey: kCIInputImageKey];
 
-	firstAlertVC = [UIAlertController alertControllerWithTitle:@"April" message:@"How much blur intensity do you want?" preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"April" message:@"How much blur intensity do you want?" preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"Blur" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
 
-		[blurFilter setValue:@(firstAlertVC.textFields.firstObject.text.doubleValue) forKey:@"inputRadius"];
+		[blurFilter setValue:@(alertController.textFields.firstObject.text.doubleValue) forKey:@"inputRadius"];
 
 		CIImage *outputImage = [blurFilter valueForKey: kCIOutputImageKey];
 		CGImageRef cgImage = [context createCGImage:outputImage fromRect: inputImage.extent];
@@ -66,7 +72,7 @@
 		[NSNotificationCenter.defaultCenter removeObserver: observer];
 	}];
 
-	[firstAlertVC addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+	[alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
 		textField.placeholder = @"Between 0 and 100";
 		textField.keyboardType = UIKeyboardTypeNumberPad;
 
@@ -75,15 +81,17 @@
 		}];
 	}];
 
-	[firstAlertVC addAction: confirmAction];
-	[firstAlertVC addAction: dismissAction];
+	[alertController addAction: confirmAction];
+	[alertController addAction: dismissAction];
+
+	[rootViewController presentViewController:alertController animated:YES completion:nil];
 
 }
 
 
 - (void)presentSuccessAlertController {
 
-	secondAlertVC = [UIAlertController alertControllerWithTitle:@"April" message:@"Your fancy image got succesfully saved to your gallery, do you want to see how it looks?" preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"April" message:@"Your fancy image got succesfully saved to your gallery, do you want to see how it looks?" preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"Heck yeah" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
 
 		[UIApplication.sharedApplication _openURL: [NSURL URLWithString: @"photos-redirect://"]];
@@ -91,10 +99,32 @@
 	}];
 	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Later" style:UIAlertActionStyleDefault handler:nil];
 
-	[secondAlertVC addAction: confirmAction];
-	[secondAlertVC addAction: cancelAction];
+	[alertController addAction: confirmAction];
+	[alertController addAction: cancelAction];
 
-	[NSNotificationCenter.defaultCenter postNotificationName:AprilPresentVCNotification object:nil];
+	[rootViewController presentViewController:alertController animated:YES completion:nil];
+
+}
+
+
+- (UIViewController *)getRootViewController {
+
+	UIViewController *rootVC = nil;
+	NSSet *connectedScenes = [UIApplication sharedApplication].connectedScenes;
+
+	for(UIScene *scene in connectedScenes) {
+		if(scene.activationState != UISceneActivationStateForegroundActive
+			|| ![scene isKindOfClass:[UIWindowScene class]]) return nil;
+
+		UIWindowScene *windowScene = (UIWindowScene *)scene;
+		for(UIWindow *window in windowScene.windows) {
+			rootVC = window.rootViewController;
+			break;
+		}
+
+	}
+
+	return rootVC;
 
 }
 

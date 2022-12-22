@@ -3,12 +3,7 @@
 @import Photos;
 
 
-@interface AprilImageManager : NSObject {
-
-	@public UIAlertController *firstAlertVC;
-	@public UIAlertController *secondAlertVC;
-
-}
+@interface AprilImageManager : NSObject
 + (AprilImageManager *)sharedInstance;
 - (void)blurImage;
 @end

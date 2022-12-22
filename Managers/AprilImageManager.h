@@ -1,5 +1,6 @@
 #import <GcUniversal/GcImagePickerUtils.h>
 #import "Headers/Common.h"
+@import Photos;
 
 
 @interface AprilImageManager : NSObject {

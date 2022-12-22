@@ -1,6 +1,5 @@
 #import "AprilImageManager.h"
 
-#define saveImageToGallery UIImageWriteToSavedPhotosAlbum
 
 @implementation AprilImageManager
 
@@ -54,7 +53,7 @@
 		CGImageRef cgImage = [context createCGImage:outputImage fromRect: inputImage.extent];
 		UIImage *blurredImage = [[UIImage alloc] initWithCGImage:cgImage scale:candidateImage.scale orientation: UIImageOrientationUp];
 
-		saveImageToGallery(blurredImage, nil, nil, nil);
+		[self saveAprilImage: blurredImage];
 		CGImageRelease(cgImage);
 
 		[self presentSuccessAlertController];
@@ -96,6 +95,51 @@
 	[secondAlertVC addAction: cancelAction];
 
 	[NSNotificationCenter.defaultCenter postNotificationName:AprilPresentVCNotification object:nil];
+
+}
+
+
+- (void)saveAprilImage:(UIImage *)image {
+
+	// slightly modified from ⇝ https://stackoverflow.com/a/39909129
+	NSString *albumName = @"April";
+
+	PHFetchOptions *fetchOptions = [PHFetchOptions new];
+	fetchOptions.predicate = [NSPredicate predicateWithFormat:@"localizedTitle = %@", albumName];
+	PHFetchResult *fetchResult = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:fetchOptions];
+
+	if(fetchResult.count > 0) [self createAprilImageAssetFromImage:image forCollection: fetchResult.firstObject];
+
+	else {
+
+		__block PHObjectPlaceholder *albumPlaceholder;
+
+		[[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+
+			PHAssetCollectionChangeRequest *changeRequest = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle: albumName];
+			albumPlaceholder = changeRequest.placeholderForCreatedAssetCollection;
+
+		} completionHandler:^(BOOL success, NSError *error) {
+
+			if(!success) return;
+
+			PHFetchResult *fetchResult = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[albumPlaceholder.localIdentifier] options:nil];
+			if(fetchResult.count > 0) [self createAprilImageAssetFromImage:image forCollection: fetchResult.firstObject];
+
+		}];
+
+	}
+
+}
+
+
+- (void)createAprilImageAssetFromImage:(UIImage *)image forCollection:(PHAssetCollection *)collection {
+
+	[[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+		PHAssetChangeRequest *assetChangeRequest = [PHAssetChangeRequest creationRequestForAssetFromImage: image];
+		PHAssetCollectionChangeRequest *assetCollectionChangeRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection: collection];
+		[assetCollectionChangeRequest addAssets:@[[assetChangeRequest placeholderForCreatedAsset]]];
+	} completionHandler: nil];
 
 }
 

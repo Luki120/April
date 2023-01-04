@@ -236,6 +236,7 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 	if(changelogController) { [self presentViewController:changelogController animated:YES completion:nil]; return; }
 	changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"2.2" icon:tweakImage];
 	[changelogController addBulletedListItemWithTitle:@"Code" description:@"Even more refactoring ⇝ everything works the same, but better." image:checkmarkImage];
+	[changelogController addBulletedListItemWithTitle:@"Tweak" description:@"Images saved using the Gaussian Blur option will be added to a custom \"April\" album in the Photos app." image:checkmarkImage];
 
 	_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
 

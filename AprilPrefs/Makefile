@@ -1,6 +1,6 @@
 BUNDLE_NAME = AprilPrefs
 
-AprilPrefs_FILES = Controllers/AprilVC.m Cells/AprilGaussianBlurCell.m ../Managers/AprilImageManager.m Views/APPAnimatedTitleView.m
+AprilPrefs_FILES = $(wildcard **/*.m) ../Managers/AprilImageManager.m
 AprilPrefs_CFLAGS = -fobjc-arc
 AprilPrefs_LIBRARIES = gcuniversal
 AprilPrefs_FRAMEWORKS = UIKit

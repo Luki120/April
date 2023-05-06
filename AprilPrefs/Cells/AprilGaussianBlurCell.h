@@ -2,11 +2,13 @@
 #import "Headers/Common.h"
 
 
+@class AprilGaussianBlurCell;
+
 @protocol AprilGaussianBlurCellDelegate <NSObject>
 
 @required
-- (void)aprilGaussianBlurCellDidTapGaussianBlurButton;
-- (void)aprilGaussianBlurCellDidTapGaussianBlurInfoButton;
+- (void)didTapGaussianBlurButtonInAprilGaussianBlurCell:(AprilGaussianBlurCell *)aprilGaussianBlurCell;
+- (void)didTapGaussianBlurInfoButtonInAprilGaussianBlurCell:(AprilGaussianBlurCell *)aprilGaussianBlurCell;
 
 @end
 

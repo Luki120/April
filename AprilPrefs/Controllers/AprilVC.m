@@ -414,8 +414,14 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 
 // ! AprilGaussianBlurCellDelegate
 
-- (void)aprilGaussianBlurCellDidTapGaussianBlurButton { [[AprilImageManager sharedInstance] blurImage]; }
-- (void)aprilGaussianBlurCellDidTapGaussianBlurInfoButton {
+- (void)didTapGaussianBlurButtonInAprilGaussianBlurCell:(AprilGaussianBlurCell *)aprilGaussianBlurCell {
+
+	[[AprilImageManager sharedInstance] blurImage];
+
+}
+
+
+- (void)didTapGaussianBlurInfoButtonInAprilGaussianBlurCell:(AprilGaussianBlurCell *)aprilGaussianBlurCell {
 
 	AudioServicesPlaySystemSound(1521);
 

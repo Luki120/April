@@ -7,7 +7,7 @@
 
 // ! Constants
 
-static NSString *const kImagesPath = @"/var/mobile/Library/Preferences/me.luki.aprilprefs/";
+static NSString *const kImagesPath = rootlessPathNS(@"/var/mobile/Library/Preferences/me.luki.aprilprefs/");
 
 static const char *april_image_changed = "me.luki.aprilprefs/imageChanged";
 static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged";
@@ -82,7 +82,7 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 
 - (void)setupUI {
 
-	UIImage *bannerImage = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/Assets/AprilBanner.png"];
+	UIImage *bannerImage = [UIImage imageWithContentsOfFile:rootlessPathNS(@"/Library/PreferenceBundles/AprilPrefs.bundle/Assets/AprilBanner.png")];
 	UIImage *changelogImage = [UIImage systemImageNamed:@"atom"];
 
 	if(!headerView) headerView = [[UIView alloc] initWithFrame:CGRectMake(0,0,200,200)];
@@ -230,7 +230,7 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 
 	AudioServicesPlaySystemSound(1521);
 
-	UIImage *tweakImage = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/AprilPrefs.bundle/Assets/AprilIcon.png"];
+	UIImage *tweakImage = [UIImage imageWithContentsOfFile:rootlessPathNS(@"/Library/PreferenceBundles/AprilPrefs.bundle/Assets/AprilIcon.png")];
 	UIImage *checkmarkImage = [UIImage systemImageNamed:@"checkmark.circle.fill"];
 
 	if(changelogController) { [self presentViewController:changelogController animated:YES completion:nil]; return; }
@@ -299,7 +299,7 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 
 	pid_t pid;
 	const char* args[] = {"killall", "Preferences", NULL};
-	posix_spawn(&pid, "/usr/bin/killall", NULL, NULL, (char* const*)args, NULL);
+	posix_spawn(&pid, rootlessPathC("/usr/bin/killall"), NULL, NULL, (char* const*)args, NULL);
 
 }
 

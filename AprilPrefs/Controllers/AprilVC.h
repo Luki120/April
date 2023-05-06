@@ -2,7 +2,6 @@
 @import ObjectiveC.message;
 @import Preferences.PSSpecifier;
 @import Preferences.PSListController;
-@import Preferences.PSSliderTableCell;
 #import "../Cells/AprilGaussianBlurCell.h"
 #import "../Views/APPAnimatedTitleView.h"
 #import "../../Managers/AprilImageManager.h"

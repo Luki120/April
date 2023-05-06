@@ -73,7 +73,12 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 
 	[self setupUI];
 	[self setupObservers];
-	[self setupSubclasses];
+
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{ registerAprilTintCellClass(); });
+
+	[UISlider appearanceWhenContainedInInstancesOfClasses:@[[self class]]].minimumTrackTintColor = kAprilTintColor;
+	[UISwitch appearanceWhenContainedInInstancesOfClasses:@[[self class]]].onTintColor = kAprilTintColor;	
 
 	return self;
 
@@ -133,17 +138,6 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 }
 
 
-- (void)setupSubclasses {
-
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		allocateClassWithName("AprilSliderCell", [PSSliderTableCell class], @selector(initWithStyle:reuseIdentifier:specifier:), (IMP) april_initWithStyle);
-		allocateClassWithName("AprilTableCell", [PSTableCell class], @selector(setTitle:), (IMP) april_setTitle);
-	});
-
-}
-
-
 - (void)viewDidLoad {
 
 	[super viewDidLoad];
@@ -158,7 +152,7 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 
 	if(self.navigationItem.titleView) return;
 
-	aprilTitleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 2.2" minimumScrollOffsetRequired: -68];
+	aprilTitleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 3.0" minimumScrollOffsetRequired: -68];
 	self.navigationItem.titleView = aprilTitleView;
 
 }
@@ -234,9 +228,8 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 	UIImage *checkmarkImage = [UIImage systemImageNamed:@"checkmark.circle.fill"];
 
 	if(changelogController) { [self presentViewController:changelogController animated:YES completion:nil]; return; }
-	changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"2.2" icon:tweakImage];
-	[changelogController addBulletedListItemWithTitle:@"Code" description:@"Even more refactoring ⇝ everything works the same, but better." image:checkmarkImage];
-	[changelogController addBulletedListItemWithTitle:@"Tweak" description:@"Images saved using the Gaussian Blur option will be added to a custom \"April\" album in the Photos app." image:checkmarkImage];
+	changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"3.0" icon:tweakImage];
+	[changelogController addBulletedListItemWithTitle:@"Tweak" description:@"Added rootless support." image:checkmarkImage];
 
 	_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
 
@@ -434,21 +427,6 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 
 // ! Dark magic
 
-static id april_initWithStyle(PSSliderTableCell *self, SEL _cmd, UITableViewCellStyle style, NSString *reuseIdentifier, PSSpecifier *specifier) {
-
-	struct objc_super superInitWithStyle = {
-		self,
-		[self superclass]
-	};
-
-	id (*superCall)(struct objc_super *, SEL, UITableViewCellStyle, NSString *, PSSpecifier *) = (void *)objc_msgSendSuper;
-	self = superCall(&superInitWithStyle, _cmd, style, reuseIdentifier, specifier);
-
-	((UISlider *)[self control]).minimumTrackTintColor = kAprilTintColor;
-	return self;
-
-}
-
 static void april_setTitle(PSTableCell *self, SEL _cmd, NSString *title) {
 
 	struct objc_super superSetTitle = {
@@ -460,17 +438,18 @@ static void april_setTitle(PSTableCell *self, SEL _cmd, NSString *title) {
 	superCall(&superSetTitle, _cmd, title);
 
 	self.titleLabel.textColor = kAprilTintColor;
+	self.titleLabel.highlightedTextColor = kAprilTintColor;
 
 }
 
-static void allocateClassWithName(const char *className, Class superclass, SEL selector, IMP customIMP) {
+static void registerAprilTintCellClass() {
 
-	Class newClass = objc_allocateClassPair(superclass, className, 0);
-	Method method = class_getInstanceMethod([PSTableCell class], selector);
+	Class AprilTintCellClass = objc_allocateClassPair([PSTableCell class], "AprilTintCell", 0);
+	Method method = class_getInstanceMethod([PSTableCell class], @selector(setTitle:));
 	const char *typeEncoding = method_getTypeEncoding(method);
-	class_addMethod(newClass, selector, customIMP, typeEncoding);
+	class_addMethod(AprilTintCellClass, @selector(setTitle:), (IMP) april_setTitle, typeEncoding);
 
-	objc_registerClassPair(newClass);
+	objc_registerClassPair(AprilTintCellClass);
 
 }
 

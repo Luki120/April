@@ -1,6 +1,8 @@
 #import "Headers/April.h"
 
 
+@class PSSpecifier;
+
 static Class AprilGradientView;
 static UIView *aprilGradientView;
 static UIImage *darkImage;
@@ -9,7 +11,7 @@ static NSNotificationName const AprilApplyTimerNotification = @"AprilApplyTimerN
 
 static Class april_layerClass(UIView *self, SEL _cmd) { return [CAGradientLayer class]; }
 
-static void allocateClass() {
+static void registerAprilGradientViewClass() {
 
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
@@ -53,7 +55,6 @@ static void allocateClass() {
 
 }
 
-
 %new
 
 - (void)setScheduledImages {
@@ -80,7 +81,6 @@ static void allocateClass() {
 
 }
 
-
 %new
 
 - (void)setBlur {
@@ -89,7 +89,7 @@ static void allocateClass() {
 
 	[[self.backgroundView viewWithTag:1337] removeFromSuperview];
 
-	if(!blur) return;
+	if(!blur || !yes) return;
 
 	if(blurType == 0) {
 
@@ -121,7 +121,6 @@ static void allocateClass() {
 	}
 
 }
-
 
 %new
 
@@ -166,10 +165,13 @@ static void allocateClass() {
 }
 
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection { // handle transition between light/dark mode dynamically
+- (void)didMoveToWindow {
 
 	%orig;
-	self.aprilImageView.image = kUserInterfaceStyle ? darkImage : lightImage;
+
+	[self setImage];
+	[self setGradient];
+	[self setScheduledImages];
 
 }
 
@@ -185,16 +187,12 @@ static void allocateClass() {
 }
 
 
-- (void)didMoveToWindow {
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection { // handle transition between light/dark mode dynamically
 
 	%orig;
-
-	[self setImage];
-	[self setGradient];
-	[self setScheduledImages];
+	self.aprilImageView.image = kUserInterfaceStyle ? darkImage : lightImage;
 
 }
-
 
 // Reusable funcs
 
@@ -211,7 +209,6 @@ static void allocateClass() {
 
 }
 
-
 %new
 
 - (void)setScheduledImageWithImage:(UIImage *)image imageKey:(NSString *)key {
@@ -220,7 +217,6 @@ static void allocateClass() {
 	self.aprilScheduledImageView.image = image;
 
 }
-
 
 %new
 
@@ -231,12 +227,10 @@ static void allocateClass() {
 
 }
 
-
 %end
 
 
 %hook PSTableCell
-
 
 %new
 
@@ -261,7 +255,7 @@ static void allocateClass() {
 }
 
 
-- (void)refreshCellContentsWithSpecifier:(id)specifier {
+- (void)refreshCellContentsWithSpecifier:(PSSpecifier *)specifier {
 
 	%orig;
 	[self applyAlpha];
@@ -286,7 +280,6 @@ static void allocateClass() {
 
 - (void)setSelected:(BOOL)arg1 animated:(BOOL)arg2 { %orig(NO, NO); }
 - (void)setHighlighted:(BOOL)arg1 animated:(BOOL)arg2 { %orig(NO, NO); }
-
 
 %end
 
@@ -319,7 +312,7 @@ static void scheduleTimer() {
 %ctor {
 
 	loadWithoutAFuckingRespring();
-	allocateClass();
+	registerAprilGradientViewClass();
 	scheduleTimer();
 
 }

@@ -139,8 +139,6 @@
 			<dict>
 				<key>cell</key>
 				<string>PSSliderCell</string>
-				<key>cellClass</key>
-				<string>AprilSliderCell</string>
 				<key>default</key>
 				<real>0.85</real>
 				<key>defaults</key>
@@ -175,8 +173,6 @@
 			<dict>
 				<key>cell</key>
 				<string>PSSliderCell</string>
-				<key>cellClass</key>
-				<string>AprilSliderCell</string>
 				<key>default</key>
 				<real>1</real>
 				<key>defaults</key>
@@ -444,7 +440,7 @@
 				<key>cell</key>
 				<string>PSButtonCell</string>
 				<key>cellClass</key>
-				<string>AprilTableCell</string>
+				<string>AprilTintCell</string>
 				<key>label</key>
 				<string>Reset Preferences</string>
 			</dict>
@@ -456,7 +452,7 @@
 				<key>cell</key>
 				<string>PSLinkCell</string>
 				<key>cellClass</key>
-				<string>AprilTableCell</string>
+				<string>AprilTintCell</string>
 				<key>detail</key>
 				<string>AprilContributorsVC</string>
 				<key>isController</key>
@@ -472,7 +468,7 @@
 				<key>cell</key>
 				<string>PSLinkCell</string>
 				<key>cellClass</key>
-				<string>AprilTableCell</string>
+				<string>AprilTintCell</string>
 				<key>detail</key>
 				<string>AprilLinksVC</string>
 				<key>isController</key>
@@ -488,7 +484,7 @@
 				<key>cell</key>
 				<string>PSButtonCell</string>
 				<key>cellClass</key>
-				<string>AprilTableCell</string>
+				<string>AprilTintCell</string>
 				<key>action</key>
 				<string>launchGradientPresets</string>
 				<key>label</key>

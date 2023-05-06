@@ -14,7 +14,7 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
-			<string>AprilTableCell</string>
+			<string>AprilTintCell</string>
 			<key>action</key>
 			<string>launchDiscord</string>
 			<key>label</key>
@@ -24,7 +24,7 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
-			<string>AprilTableCell</string>
+			<string>AprilTintCell</string>
 			<key>action</key>
 			<string>launchPayPal</string>
 			<key>label</key>
@@ -34,7 +34,7 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
-			<string>AprilTableCell</string>
+			<string>AprilTintCell</string>
 			<key>action</key>
 			<string>launchGitHub</string>
 			<key>label</key>
@@ -50,7 +50,7 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
-			<string>AprilTableCell</string>
+			<string>AprilTintCell</string>
 			<key>action</key>
 			<string>launchAmelija</string>
 			<key>label</key>
@@ -62,7 +62,7 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>cellClass</key>
-			<string>AprilTableCell</string>
+			<string>AprilTintCell</string>
 			<key>action</key>
 			<string>launchMeredith</string>
 			<key>label</key>

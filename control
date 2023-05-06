@@ -1,6 +1,6 @@
 Package: me.luki.april
 Name: April
-Version: 2.2
+Version: 3.0
 Architecture: iphoneos-arm
 Description: Augment your settings app aesthetics to the next level on the fly
 Maintainer: Luki
@@ -8,3 +8,6 @@ Author: Luki
 Section: Tweaks
 Depends: mobilesubstrate, preferenceloader, com.mrgcgamer.libgcuniversal
 Conflicts: com.midnightchips.bettersettings
+Icon: https://raw.githubusercontent.com/Luki120/April/main/AprilPrefs/Resources/Assets/AprilIcon.png
+Depiction: https://luki120.github.io/depictions/web/?p=me.luki.april
+SileoDepiction: https://luki120.github.io/depictions/native/me.luki.april/depiction.json

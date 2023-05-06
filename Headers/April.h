@@ -1,8 +1,8 @@
-#import <GcUniversal/GcColorPickerUtils.h>
-#import <GcUniversal/GcImagePickerUtils.h>
+@import GcUniversal.ColorPickerUtils;
+@import GcUniversal.ImagePickerUtils;
+@import ObjectiveC.runtime;
 #import "Common.h"
 #import "Prefs.h"
-@import ObjectiveC.runtime;
 
 
 @interface PSTableCell : UITableViewCell

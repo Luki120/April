@@ -1,6 +1,5 @@
 @import AudioToolbox.AudioServices;
 @import ObjectiveC.message;
-@import ObjectiveC.runtime;
 @import Preferences.PSSpecifier;
 @import Preferences.PSListController;
 @import Preferences.PSSliderTableCell;
@@ -30,5 +29,5 @@
 
 
 @interface PSListController (Private)
-- (BOOL)containsSpecifier:(PSSpecifier *)arg1;
+- (BOOL)containsSpecifier:(PSSpecifier *)specifier;
 @end

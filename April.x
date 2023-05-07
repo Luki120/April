@@ -89,7 +89,7 @@ static void registerAprilGradientViewClass() {
 
 	[[self.backgroundView viewWithTag:1337] removeFromSuperview];
 
-	if(!blur || !yes) return;
+	if(!blur || (!yes && !scheduledImages)) return;
 
 	if(blurType == 0) {
 

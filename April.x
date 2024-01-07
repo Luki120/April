@@ -159,6 +159,7 @@ static void registerAprilGradientViewClass() {
 	animation.repeatCount = HUGE_VALF; // Loop the animation forever
 	animation.autoreverses = YES;
 	animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
+	animation.removedOnCompletion = NO;
 	[[aprilGradientView valueForKey: @"layer"] removeAnimationForKey:@"gradientAnimation"];
 	[[aprilGradientView valueForKey: @"layer"] addAnimation:animation forKey:@"gradientAnimation"];
 

@@ -210,7 +210,7 @@
 				<key>cell</key>
 				<string>PSGroupCell</string>
 				<key>footerText</key>
-				<string>Please notice: the animation will return to it's starting point when switching pages. This is NOT a bug but the way UITableViews work and the gradient is placed. If I found a non hacky solution I'll add it.</string>
+				<string>Please notice: the animation will return to it's starting point when switching pages. This is NOT a bug but related to how UITableView works and the gradient is placed.</string>
 				<key>id</key>
 				<string>GroupCell-2</string>
 			</dict>

@@ -152,7 +152,7 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 
 	if(self.navigationItem.titleView) return;
 
-	aprilTitleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 3.0" minimumScrollOffsetRequired: -68];
+	aprilTitleView = [[APPAnimatedTitleView alloc] initWithTitle:@"April 3.1" minimumScrollOffsetRequired: -68];
 	self.navigationItem.titleView = aprilTitleView;
 
 }
@@ -228,8 +228,8 @@ static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged"
 	UIImage *checkmarkImage = [UIImage systemImageNamed:@"checkmark.circle.fill"];
 
 	if(changelogController) { [self presentViewController:changelogController animated:YES completion:nil]; return; }
-	changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"3.0" icon:tweakImage];
-	[changelogController addBulletedListItemWithTitle:@"Tweak" description:@"Added rootless support." image:checkmarkImage];
+	changelogController = [[OBWelcomeController alloc] initWithTitle:@"April" detailText:@"3.1" icon:tweakImage];
+	[changelogController addBulletedListItemWithTitle:@"Tweak" description:@"Fixed gradient animation stopping when the app went to the background." image:checkmarkImage];
 
 	_UIBackdropViewSettings *settings = [_UIBackdropViewSettings settingsForStyle:2];
 

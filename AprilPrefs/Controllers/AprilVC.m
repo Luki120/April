@@ -7,7 +7,7 @@
 
 // ! Constants
 
-static NSString *const kImagesPath = rootlessPathNS(@"/var/mobile/Library/Preferences/me.luki.aprilprefs/");
+#define kImagesPath rootlessPathNS(@"/var/mobile/Library/Preferences/me.luki.aprilprefs/")
 
 static const char *april_image_changed = "me.luki.aprilprefs/imageChanged";
 static const char *april_gradient_changed = "me.luki.aprilprefs/gradientChanged";

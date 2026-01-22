@@ -2,9 +2,8 @@ name: Makefile CI
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
     
 jobs:
   build:
@@ -25,7 +24,7 @@ jobs:
         with:
           repository: theos/sdks
           ref: master
-          sparse-checkout: iPhoneOS14.5.sdk
+          sparse-checkout: iPhoneOS16.5.sdk
           path: theos/sdks
 
       - name: Checkout LibGcUniversalDocumentation/master
@@ -40,9 +39,9 @@ jobs:
           THEOS=../theos ./install.sh
           cd ..
           brew install make ldid
-          THEOS=theos gmake clean package TARGET="iphone:clang:14.5:14.0" FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+          THEOS=theos gmake clean package TARGET="iphone:clang:16.5:14.0" FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
 
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: packages/*.deb
